@@ -14,7 +14,10 @@
       "target": "zip",
       "category": "Games",
       "artifactName": "${name}_${version}_linux.${ext}"
-    }
+    },
+    "extraFiles": [
+      "geforcenow-electron.desktop"
+    ]
   },
   "repository": "https://github.com/electron/geforcenow-electron",
   "keywords": [
