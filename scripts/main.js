@@ -6,7 +6,6 @@ function createWindow () {
     width: 1280,
     height: 768,
     //fullscreen: true,
-    icon: 'icon.png',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       webviewTag: true
