@@ -12,7 +12,8 @@
   "build": {
     "linux": {
       "target": "zip",
-      "category": "Games"
+      "category": "Games",
+      "artifactName": "${name}_${version}_linux.${ext}"
     },
     "extraFiles": [
       "icon.png"
