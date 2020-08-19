@@ -4,7 +4,7 @@ GeForce Now application written in Electron, wrapping around the web browser GFN
 
 ## How to run
 
-You can run this wrapper directly from a local directory cloned via git. On Arch Linux you can also use the provided PKGBUILD for a system-wide installation.
+You can run this wrapper directly from a local directory cloned via git. On Arch Linux you can also use [this PKGBUILD](https://github.com/hmlendea/PKGBUILDs/blob/master/pkg/geforcenow-electron/PKGBUILD) for a system-wide installation.
 
 ### Requirements
 
