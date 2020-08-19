@@ -1,20 +1,19 @@
 {
-  "name": "electron-quick-start",
+  "name": "geforcenow",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A cross-platform web app for GeForce Now for ChromeBook",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/electron/geforcenow-electron",
   "keywords": [
     "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "gfn",
+    "geforcenow",
+    "geforce-now"
   ],
-  "author": "GitHub",
+  "author": "Horațiu Mlendea <Mlendea.Horatiu@GMail.com>",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^9.2.1"
