@@ -1,5 +1,6 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
+const userAgent = 'Mozilla/5.0 (X11; CrOS x86_64 13099.85.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.110 Safari/537.36';
 
 function createWindow () {
   const mainWindow = new BrowserWindow({
@@ -11,9 +12,7 @@ function createWindow () {
     }
   })
 
-  mainWindow.loadURL('https://play.geforcenow.com', {
-    userAgent: 'Mozilla/5.0 (X11; CrOS x86_64 13099.85.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.110 Safari/537.36'
-  });
+  mainWindow.loadURL('https://play.geforcenow.com');
 }
 
 app.whenReady().then(() => {
@@ -26,6 +25,7 @@ app.whenReady().then(() => {
 
 app.on('browser-window-created',function(e,window) {
   window.setMenu(null);
+  window.webContents.setUserAgent(userAgent);
 });
 
 app.on('window-all-closed', function () {
