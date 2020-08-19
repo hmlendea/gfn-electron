@@ -7,13 +7,13 @@ function createWindow () {
     height: 768,
     //fullscreen: true,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      webviewTag: true
+      preload: path.join(__dirname, 'preload.js')
     }
   })
 
-  mainWindow.setMenu(null);
-  mainWindow.loadFile('html/index.html');
+  mainWindow.loadURL('https://play.geforcenow.com', {
+    userAgent: 'Mozilla/5.0 (X11; CrOS x86_64 13099.85.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.110 Safari/537.36'
+  });
 }
 
 app.whenReady().then(() => {
@@ -23,6 +23,10 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
+
+app.on('browser-window-created',function(e,window) {
+  window.setMenu(null);
+});
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
