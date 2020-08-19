@@ -2,7 +2,7 @@
   "name": "geforcenow",
   "version": "1.0.0",
   "description": "A cross-platform web app for GeForce Now for ChromeBook",
-  "main": "main.js",
+  "main": "scripts/main.js",
   "scripts": {
     "start": "electron ."
   },
