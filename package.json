@@ -6,7 +6,17 @@
   "description": "A cross-platform web app for GeForce Now for ChromeBook",
   "main": "scripts/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "build": {
+    "linux": {
+      "target": "zip",
+      "category": "Games"
+    },
+    "extraFiles": [
+      "icon.png"
+    ]
   },
   "repository": "https://github.com/electron/geforcenow-electron",
   "keywords": [
@@ -18,6 +28,7 @@
   "author": "Horațiu Mlendea <Mlendea.Horatiu@GMail.com>",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^9.2.1"
+    "electron": "^9.2.1",
+    "electron-builder": "^22.5.1"
   }
 }
