@@ -24,6 +24,7 @@ app.whenReady().then(() => {
 })
 
 app.on('browser-window-created',function(e,window) {
+  window.setBackgroundColor('#1A1D1F');
   window.setMenu(null);
   window.webContents.setUserAgent(userAgent);
 
