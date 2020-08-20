@@ -6,13 +6,16 @@ function createWindow () {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 768,
-    //fullscreen: true,
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
   })
 
   mainWindow.loadURL('https://play.geforcenow.com');
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+  })
 }
 
 app.whenReady().then(() => {
