@@ -34,12 +34,9 @@ app.on('browser-window-created',function(e,window) {
   if (window.id != 1) {
     var mainWindow = BrowserWindow.fromId(1);
     var mainWindowPosition = mainWindow.getPosition();
-    var mainWindowSize = mainWindow.getSize();
-    var windowSize = window.getSize();
 
-    window.setPosition(
-      mainWindowPosition[0] + (mainWindowSize[0] - windowSize[0]) / 2,
-      mainWindowPosition[1] + (mainWindowSize[1] - windowSize[1]) / 2);
+    window.setPosition(mainWindowPosition[0], mainWindowPosition[1]);
+    window.center();
   }
 });
 
