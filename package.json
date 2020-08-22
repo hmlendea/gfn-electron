@@ -19,7 +19,7 @@
       "geforcenow-electron.desktop"
     ]
   },
-  "repository": "https://github.com/electron/geforcenow-electron",
+  "repository": "https://github.com/hmlendea/geforcenow-electron",
   "keywords": [
     "Electron",
     "gfn",
