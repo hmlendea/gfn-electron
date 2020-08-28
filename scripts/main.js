@@ -4,8 +4,6 @@ const userAgent = 'Mozilla/5.0 (X11; CrOS x86_64 13099.85.0) AppleWebKit/537.36 
 
 function createWindow () {
   const mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 768,
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
