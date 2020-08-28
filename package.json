@@ -1,8 +1,8 @@
 {
   "name": "geforcenow",
   "appId": "com.electron.${name}",
-  "productName": "GeForce Now",
-  "version": "1.0.2",
+  "productName": "GeForce NOW",
+  "version": "1.0.3",
   "description": "A cross-platform web app for GeForce Now for ChromeBook",
   "main": "scripts/main.js",
   "scripts": {
@@ -19,7 +19,7 @@
       "geforcenow-electron.desktop"
     ]
   },
-  "repository": "https://github.com/electron/geforcenow-electron",
+  "repository": "https://github.com/hmlendea/geforcenow-electron",
   "keywords": [
     "Electron",
     "gfn",
@@ -29,7 +29,7 @@
   "author": "Horațiu Mlendea <Mlendea.Horatiu@GMail.com>",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^10.0.0-beta.23",
-    "electron-builder": "^22.5.1"
+    "electron": "^10.0.0-beta.24",
+    "electron-builder": "^22.8.0"
   }
 }
