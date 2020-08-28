@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron')
+const {app, globalShortcut, BrowserWindow} = require('electron')
 const path = require('path')
 const userAgent = 'Mozilla/5.0 (X11; CrOS x86_64 13099.85.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.110 Safari/537.36';
 
@@ -14,7 +14,7 @@ function createWindow () {
 
   mainWindow.loadURL('https://play.geforcenow.com');
   mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow.show();
   })
 }
 
@@ -22,11 +22,14 @@ app.whenReady().then(() => {
   createWindow()
   
   app.on('activate', function () {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
   })
+
+  // Prevent ESC from exiting fullscreen
+  globalShortcut.register('Esc', () => { });
 })
 
-app.on('browser-window-created',function(e,window) {
+app.on('browser-window-created', function(e, window) {
   window.setBackgroundColor('#1A1D1F');
   window.setMenu(null);
   window.webContents.setUserAgent(userAgent);
@@ -41,5 +44,6 @@ app.on('browser-window-created',function(e,window) {
 });
 
 app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit()
+  if (process.platform !== 'darwin')
+    app.quit();
 })
