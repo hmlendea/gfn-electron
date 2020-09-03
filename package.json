@@ -11,7 +11,13 @@
   },
   "build": {
     "linux": {
-      "target": "zip",
+      "target": [
+        "zip",
+        "AppImage",
+        "deb",
+        "apk",
+        "snap"
+      ],
       "category": "Games",
       "artifactName": "${name}_${version}_linux.${ext}"
     },
