@@ -1,16 +1,27 @@
-# geforcenow-electron
+# About
 
 GeForce Now application written in Electron, wrapping around the web browser GFN implementation for ChromeBooks
 
-## How to run
+# Installation
 
-You can run this wrapper directly from a local directory cloned via git. On Arch Linux you can also use [this PKGBUILD](https://github.com/hmlendea/PKGBUILDs/blob/master/pkg/geforcenow-electron/PKGBUILD) for a system-wide installation.
+## Manual
 
-### Requirements
+ - Go to the [latest release](https://github.com/hmlendea/geforcenow-electron/releases/latest).
+ - Download the specific file that best fits your disto
 
-Next to git, you will need to install [npm](https://www.npmjs.com/), the Node.js package manager. On most distributions, the package is simply called `npm`.
+## Using a package manager
 
-### Cloning the source code
+On Arch Linux you can use [this PKGBUILD](https://github.com/hmlendea/PKGBUILDs/blob/master/pkg/geforcenow-electron/PKGBUILD) for a system-wide installation.
+
+For other distributions, you will have to check if someone included this package into the package manager's repository.
+
+# Building from source
+
+## Requirements
+
+You will need to install [npm](https://www.npmjs.com/), the Node.js package manager. On most distributions, the package is simply called `npm`.
+
+## Cloning the source code
 
 Once you have npm, clone the wrapper to a convenient location:
 
@@ -18,7 +29,7 @@ Once you have npm, clone the wrapper to a convenient location:
 git clone https://github.com/hmlendea/geforcenow-electron.git
 ```
 
-### Installing dependencies and running
+## Building
 
 ```
 cd geforcenow-electron
