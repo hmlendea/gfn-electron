@@ -17,6 +17,12 @@ On Arch Linux you can use [this PKGBUILD](https://github.com/hmlendea/PKGBUILDs/
 
 For other distributions, you will have to check if someone included this package into the package manager's repository.
 
+# Usage
+
+If you've installed it through your package manager, then it should already contain a launcher for it. Otherwise, run the `geforcenow` binary.
+
+To exit full-screen mod in games, use the Shift+\` keyboard shortcut.
+
 # Building from source
 
 ## Requirements
