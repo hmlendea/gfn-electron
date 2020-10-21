@@ -23,8 +23,13 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   })
 
-  // Prevent ESC from exiting fullscreen
-  globalShortcut.register('Esc', () => { });
+  globalShortcut.register("Shift+`", () => {
+    var fs = BrowserWindow.getAllWindows()[0].isFullScreen();
+    if(fs)
+      BrowserWindow.getAllWindows()[0].setFullScreen(false);
+    else
+      BrowserWindow.getAllWindows()[0].setFullScreen(true);
+  });
 })
 
 app.on('browser-window-created', function(e, window) {
@@ -36,6 +41,7 @@ app.on('browser-window-created', function(e, window) {
     var mainWindow = BrowserWindow.fromId(1);
     var mainWindowPosition = mainWindow.getPosition();
 
+    window.setFullScreen(true);
     window.setPosition(mainWindowPosition[0], mainWindowPosition[1]);
     window.center();
   }
