@@ -1,6 +1,8 @@
+[![Support this on Patreon](https://raw.githubusercontent.com/hmlendea/readme-assets/master/donate_patreon.png)](https://www.patreon.com/hmlendea) [![Donate through PayPal](https://raw.githubusercontent.com/hmlendea/readme-assets/master/donate_paypal.png)](https://www.paypal.com/donate?hosted_button_id=6YVRGJHDGWGKQ)
+
 # About
 
-GeForce Now application written in Electron, wrapping around the web browser GFN implementation for ChromeBooks
+GeForce Now application written in Electron, wrapping around the GFN web browser implementation
 
 # Installation
 
@@ -14,6 +16,12 @@ GeForce Now application written in Electron, wrapping around the web browser GFN
 On Arch Linux you can use [this PKGBUILD](https://github.com/hmlendea/PKGBUILDs/blob/master/pkg/geforcenow-electron/PKGBUILD) for a system-wide installation.
 
 For other distributions, you will have to check if someone included this package into the package manager's repository.
+
+# Usage
+
+If you've installed it through your package manager, then it should already contain a launcher for it. Otherwise, run the `geforcenow` binary.
+
+To exit full-screen mod in games, use the Shift+\` keyboard shortcut.
 
 # Building from source
 
@@ -50,3 +58,5 @@ git pull
 npm install
 npm start
 ```
+
+[![Support this on Patreon](https://raw.githubusercontent.com/hmlendea/readme-assets/master/donate_patreon.png)](https://www.patreon.com/hmlendea) [![Donate through PayPal](https://raw.githubusercontent.com/hmlendea/readme-assets/master/donate_paypal.png)](https://www.paypal.com/donate?hosted_button_id=6YVRGJHDGWGKQ)

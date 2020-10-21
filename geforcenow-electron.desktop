@@ -6,3 +6,4 @@ Exec=/opt/geforcenow-electron/geforcenow
 Icon=nvidia
 StartupWMClass=geforce now
 Categories=Games;
+Keywords=Game;Nvidia;GeForce;
