@@ -1,6 +1,8 @@
+[![Support this on Patreon](https://raw.githubusercontent.com/hmlendea/more-cultural-names/master/assets/patreon.png)](https://www.patreon.com/hmlendea)
+
 # About
 
-GeForce Now application written in Electron, wrapping around the web browser GFN implementation for ChromeBooks
+GeForce Now application written in Electron, wrapping around the GFN web browser implementation
 
 # Installation
 
@@ -50,3 +52,5 @@ git pull
 npm install
 npm start
 ```
+
+[![Support this on Patreon](https://raw.githubusercontent.com/hmlendea/more-cultural-names/master/assets/patreon.png)](https://www.patreon.com/hmlendea)
