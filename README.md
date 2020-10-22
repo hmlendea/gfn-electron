@@ -2,14 +2,14 @@
 
 # About
 
-GeForce Now application written in Electron, wrapping around the GFN web browser implementation
+GeForce Now application written in Electron, wrapping around the GFN web browser implementation.
 
 # Installation
 
 ## Manual
 
  - Go to the [latest release](https://github.com/hmlendea/geforcenow-electron/releases/latest).
- - Download the specific file that best fits your disto
+ - Download the specific file that best fits your disto.
 
 ## Using a package manager
 
