@@ -22,14 +22,6 @@ app.whenReady().then(() => {
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   })
-
-  globalShortcut.register("Shift+`", () => {
-    var fs = BrowserWindow.getAllWindows()[0].isFullScreen();
-    if(fs)
-      BrowserWindow.getAllWindows()[0].setFullScreen(false);
-    else
-      BrowserWindow.getAllWindows()[0].setFullScreen(true);
-  });
 })
 
 app.on('browser-window-created', function(e, window) {
