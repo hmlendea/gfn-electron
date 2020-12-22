@@ -21,7 +21,7 @@ For other distributions, you will have to check if someone included this package
 
 If you've installed it through your package manager, then it should already contain a launcher for it. Otherwise, run the `geforcenow` binary.
 
-To exit full-screen mod in games, use the Shift+\` keyboard shortcut.
+To toggle full-screen mode, use the `Super + F` keyboard shortcut.
 
 # Building from source
 
