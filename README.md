@@ -1,13 +1,8 @@
 [![Support this on Patreon](https://raw.githubusercontent.com/hmlendea/readme-assets/master/donate_patreon.png)](https://www.patreon.com/hmlendea) [![Donate through PayPal](https://raw.githubusercontent.com/hmlendea/readme-assets/master/donate_paypal.png)](https://www.paypal.com/donate?hosted_button_id=6YVRGJHDGWGKQ)
-This repository contains the GFN Electron flatpak files.
-
 
 # About
-The original upstream source is available here:
-
 
 GeForce Now application written in Electron, wrapping around the GFN web browser implementation.
-https://github.com/hmlendea/geforcenow-electron
 
 # Installation
 
