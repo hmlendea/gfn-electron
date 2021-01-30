@@ -35,7 +35,7 @@
   "author": "Horațiu Mlendea <Mlendea.Horatiu@GMail.com>",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "11.0.2",
+    "electron": "11.1.0",
     "electron-builder": "22.9.1"
   }
 }
