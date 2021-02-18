@@ -1,6 +1,5 @@
 const {app, globalShortcut, BrowserWindow} = require('electron');
 const path = require('path');
-const userAgent = 'Mozilla/5.0 (X11; CrOS x86_64 13099.85.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.110 Safari/537.36';
 
 var isFullScreen = false;
 
@@ -38,7 +37,6 @@ app.whenReady().then(() => {
 app.on('browser-window-created', function(e, window) {
   window.setBackgroundColor('#1A1D1F');
   window.setMenu(null);
-  window.webContents.setUserAgent(userAgent);
 
   window.on('leave-full-screen', function(e, win) {
     if (isFullScreen) {
