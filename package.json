@@ -2,7 +2,7 @@
   "name": "geforcenow",
   "appId": "com.electron.${name}",
   "productName": "GeForce NOW",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "A cross-platform web app for GeForce Now for ChromeBook",
   "main": "scripts/main.js",
   "scripts": {
