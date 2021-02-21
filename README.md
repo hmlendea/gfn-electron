@@ -4,18 +4,10 @@
 
 GeForce Now application written in Electron, wrapping around the GFN web browser implementation.
 
-# Installation
-
-## Manual
+# Manual Installation
 
  - Go to the [latest release](https://github.com/hmlendea/geforcenow-electron/releases/latest).
  - Download the specific file that best fits your disto.
-
-## Using a package manager
-
-On Arch Linux you can use [this PKGBUILD](https://github.com/hmlendea/PKGBUILDs/blob/master/pkg/geforcenow-electron/PKGBUILD) for a system-wide installation.
-
-For other distributions, you will have to check if someone included this package into the package manager's repository.
 
 # Usage
 
