@@ -3,6 +3,8 @@ const path = require('path');
 
 var isFullScreen = false;
 
+app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder');
+
 function createWindow () {
   const mainWindow = new BrowserWindow({
     webPreferences: {
