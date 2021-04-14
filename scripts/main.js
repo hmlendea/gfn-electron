@@ -47,10 +47,12 @@ app.on('browser-window-created', function(e, window) {
   });
 
   window.on('page-title-updated', function(e, title) {
-    console.log(title);
     if (title.includes('on GeForce NOW')) {
       window.setFullScreen(true);
       isFullScreen = true;
+    } else {
+      window.setFullScreen(false);
+      isFullScreen = false;
     }
   });
 });
