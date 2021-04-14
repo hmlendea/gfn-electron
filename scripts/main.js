@@ -8,7 +8,8 @@ app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder');
 function createWindow () {
   const mainWindow = new BrowserWindow({
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: false
     }
   });
 
