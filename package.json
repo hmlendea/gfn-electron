@@ -32,7 +32,7 @@
     "geforcenow",
     "geforce-now"
   ],
-  "author": "Horațiu Mlendea <Mlendea.Horatiu@GMail.com>",
+  "author": "Horațiu Mlendea <Horatiu.Mlendea@ProtonMail.com>",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "12.0.2",

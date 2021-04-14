@@ -8,7 +8,8 @@ app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder');
 function createWindow () {
   const mainWindow = new BrowserWindow({
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: false
     }
   });
 
@@ -47,10 +48,12 @@ app.on('browser-window-created', function(e, window) {
   });
 
   window.on('page-title-updated', function(e, title) {
-    console.log(title);
     if (title.includes('on GeForce NOW')) {
       window.setFullScreen(true);
       isFullScreen = true;
+    } else {
+      window.setFullScreen(false);
+      isFullScreen = false;
     }
   });
 });
