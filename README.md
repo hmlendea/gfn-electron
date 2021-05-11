@@ -1,12 +1,14 @@
-[![Arch Linux AUR Package](https://img.shields.io/aur/version/geforcenow-electron?logo=arch-linux&logoColor=white)](https://aur.archlinux.org/packages/geforcenow-electron/)
-
-[![Support this on Patreon](https://raw.githubusercontent.com/hmlendea/readme-assets/master/donate_patreon.png)](https://www.patreon.com/hmlendea) [![Donate through PayPal](https://raw.githubusercontent.com/hmlendea/readme-assets/master/donate_paypal.png)](https://www.paypal.com/donate?hosted_button_id=6YVRGJHDGWGKQ)
+[![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/geforcenow-electron)](https://github.com/hmlendea/geforcenow-electron/releases/latest)
 
 # About
 
 GeForce Now application written in Electron, wrapping around the GFN web browser implementation.
 
-# Manual Installation
+# Installation
+
+[![Get it from the AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/install_from_aur.png)](https://aur.archlinux.org/packages/geforcenow-electron/) [![Get it from the Snap Store](https://raw.githubusercontent.com/snapcore/snap-store-badges/master/EN/%5BEN%5D-snap-store-white.png)](https://snapcraft.io/geforcenow)
+
+## Manual Installation
 
  - Go to the [latest release](https://github.com/hmlendea/geforcenow-electron/releases/latest).
  - Download the specific file that best fits your disto.
