@@ -1,3 +1,5 @@
+[![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/geforcenow-electron)](https://github.com/hmlendea/geforcenow-electron/releases/latest)
+
 # About
 
 GeForce Now application written in Electron, wrapping around the GFN web browser implementation.
