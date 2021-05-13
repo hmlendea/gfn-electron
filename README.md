@@ -2,7 +2,7 @@
 
 # About
 
-GeForce Now application written in Electron, wrapping around the GFN web browser implementation.
+GeForce NOW application written in Electron, wrapping around the GFN web browser implementation.
 
 # Installation
 
