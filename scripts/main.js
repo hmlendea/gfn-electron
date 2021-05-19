@@ -30,12 +30,6 @@ function createWindow() {
   });
   mainWindow.webContents.userAgent = "Mozilla/5.0 (X11; CrOS x86_64 13816.55.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.86 Safari/537.36";
   mainWindow.loadURL('https://play.geforcenow.com');
-  mainWindow.on("page-title-updated", (event, title) => {
-    console.log(title)
-    if (title == "GeForce NOW") RPC.details = "Main Menu";
-    else RPC.details = `Playing ${title.slice(0, 5)}`;
-    rpc.setActivity(RPC);
-  })
 }
 
 app.whenReady().then(() => {
@@ -70,6 +64,9 @@ app.on('browser-window-created', function (e, window) {
   });
 
   window.on('page-title-updated', function (e, title) {
+    if (title == "GeForce NOW") RPC.details = "Main Menu";
+    else RPC.details = `Playing ${title.slice(0, title.length - 15)}`; // removes "on GeForce Now"
+    rpc.setActivity(RPC);
     if (title.includes('on GeForce NOW')) {
       window.setFullScreen(true);
       isFullScreen = true;
