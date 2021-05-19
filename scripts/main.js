@@ -1,7 +1,7 @@
 const { app, globalShortcut, BrowserWindow } = require('electron');
 const DiscordRPC = require("discord-rpc");
 const path = require('path');
-const configure = require("./../config.json")
+const configure = require("./../config.json");
 
 var isFullScreen = false;
 const rpc = new DiscordRPC.Client({ transport: "ipc" });
@@ -12,7 +12,7 @@ let RPC = {
   details: `Playing`,
   startTimestamp: starttimestamp,
   largeImageKey: "nvidia"
-}
+};
 
 rpc.on("ready", () => {
   rpc.setActivity(RPC);
@@ -65,15 +65,16 @@ app.on('browser-window-created', function (e, window) {
 
   window.on('page-title-updated', function (e, title) {
     if (title == "GeForce NOW") RPC.details = "Main Menu";
-    else RPC.details = `Playing ${title.slice(0, title.length - 15)}`; // removes "on GeForce Now"
-    rpc.setActivity(RPC);
+    else RPC.details = "Something else"; // other than "GeForce Now" title
     if (title.includes('on GeForce NOW')) {
+      RPC.details = `Playing ${title.slice(0, title.length - 15)}`; // removes "on GeForce Now"
       window.setFullScreen(true);
       isFullScreen = true;
     } else {
       window.setFullScreen(false);
       isFullScreen = false;
     }
+    rpc.setActivity(RPC);
   });
 });
 
