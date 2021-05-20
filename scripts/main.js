@@ -1,23 +1,7 @@
 const { app, globalShortcut, BrowserWindow } = require('electron');
-const DiscordRPC = require("discord-rpc");
 const path = require('path');
-const configure = require("./../config.json");
-
+const RPC = require("./RPC.js");
 var isFullScreen = false;
-const rpc = new DiscordRPC.Client({ transport: "ipc" });
-const starttimestamp = new Date();
-const clientId = configure.clientID;
-
-let RPC = {
-  details: `Playing`,
-  startTimestamp: starttimestamp,
-  largeImageKey: "nvidia"
-};
-
-rpc.on("ready", () => {
-  rpc.setActivity(RPC);
-});
-rpc.login({ clientId }).catch(console.error);
 
 app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder');
 
@@ -26,7 +10,8 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: false
-    }
+    },
+    icon: path.join(__dirname, "../icon.png")
   });
   mainWindow.webContents.userAgent = "Mozilla/5.0 (X11; CrOS x86_64 13816.55.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.86 Safari/537.36";
   mainWindow.loadURL('https://play.geforcenow.com');
@@ -64,17 +49,17 @@ app.on('browser-window-created', function (e, window) {
   });
 
   window.on('page-title-updated', function (e, title) {
-    if (title == "GeForce NOW") RPC.details = "Main Menu";
-    else RPC.details = "Something else"; // other than "GeForce Now" title
+    if (title == "GeForce NOW") RPC.setStatus("Main Menu")
+    else RPC.setStatus("Something else") // other than "GeForce Now" title
     if (title.includes('on GeForce NOW')) {
-      RPC.details = `Playing ${title.slice(0, title.length - 15)}`; // removes "on GeForce Now"
+      const game = title.slice(0, title.length - 15); // removes "on GeForce Now"
+      RPC.setStatus(game, true)
       window.setFullScreen(true);
       isFullScreen = true;
     } else {
       window.setFullScreen(false);
       isFullScreen = false;
     }
-    rpc.setActivity(RPC);
   });
 });
 
