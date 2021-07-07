@@ -21,6 +21,12 @@
       "category": "Games",
       "artifactName": "${name}_${version}_linux.${ext}"
     },
+    "snap": {
+      "plugs": [
+        "default",
+        "joystick"
+      ]
+    },
     "extraFiles": [
       "geforcenow-electron.desktop"
     ]
