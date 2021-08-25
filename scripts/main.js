@@ -12,7 +12,7 @@ function createWindow () {
       contextIsolation: false
     }
   });
-  mainWindow.webContents.userAgent = "Mozilla/5.0 (X11; CrOS x86_64 13816.55.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.86 Safari/537.36";
+  mainWindow.webContents.userAgent = "Mozilla/5.0 (X11; CrOS aarch64 13982.82.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.157 Safari/537.36";
   mainWindow.loadURL('https://play.geforcenow.com');
 }
 
