@@ -14,7 +14,6 @@ function createWindow () {
     }
   });
   mainWindow.loadURL('https://play.geforcenow.com');
-  mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
