@@ -28,7 +28,7 @@
       ]
     },
     "extraFiles": [
-      "geforcenow-electron.desktop"
+      "com.github.hmlendea.${name}.desktop"
     ]
   },
   "repository": "https://github.com/hmlendea/geforcenow-electron",
@@ -39,7 +39,7 @@
     "geforce-now"
   ],
   "author": "Horațiu Mlendea <Horatiu.Mlendea@ProtonMail.com>",
-  "license": "CC0-1.0",
+  "license": "GPL-3.0",
   "devDependencies": {
     "electron": "13.2.1",
     "electron-builder": "^22.9.1"
