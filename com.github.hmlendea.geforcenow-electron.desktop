@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=GeForce NOW
+Comment=Stream games using the Nvidia GeForce NOW service
+Comment[ro]=Joacă jocuri prin streaming folosind serviciul Nvidia GeForce NOW
+Type=Application
+Exec=/opt/geforcenow-electron/geforcenow
+Icon=nvidia
+StartupWMClass=geforce now
+Categories=Network;Game;
+Keywords=Game;Streaming;Nvidia;GeForce;NOW;GFN;
+Keywords[ro]=Game;Streaming;Joc;Transmisie;Transmisiune;Nvidia;GeForce;NOW;GFN;
