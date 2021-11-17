@@ -24,9 +24,10 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **System information:**
- - OS: [e.g. Ubuntu]
+ - OS: [e.g. Pop!_OS]
+ - Desktop Environment: [e.g. GNOME 41]
  - Installation method: [e.g. flatpak]
- - Version [e.g. 1.0.9]
+ - Version: [e.g. 1.0.9]
 
 **Additional context**
 Add any other context about the problem here.
