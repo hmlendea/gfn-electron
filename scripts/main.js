@@ -11,6 +11,7 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: false,
+      nativeWindowOpen: false
     },
   });
 
