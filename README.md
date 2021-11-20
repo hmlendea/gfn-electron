@@ -17,7 +17,10 @@ GeForce NOW application written in Electron, wrapping around the GFN web browser
 
 If you've installed it through your package manager, then it should already contain a launcher for it. Otherwise, run the `geforcenow` binary.
 
-To toggle full-screen mode, use the `Super + F` keyboard shortcut.
+## Keyboard shortcuts
+
+ - **Super + F**: Toggles the fullscreen mode
+ - **Super + M**: Toggles the microphone
 
 # Building from source
 
