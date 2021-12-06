@@ -1,0 +1,67 @@
+name: Bug report
+description: Create a report to help us improve
+title: "[BUG]"
+labels: [":bug: bug"]
+assignees: hmlendea
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+    validations:
+      required: false
+  - type: input
+    id: operatingsystem
+    attributes:
+      label: Operatingsystem
+      placeholder: (e.g. Pop!_OS)
+    validations:
+      required: true
+  - type: input
+    id: desktopEnvironment
+    attributes:
+      label: Desktop Environment
+      placeholder: (e.g. GNOME 41)
+    validations:
+      required: true
+  - type: input
+    id: installationMethod
+    attributes:
+      label: Installation method
+      placeholder: (e.g. flatpak)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: (e.g. 1.0.9)
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.
+    validations:
+      required: false
