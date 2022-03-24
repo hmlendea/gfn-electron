@@ -6,7 +6,7 @@ GeForce NOW application written in Electron, wrapping around the GFN web browser
 
 # Installation
 
-[![Get it from the AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/aur.png)](https://aur.archlinux.org/packages/geforcenow-electron/) [![Get it from the Snap Store](https://raw.githubusercontent.com/snapcore/snap-store-badges/master/EN/%5BEN%5D-snap-store-white.png)](https://snapcraft.io/geforcenow-electron) [![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://www.flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
+[![Get it from the AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/aur.png)](https://aur.archlinux.org/packages/geforcenow-electron/) [![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron) [![Get it from the Snap Store](https://raw.githubusercontent.com/snapcore/snap-store-badges/master/EN/%5BEN%5D-snap-store-white.png)](https://snapcraft.io/geforcenow-electron)
 
 ## Manual Installation
 
@@ -17,7 +17,10 @@ GeForce NOW application written in Electron, wrapping around the GFN web browser
 
 If you've installed it through your package manager, then it should already contain a launcher for it. Otherwise, run the `geforcenow` binary.
 
-To toggle full-screen mode, use the `Super + F` keyboard shortcut.
+## Keyboard shortcuts
+
+ - **Super + F**: Toggles the fullscreen mode
+ - **Super + M**: Toggles the microphone
 
 # Building from source
 
@@ -54,3 +57,8 @@ git pull
 npm install
 npm start
 ```
+
+# Links
+ - [GeForce NOW](https://nvidia.com/en-eu/geforce-now)
+ - [FlatHub release](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
+ - [FlatHub repository](https://github.com/flathub/io.github.hmlendea.geforcenow-electron)
