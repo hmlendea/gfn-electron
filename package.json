@@ -32,7 +32,7 @@
       "com.github.hmlendea.${name}.desktop"
     ]
   },
-  "repository": "https://github.com/hmlendea/geforcenow-electron",
+  "repository": "https://github.com/hmlendea/gfn-electron",
   "keywords": [
     "Electron",
     "gfn",
