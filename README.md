@@ -1,4 +1,4 @@
-[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html) [![Build Status](https://github.com/hmlendea/geforcenow-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/geforcenow-electron/actions/workflows/node.js.yml) [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/geforcenow-electron)](https://github.com/hmlendea/geforcenow-electron/releases/latest)
+[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html) [![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml) [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/releases/latest)
 
 # About
 
@@ -10,7 +10,7 @@ GeForce NOW application written in Electron, wrapping around the GFN web browser
 
 ## Manual Installation
 
- - Go to the [latest release](https://github.com/hmlendea/geforcenow-electron/releases/latest).
+ - Go to the [latest release](https://github.com/hmlendea/gfn-electron/releases/latest).
  - Download the specific file that best fits your disto.
 
 # Usage
@@ -30,7 +30,7 @@ You will need to install [npm](https://www.npmjs.com/), the Node.js package mana
 Once you have npm, clone the wrapper to a convenient location:
 
 ```
-git clone https://github.com/hmlendea/geforcenow-electron.git
+git clone https://github.com/hmlendea/gfn-electron.git
 ```
 
 ## Building
