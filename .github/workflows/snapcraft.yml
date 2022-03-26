@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Fetching the release package
-      run: wget "https://github.com/hmlendea/gfn-electron/releases/download/${{github_ref_name}}/geforcenow-electron_${GITHUB_REF:11}_linux.snap" -O "geforcenow-electron.snap"
+      run: wget "https://github.com/hmlendea/gfn-electron/releases/download/${{github.ref_name}}/geforcenow-electron_${GITHUB_REF:11}_linux.snap" -O "geforcenow-electron.snap"
 
     - uses: snapcore/action-publish@v1
       with:
