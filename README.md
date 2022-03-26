@@ -32,30 +32,27 @@ You will need to install [npm](https://www.npmjs.com/), the Node.js package mana
 
 Once you have npm, clone the wrapper to a convenient location:
 
-```
+```bash
 git clone https://github.com/hmlendea/gfn-electron.git
 ```
 
 ## Building
 
-```
-cd geforcenow-electron
+```bash
 npm install
 npm start
 ```
 
 On subsequent runs, `npm start` will be all that's required.
 
-## Updating
+## Updating the source code
 
 Simply pull the latest version of master and install any changed dependencies:
 
-```
-cd geforcenow-electron
+```bash
 git checkout master
 git pull
 npm install
-npm start
 ```
 
 # Links
