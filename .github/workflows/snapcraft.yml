@@ -2,11 +2,8 @@ name: Snapcraft
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
-  workflow_dispatch:
+    tags:
+    - 'v*.*.*'
 
 jobs:
   build:
@@ -15,10 +12,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Fetching the release package
-      run: wget "https://github.com/hmlendea/gfn-electron/releases/download/v1.2.0/geforcenow-electron_1.2.0_linux.snap" -O "geforcenow-electron.snap"
+      run: wget "https://github.com/hmlendea/gfn-electron/releases/download/${{github_ref_name}}/geforcenow-electron_${GITHUB_REF:11}_linux.snap" -O "geforcenow-electron.snap"
 
     - uses: snapcore/action-publish@v1
       with:
         store_login: ${{ secrets.SNAPCRAFT_LOGIN }}
         snap: geforcenow-electron.snap # ${{ steps.build.outputs.snap }}
-        release: edge
+        release: stable
