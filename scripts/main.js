@@ -1,6 +1,6 @@
 const { app, globalShortcut, BrowserWindow } = require("electron");
 const path = require("path");
-const userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36";
+const userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36";
 
 var isFullScreen = false;
 
