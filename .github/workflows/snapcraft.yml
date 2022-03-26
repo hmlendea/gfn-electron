@@ -13,10 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
     - uses: snapcore/action-build@v1
       id: build
+
+    - name: Fetching the release package
+      run: wget "https://github.com/hmlendea/gfn-electron/releases/download/v1.2.0/geforcenow-electron_1.2.0_linux.snap" -O "geforcenow-electron.snap"
+
     - uses: snapcore/action-publish@v1
       with:
         store_login: ${{ secrets.SNAPCRAFT_LOGIN }}
-        snap: ${{ steps.build.outputs.snap }}
+        snap: geforcenow-electron.snap # ${{ steps.build.outputs.snap }}
         release: edge
