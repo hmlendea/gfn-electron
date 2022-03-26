@@ -2,7 +2,7 @@
 
 # About
 
-GeForce NOW application written in Electron, wrapping around the GFN web browser implementation.
+Unofficial client for GeForce NOW, written as an Electron wrapper around GFN's web browser implementation.
 
 # Installation
 
