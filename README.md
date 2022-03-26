@@ -2,7 +2,7 @@
 
 # About
 
-GeForce NOW application written in Electron, wrapping around the GFN web browser implementation.
+Unofficial client for GeForce NOW, written as an Electron wrapper around GFN's web browser implementation.
 
 # Installation
 
@@ -15,7 +15,8 @@ GeForce NOW application written in Electron, wrapping around the GFN web browser
 
 # Usage
 
-If you've installed it through your package manager, then it should already contain a launcher for it. Otherwise, run the `geforcenow` binary.
+If you've installed it through a package manager, then you can launch it directly from your desktop environment.
+You can also run `geforcenow` _(or `flatpak run io.github.hmlendea.geforcenow-electron` if you're using flatpak)_ in the terminal.
 
 ## Keyboard shortcuts
 
@@ -32,30 +33,27 @@ You will need to install [npm](https://www.npmjs.com/), the Node.js package mana
 
 Once you have npm, clone the wrapper to a convenient location:
 
-```
+```bash
 git clone https://github.com/hmlendea/gfn-electron.git
 ```
 
 ## Building
 
-```
-cd geforcenow-electron
+```bash
 npm install
 npm start
 ```
 
 On subsequent runs, `npm start` will be all that's required.
 
-## Updating
+## Updating the source code
 
 Simply pull the latest version of master and install any changed dependencies:
 
-```
-cd geforcenow-electron
+```bash
 git checkout master
 git pull
 npm install
-npm start
 ```
 
 # Links
