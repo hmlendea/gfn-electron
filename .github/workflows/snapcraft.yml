@@ -1,3 +1,4 @@
+name: Snapcraft
 jobs:
   build:
     runs-on: ubuntu-latest
