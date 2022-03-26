@@ -15,7 +15,8 @@ GeForce NOW application written in Electron, wrapping around the GFN web browser
 
 # Usage
 
-If you've installed it through your package manager, then it should already contain a launcher for it. Otherwise, run the `geforcenow` binary.
+If you've installed it through a package manager, then you can launch it directly from your desktop environment.
+You can also run `geforcenow` _(or `flatpak run io.github.hmlendea.geforcenow-electron` if you're using flatpak)_ in the terminal.
 
 ## Keyboard shortcuts
 
