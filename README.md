@@ -23,6 +23,17 @@ You can also run `geforcenow` _(or `io.github.hmlendea.geforcenow-electron` if y
  - **Super + F** / **F11**: Toggles the fullscreen mode
  - **Super + M**: Toggles the microphone
 
+## Command-line arguments
+
+ - **--spoof-chromeos**: Uses a ChromeOS UserAgent string
+ - **--spoof-windows**: Uses a Windows UserAgent string
+
+## Changing the keyboard layout
+
+Currently Nvidia doesn't allow changing the keyboard layout on Linux.
+
+In order to get access to that setting, use one of the UA-spoofing CLI arguments mentioned above.
+
 # Building from source
 
 ## Requirements
