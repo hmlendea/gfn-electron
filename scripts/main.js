@@ -4,12 +4,12 @@ const path = require("path");
 var userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36"; // Linux
 var isFullScreen = false;
 
-if (process.argv.indexOf('--spoof-chromeos')) {
+if (process.argv.includes("--spoof-chromeos")) {
   userAgent = "Mozilla/5.0 (X11; CrOS x86_64 14469.41.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.57 Safari/537.36" // ChromeOS
   app.commandLine.appendSwitch("disable-features", "UserAgentClientHint");
 }
 
-if (process.argv.indexOf('--spoof-windows')) {
+if (process.argv.includes('--spoof-windows')) {
   userAgent = "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.7113.93 Safari/537.36" // Windows
   app.commandLine.appendSwitch("disable-features", "UserAgentClientHint");
 }
