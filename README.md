@@ -16,11 +16,11 @@ Unofficial client for GeForce NOW, written as an Electron wrapper around GFN's w
 # Usage
 
 If you've installed it through a package manager, then you can launch it directly from your desktop environment.
-You can also run `geforcenow` _(or `flatpak run io.github.hmlendea.geforcenow-electron` if you're using flatpak)_ in the terminal.
+You can also run `geforcenow` _(or `io.github.hmlendea.geforcenow-electron` if you're using flatpak)_ in the terminal.
 
 ## Keyboard shortcuts
 
- - **Super + F**: Toggles the fullscreen mode
+ - **Super + F** / **F11**: Toggles the fullscreen mode
  - **Super + M**: Toggles the microphone
 
 # Building from source
