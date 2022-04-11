@@ -18,7 +18,7 @@ console.log('Using user agent: ' + userAgent);
 
 app.commandLine.appendSwitch("enable-features", "VaapiVideoDecoder");
 
-function createWindow() {
+async function createWindow() {
   const mainWindow = new BrowserWindow({
     fullscreenable: true,
     webPreferences: {
@@ -31,7 +31,11 @@ function createWindow() {
 
   mainWindow.loadURL("https://play.geforcenow.com");
 
-  /*e
+  globalShortcut.register("F12", async () => {
+    mainWindow.webContents.toggleDevTools();
+  });
+  
+  /*
   uncomment this to debug any errors with loading GFN landing page
 
   mainWindow.webContents.on("will-navigate", (event, url) => {
@@ -41,16 +45,16 @@ function createWindow() {
   */
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   createWindow();
 
-  app.on("activate", function () {
+  app.on("activate", async function() {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
   });
 
-  globalShortcut.register("Super+F", () => {
+  globalShortcut.register("Super+F", async () => {
     isFullScreen = BrowserWindow.getAllWindows()[0].isFullScreen();
     if (isFullScreen) {
       BrowserWindow.getAllWindows()[0].setFullScreen(false);
@@ -60,21 +64,40 @@ app.whenReady().then(() => {
       isFullScreen = true;
     }
   });
+
+  globalShortcut.register("F11", async () => {
+    isFullScreen = BrowserWindow.getAllWindows()[0].isFullScreen();
+    if (isFullScreen) {
+      BrowserWindow.getAllWindows()[0].setFullScreen(false);
+      isFullScreen = false;
+    } else {
+      BrowserWindow.getAllWindows()[0].setFullScreen(true);
+      isFullScreen = true;
+    }
+  });
+
+  globalShortcut.register("Alt+F4", async () => {
+    app.quit();
+  });
+
+  globalShortcut.register("F4", async () => {
+    app.quit();
+  });
 });
 
-app.on("browser-window-created", function (e, window) {
+app.on("browser-window-created", async function(e, window) {
   window.setBackgroundColor("#1A1D1F");
   window.setMenu(null);
 
   window.webContents.setUserAgent(userAgent);
 
-  window.on("leave-full-screen", function (e, win) {
+  window.on("leave-full-screen", async function(e, win) {
     if (isFullScreen) {
       BrowserWindow.getAllWindows()[0].setFullScreen(true);
     }
   });
 
-  window.on("page-title-updated", function (e, title) {
+  window.on("page-title-updated", async function(e, title) {
     if (title.includes("on GeForce NOW")) {
       window.setFullScreen(true);
       isFullScreen = true;
@@ -85,12 +108,12 @@ app.on("browser-window-created", function (e, window) {
   });
 });
 
-app.on("will-quit", () => {
+app.on("will-quit", async () => {
   globalShortcut.unregisterAll();
 });
 
-app.on("window-all-closed", function () {
+app.on("window-all-closed", async function() {
   if (process.platform !== "darwin") {
     app.quit();
-  }
+  };
 });
