@@ -31,7 +31,7 @@ function createWindow() {
 
   mainWindow.loadURL("https://play.geforcenow.com");
 
-  /*
+  /*e
   uncomment this to debug any errors with loading GFN landing page
 
   mainWindow.webContents.on("will-navigate", (event, url) => {
