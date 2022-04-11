@@ -21,7 +21,9 @@ You can also run `geforcenow` _(or `io.github.hmlendea.geforcenow-electron` if y
 ## Keyboard shortcuts
 
  - **Super + F** / **F11**: Toggles the fullscreen mode
- - **Super + M**: Toggles the microphone
+ - **ALT + F4** / **F4**: Exits app
+ - **CTRL + M**: Toggles the microphone
+ - **F12**: Toggles chrome dev tools
 
 ## Command-line arguments
 
