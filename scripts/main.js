@@ -99,8 +99,8 @@ app.on("browser-window-created", async function(e, window) {
 
   window.on("page-title-updated", async function(e, title) {
     if (title.includes("on GeForce NOW")) {
-      const { RPC } = require('./rpc.js');
-      RPC(title);
+      const { DiscordRPC } = require('./rpc.js');
+      DiscordRPC(title);
       window.setFullScreen(true);
       isFullScreen = true;
     } else {
