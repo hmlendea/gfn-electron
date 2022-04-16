@@ -37,12 +37,12 @@ Currently NVIDIA doesn't allow changing the keyboard layout on Linux.
 
 In order to get access to that setting, use one of the UA-spoofing CLI arguments mentioned above.
 
-# Building from source
-
 ## Disabling Discord Rich Presence
 Currently it cannot be in settings as in the browser version NVIDIA doesn't have that option.
 
 In order to disable it you must use CLI arguments that are mentioned above.
+
+# Building from source
 
 ## Requirements
 
