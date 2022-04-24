@@ -1,6 +1,8 @@
 const { app, globalShortcut, BrowserWindow } = require("electron");
 const path = require("path");
 
+const { DiscordRPC } = require('./rpc.js');
+
 var userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36"; // Linux
 var isFullScreen = false;
 
@@ -47,6 +49,8 @@ async function createWindow() {
 
 app.whenReady().then(async () => {
   createWindow();
+  
+  DiscordRPC("GeForce NOW");
 
   app.on("activate", async function() {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -90,18 +94,22 @@ app.on("browser-window-created", async function(e, window) {
   window.setMenu(null);
 
   window.webContents.setUserAgent(userAgent);
-
+   
+  /*
   window.on("leave-full-screen", async function(e, win) {
     if (isFullScreen) {
       BrowserWindow.getAllWindows()[0].setFullScreen(true);
     }
   });
+  */
 
   window.on("page-title-updated", async function(e, title) {
     if (title.includes("on GeForce NOW")) {
+      DiscordRPC(title);
       window.setFullScreen(true);
       isFullScreen = true;
     } else {
+      DiscordRPC(title);
       window.setFullScreen(false);
       isFullScreen = false;
     }

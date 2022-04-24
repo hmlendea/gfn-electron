@@ -29,12 +29,18 @@ You can also run `geforcenow` _(or `io.github.hmlendea.geforcenow-electron` if y
 
  - **--spoof-chromeos**: Uses a ChromeOS UserAgent string
  - **--spoof-windows**: Uses a Windows UserAgent string
+ - **--disable-rpc**: Disables Discord Rich Presence
 
 ## Changing the keyboard layout
 
-Currently Nvidia doesn't allow changing the keyboard layout on Linux.
+Currently NVIDIA doesn't allow changing the keyboard layout on Linux.
 
 In order to get access to that setting, use one of the UA-spoofing CLI arguments mentioned above.
+
+## Disabling Discord Rich Presence
+Currently it cannot be in settings as in the browser version NVIDIA doesn't have that option.
+
+In order to disable it you must use CLI arguments that are mentioned above.
 
 # Building from source
 
