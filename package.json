@@ -44,5 +44,8 @@
   "devDependencies": {
     "electron": "^17.4.0",
     "electron-builder": "^22.13.1"
+  },
+  "dependencies": {
+    "discord-rich-presence": "^0.0.8"
   }
 }
