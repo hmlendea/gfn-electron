@@ -1,10 +1,11 @@
-const client = require('discord-rich-presence')('963128360219869194');
-
-const pkg = require('../package.json');
-const args = pkg.scripts.start;
+var client;
 
 function DiscordRPC(title) {
-    if (args.includes('--disable-rpc')) return;
+    if (process.argv.includes("--disable-rpc")) return;
+
+    if (!client) {
+        client = require('discord-rich-presence')('963128360219869194');
+    }
 
     let d;
 
