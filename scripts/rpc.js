@@ -1,7 +1,11 @@
-const client = require('discord-rich-presence')('963128360219869194');
+var client;
 
 function DiscordRPC(title) {
     if (process.argv.includes("--disable-rpc")) return;
+
+    if (!client) {
+        client = require('discord-rich-presence')('963128360219869194');
+    }
 
     let d;
 
