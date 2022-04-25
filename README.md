@@ -29,7 +29,7 @@ You can also run `geforcenow` _(or `io.github.hmlendea.geforcenow-electron` if y
 
  - **--spoof-chromeos**: Uses a ChromeOS UserAgent string
  - **--spoof-windows**: Uses a Windows UserAgent string
- - **--disable-rpc**: Disables Discord Rich Presence
+ - **--disable-rpc**: Disables the Discord Rich Presence
 
 ## Changing the keyboard layout
 
@@ -37,10 +37,23 @@ Currently NVIDIA doesn't allow changing the keyboard layout on Linux.
 
 In order to get access to that setting, use one of the UA-spoofing CLI arguments mentioned above.
 
-## Disabling Discord Rich Presence
-Currently it cannot be in settings as in the browser version NVIDIA doesn't have that option.
+## Discord Rich Presence
 
-In order to disable it you must use CLI arguments that are mentioned above.
+Discord RPC should work out-of-the-box in most situations, with no user input required.
+The exceptional cases are documented below.
+
+### Native GFN + Flatpak Discord
+Run the following commands in a terminal: *([source](https://github.com/flathub/com.discordapp.Discord/wiki/Rich-Precense-(discord-rpc)#unsandboxed-applications))*
+```bash
+mkdir -p ~/.config/user-tmpfiles.d
+echo 'L %t/discord-ipc-0 - - - - app/com.discordapp.Discord/discord-ipc-0' > ~/.config/user-tmpfiles.d/discord-rpc.conf
+systemctl --user enable --now systemd-tmpfiles-setup.service
+```
+
+### Disabling the Discord RPC
+Currently, the only way to disable it is to use the `--disable-rpc` command-line argument ([documented above](https://github.com/hmlendea/gfn-electron#command-line-arguments))
+
+In order to make this permanent, you can edit the applications desktop file launcher and add that argument to the `Exec` line
 
 # Building from source
 
