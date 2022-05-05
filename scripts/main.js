@@ -20,6 +20,11 @@ console.log('Using user agent: ' + userAgent);
 
 app.commandLine.appendSwitch("enable-features", "VaapiVideoDecoder");
 app.commandLine.appendSwitch("disable-features", "UseChromeOSDirectVideoDecoder");
+app.commandLine.appendSwitch("enable-accelerated-mjpeg-decode");
+app.commandLine.appendSwitch("enable-accelerated-video");
+app.commandLine.appendSwitch("ignore-gpu-blacklist");
+app.commandLine.appendSwitch("enable-native-gpu-memory-buffers");
+app.commandLine.appendSwitch("enable-gpu-rasterization");
 
 async function createWindow() {
   const mainWindow = new BrowserWindow({
