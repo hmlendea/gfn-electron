@@ -19,6 +19,7 @@ if (process.argv.includes('--spoof-windows')) {
 console.log('Using user agent: ' + userAgent);
 
 app.commandLine.appendSwitch("enable-features", "VaapiVideoDecoder");
+app.commandLine.appendSwitch("disable-features", "UseChromeOSDirectVideoDecoder");
 
 async function createWindow() {
   const mainWindow = new BrowserWindow({
