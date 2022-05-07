@@ -22,6 +22,7 @@ You can also run `geforcenow` _(or `io.github.hmlendea.geforcenow-electron` if y
 
  - **Super + F** / **F11**: Toggles the fullscreen mode
  - **ALT + F4** / **F4**: Exits app
+ - **ALT + Home**: Switches back to the GeForce NOW Home page
  - **CTRL + M**: Toggles the microphone
  - **F12**: Toggles chrome dev tools
 
