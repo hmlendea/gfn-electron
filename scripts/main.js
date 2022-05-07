@@ -102,7 +102,12 @@ app.on("browser-window-created", async function(e, window) {
     }
   });
   */
-
+ 
+  window.webContents.on('new-window', (event, url) => {
+    event.preventDefault();
+    BrowserWindow.getAllWindows()[0].loadURL(url);
+  });
+  
   window.on("page-title-updated", async function(e, title) {
     if (title.includes("on GeForce NOW")) {
       DiscordRPC(title);
