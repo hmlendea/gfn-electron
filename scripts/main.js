@@ -3,6 +3,8 @@ const path = require("path");
 
 const { DiscordRPC } = require('./rpc.js');
 
+const homePage = "https://play.geforcenow.com";
+
 var userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36"; // Linux
 var isFullScreen = false;
 
@@ -37,12 +39,12 @@ async function createWindow() {
     },
   });
 
-  mainWindow.loadURL("https://play.geforcenow.com");
+  mainWindow.loadURL(homePage);
 
   globalShortcut.register("F12", async () => {
     mainWindow.webContents.toggleDevTools();
   });
-  
+
   /*
   uncomment this to debug any errors with loading GFN landing page
 
@@ -55,7 +57,7 @@ async function createWindow() {
 
 app.whenReady().then(async () => {
   createWindow();
-  
+
   DiscordRPC("GeForce NOW");
 
   app.on("activate", async function() {
@@ -90,6 +92,10 @@ app.whenReady().then(async () => {
     app.quit();
   });
 
+  globalShortcut.register("Alt+Home", async () => {
+    BrowserWindow.getAllWindows()[0].loadURL(homePage);
+  });
+
   globalShortcut.register("F4", async () => {
     app.quit();
   });
@@ -100,7 +106,7 @@ app.on("browser-window-created", async function(e, window) {
   window.setMenu(null);
 
   window.webContents.setUserAgent(userAgent);
-   
+
   /*
   window.on("leave-full-screen", async function(e, win) {
     if (isFullScreen) {
@@ -108,12 +114,12 @@ app.on("browser-window-created", async function(e, window) {
     }
   });
   */
- 
+
   window.webContents.on('new-window', (event, url) => {
     event.preventDefault();
     BrowserWindow.getAllWindows()[0].loadURL(url);
   });
-  
+
   window.on("page-title-updated", async function(e, title) {
     if (title.includes("on GeForce NOW")) {
       DiscordRPC(title);
