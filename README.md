@@ -24,7 +24,7 @@ You can also run `geforcenow` _(or `io.github.hmlendea.geforcenow-electron` if y
 
 ## Keyboard shortcuts
 
- - **Super + F** / **F11**: Toggles the fullscreen mode
+ - **Super + F** / **F11**: Toggles the fullscreen mode ***(Fullscreen is always forced ON while gaming)***
  - **ALT + F4** / **F4**: Exits app
  - **ALT + Home**: Switches back to the GeForce NOW Home page
  - **CTRL + M**: Toggles the microphone
