@@ -91,7 +91,17 @@ app.whenReady().then(async () => {
     app.quit();
   });
 
-  globalShortcut.unregister('Esc');
+  globalShortcut.register('Esc', async () => {
+    var window = BrowserWindow.getAllWindows()[0];
+
+    window.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'Esc' });
+    window.webContents.sendInputEvent({ type: 'char', keyCode: 'Esc' });
+    window.webContents.sendInputEvent({ type: 'keyUp', keyCode: 'Esc' });
+
+    window.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'Esc' });
+    window.webContents.sendInputEvent({ type: 'char', keyCode: 'Esc' });
+    window.webContents.sendInputEvent({ type: 'keyUp', keyCode: 'Esc' });
+  });
 });
 
 app.on('browser-window-created', async function (e, window) {
