@@ -32,10 +32,6 @@ function switchFullscreenState() {
 }
 
 app.on('browser-window-created', async function (event, window) {
-    window.on("enter-full-screen", async function(event, window) {
-        event.preventDefault();
-        toggleFullscreen(true);
-    });
     window.on("leave-full-screen", async function(event, window) {
         event.preventDefault();
         if (isGameStreamingScreen) {
