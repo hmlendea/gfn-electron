@@ -2,12 +2,12 @@ const { app, globalShortcut, BrowserWindow } = require('electron');
 const path = require('path');
 
 const { DiscordRPC } = require('./rpc.js');
+const { switchFullscreenState } = require('./windowManager.js');
 
 const homePage = 'https://play.geforcenow.com';
 
 var userAgent =
   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36'; // Linux
-var isFullScreen = false;
 
 if (process.argv.includes('--spoof-chromeos')) {
   userAgent =
@@ -72,25 +72,11 @@ app.whenReady().then(async () => {
   });
 
   globalShortcut.register('Super+F', async () => {
-    isFullScreen = BrowserWindow.getAllWindows()[0].isFullScreen();
-    if (isFullScreen) {
-      BrowserWindow.getAllWindows()[0].setFullScreen(false);
-      isFullScreen = false;
-    } else {
-      BrowserWindow.getAllWindows()[0].setFullScreen(true);
-      isFullScreen = true;
-    }
+    switchFullscreenState();
   });
 
   globalShortcut.register('F11', async () => {
-    isFullScreen = BrowserWindow.getAllWindows()[0].isFullScreen();
-    if (isFullScreen) {
-      BrowserWindow.getAllWindows()[0].setFullScreen(false);
-      isFullScreen = false;
-    } else {
-      BrowserWindow.getAllWindows()[0].setFullScreen(true);
-      isFullScreen = true;
-    }
+    switchFullscreenState();
   });
 
   globalShortcut.register('Alt+F4', async () => {
@@ -104,6 +90,18 @@ app.whenReady().then(async () => {
   globalShortcut.register('F4', async () => {
     app.quit();
   });
+
+  globalShortcut.register('Esc', async () => {
+    var window = BrowserWindow.getAllWindows()[0];
+
+    window.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'Esc' });
+    window.webContents.sendInputEvent({ type: 'char', keyCode: 'Esc' });
+    window.webContents.sendInputEvent({ type: 'keyUp', keyCode: 'Esc' });
+
+    window.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'Esc' });
+    window.webContents.sendInputEvent({ type: 'char', keyCode: 'Esc' });
+    window.webContents.sendInputEvent({ type: 'keyUp', keyCode: 'Esc' });
+  });
 });
 
 app.on('browser-window-created', async function (e, window) {
@@ -112,29 +110,13 @@ app.on('browser-window-created', async function (e, window) {
 
   window.webContents.setUserAgent(userAgent);
 
-  /*
-  window.on("leave-full-screen", async function(e, win) {
-    if (isFullScreen) {
-      BrowserWindow.getAllWindows()[0].setFullScreen(true);
-    }
-  });
-  */
-
   window.webContents.on('new-window', (event, url) => {
     event.preventDefault();
     BrowserWindow.getAllWindows()[0].loadURL(url);
   });
 
   window.on('page-title-updated', async function (e, title) {
-    if (title.includes('on GeForce NOW')) {
-      DiscordRPC(title);
-      window.setFullScreen(true);
-      isFullScreen = true;
-    } else {
-      DiscordRPC(title);
-      window.setFullScreen(false);
-      isFullScreen = false;
-    }
+    DiscordRPC(title);
   });
 });
 
