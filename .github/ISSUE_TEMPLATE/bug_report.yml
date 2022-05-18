@@ -58,6 +58,20 @@ body:
       placeholder: (e.g. 1.0.9)
     validations:
       required: true
+  - type: input
+    id: freshInstallOrUpdate
+    attributes:
+      label: Is this a fresh install of the app or an update from a past version?
+      placeholder: (e.g. Updated from v1.6.0)
+    validations:
+      required: true
+  - type: input
+    id: dayOne
+    attributes:
+      label: Did this issue appear right away upon installation/updating, or spontaneously?
+      placeholder: (e.g. Yes, right after installation)
+    validations:
+      required: true
   - type: textarea
     id: additional
     attributes:
