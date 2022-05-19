@@ -14,7 +14,6 @@
       "target": [
         "zip",
         "AppImage",
-        "deb",
         "apk",
         "snap"
       ],
