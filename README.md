@@ -31,6 +31,8 @@ This project and its contributors are not affiliated with Nvidia, nor it's GeFor
    - [Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#discord)
      - [Using native GFN + flatpak Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#using-native-gfn--flatpak-discord)
      - [Disabling the Discord RPC](https://github.com/hmlendea/gfn-electron/wiki/Integrations#disabling-the-discord-rpc)
+ - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
+   - [Steam Deck controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#steam-deck-controls-are-not-detected)
 
 # Building from source
 
@@ -69,3 +71,5 @@ npm install
  - [GeForce NOW](https://nvidia.com/en-eu/geforce-now)
  - [FlatHub release](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
  - [FlatHub repository](https://github.com/flathub/io.github.hmlendea.geforcenow-electron)
+ - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
+ - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
