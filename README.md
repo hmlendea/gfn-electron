@@ -23,46 +23,14 @@ This project and its contributors are not affiliated with Nvidia, nor it's GeFor
 
 # Usage
 
-If you've installed it through a package manager, then you can launch it directly from your desktop environment.
-You can also run `geforcenow` _(or `io.github.hmlendea.geforcenow-electron` if you're using flatpak)_ in the terminal.
-
-## Keyboard shortcuts
-
- - **Super + F** / **F11**: Toggles the fullscreen mode ***(Fullscreen is always forced ON while gaming)***
- - **ALT + F4** / **F4**: Exits app
- - **ALT + Home**: Switches back to the GeForce NOW Home page
- - **CTRL + M**: Toggles the microphone
- - **F12**: Toggles chrome dev tools
-
-## Command-line arguments
-
- - **--spoof-chromeos**: Uses a ChromeOS UserAgent string
- - **--spoof-windows**: Uses a Windows UserAgent string
- - **--disable-rpc**: Disables the Discord Rich Presence
-
-## Changing the keyboard layout
-
-Currently NVIDIA doesn't allow changing the keyboard layout on Linux.
-
-In order to get access to that setting, use one of the UA-spoofing CLI arguments mentioned above.
-
-## Discord Rich Presence
-
-Discord RPC should work out-of-the-box in most situations, with no user input required.
-The exceptional cases are documented below.
-
-### Native GFN + Flatpak Discord
-Run the following commands in a terminal: *([source](https://github.com/flathub/com.discordapp.Discord/wiki/Rich-Precense-(discord-rpc)#unsandboxed-applications))*
-```bash
-mkdir -p ~/.config/user-tmpfiles.d
-echo 'L %t/discord-ipc-0 - - - - app/com.discordapp.Discord/discord-ipc-0' > ~/.config/user-tmpfiles.d/discord-rpc.conf
-systemctl --user enable --now systemd-tmpfiles-setup.service
-```
-
-### Disabling the Discord RPC
-Currently, the only way to disable it is to use the `--disable-rpc` command-line argument ([documented above](https://github.com/hmlendea/gfn-electron#command-line-arguments))
-
-In order to make this permanent, you can edit the applications desktop file launcher and add that argument to the `Exec` line
+ - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
+   - [Keyboard shortcuts](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#keyboard-shortcuts)
+   - [Command-line arguments](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#command-line-arguments)
+   - [Changing the keyboard layout](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#changing-the-keyboard-layout)
+ - [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
+   - [Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#discord)
+     - [Using native GFN + flatpak Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#using-native-gfn--flatpak-discord)
+     - [Disabling the Discord RPC](https://github.com/hmlendea/gfn-electron/wiki/Integrations#disabling-the-discord-rpc)
 
 # Building from source
 
