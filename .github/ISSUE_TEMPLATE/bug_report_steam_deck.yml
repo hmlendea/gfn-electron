@@ -1,0 +1,60 @@
+name: Bug report
+description: Create a report to help us improve
+title: "[BUG]"
+labels: ["bug", "steam-deck]
+assignees: hmlendea
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: (e.g. 1.0.9)
+    validations:
+      required: true
+  - type: input
+    id: freshInstallOrUpdate
+    attributes:
+      label: Is this a fresh install of the app or an update from a past version?
+      placeholder: (e.g. Updated from v1.6.0)
+    validations:
+      required: true
+  - type: input
+    id: dayOne
+    attributes:
+      label: Did this issue appear right away upon installation/updating, or spontaneously?
+      placeholder: (e.g. Yes, right after installation)
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.
+    validations:
+      required: false
