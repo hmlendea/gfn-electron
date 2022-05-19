@@ -1,7 +1,7 @@
 name: Bug report
 description: Create a report to help us improve
-title: "[BUG]"
-labels: ["bug", "steam-deck]
+title: "[BUG] [Steam Deck]"
+labels: ["bug", "steam-deck"]
 assignees: hmlendea
 body:
   - type: textarea
