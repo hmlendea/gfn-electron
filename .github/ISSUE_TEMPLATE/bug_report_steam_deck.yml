@@ -1,14 +1,14 @@
-name: Bug report
-description: Create a report to help us improve
-title: "[BUG]"
-labels: ["bug"]
+name: Bug report for Steam Deck
+description: Create a Steam Deck bug report to help us improve
+title: "[BUG] [Steam Deck]"
+labels: ["bug", "steam-deck"]
 assignees: hmlendea
 body:
   - type: textarea
     id: description
     attributes:
       label: Describe the bug
-      description: A clear and concise description of what the bug is.
+      description: A clear and concise description of what the bug is about.
     validations:
       required: true
   - type: textarea
@@ -31,38 +31,10 @@ body:
     validations:
       required: false
   - type: input
-    id: operatingsystem
-    attributes:
-      label: Operating System
-      placeholder: (e.g. Pop!_OS)
-    validations:
-      required: true
-  - type: input
-    id: desktopEnvironment
-    attributes:
-      label: Desktop Environment
-      placeholder: (e.g. GNOME 42)
-    validations:
-      required: true
-  - type: input
-    id: displayServer
-    attributes:
-      label: Display Server
-      placeholder: (e.g. X11)
-    validations:
-      required: true
-  - type: input
-    id: installationMethod
-    attributes:
-      label: Installation method
-      placeholder: (e.g. flatpak)
-    validations:
-      required: true
-  - type: input
     id: version
     attributes:
       label: Version
-      placeholder: (e.g. 1.7.0)
+      placeholder: (e.g. 1.0.9)
     validations:
       required: true
   - type: input
