@@ -12,10 +12,14 @@ This project and its contributors are not affiliated with Nvidia, nor it's GeFor
 
 [![Get it from the AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/aur.png)](https://aur.archlinux.org/packages/geforcenow-electron/) [![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron) [![Get it from the Snap Store](https://raw.githubusercontent.com/snapcore/snap-store-badges/master/EN/%5BEN%5D-snap-store-white.png)](https://snapcraft.io/geforcenow-electron)
 
+***Note**: The main version of this project, which receives the most support, is the flatpak version hosted on FlatHub!*
+
 ## Manual Installation
 
  - Go to the [latest release](https://github.com/hmlendea/gfn-electron/releases/latest).
  - Download the specific file that best fits your disto.
+
+***Note**: Manual installations are possible but not supported. Please use the flatpak version if you have any trouble with the manual installation!*
 
 # Usage
 
