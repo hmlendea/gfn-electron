@@ -47,7 +47,7 @@
   "dependencies": {
     "create-desktop-shortcuts": "^1.6.0",
     "discord-rich-presence": "^0.0.8",
-    "node-fetch": "2.6.1",
+    "node-fetch": "^2.6.7",
     "png-to-ico": "^2.1.4",
     "sanitize-filename": "^1.6.3"
   }
