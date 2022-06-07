@@ -10,6 +10,7 @@
     "build": "electron-builder --publish never"
   },
   "build": {
+    "asar": false,
     "linux": {
       "target": [
         "zip",
@@ -44,6 +45,10 @@
     "electron-builder": "^22.14.13"
   },
   "dependencies": {
-    "discord-rich-presence": "^0.0.8"
+    "create-desktop-shortcuts": "^1.6.0",
+    "discord-rich-presence": "^0.0.8",
+    "node-fetch": "2.6.1",
+    "png-to-ico": "^2.1.4",
+    "sanitize-filename": "^1.6.3"
   }
 }
