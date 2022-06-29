@@ -27,6 +27,7 @@ This project and its contributors are not affiliated with Nvidia, nor it's GeFor
    - [Keyboard shortcuts](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#keyboard-shortcuts)
    - [Command-line arguments](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#command-line-arguments)
    - [Changing the keyboard layout](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#changing-the-keyboard-layout)
+   - [Directly launching a game from the desktop](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#directly-launching-a-game-from-the-desktop)
  - [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
    - [Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#discord)
      - [Using native GFN + flatpak Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#using-native-gfn--flatpak-discord)
