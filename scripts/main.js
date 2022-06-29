@@ -2,7 +2,6 @@ const {app, globalShortcut, BrowserWindow } = require('electron');
 const path = require('path');
 const { DiscordRPC } = require('./rpc.js');
 const { switchFullscreenState } = require('./windowManager.js');
-const { createShortcut } = require('./shortcutManager.js');
 
 var homePage = 'https://play.geforcenow.com';
 
@@ -50,7 +49,7 @@ var homePage = 'https://play.geforcenow.com';
     } else {
       mainWindow.loadURL(homePage);
     }
-	
+
     /*
     uncomment this to debug any errors with loading GFN landing page
 
@@ -94,15 +93,6 @@ var homePage = 'https://play.geforcenow.com';
 
     globalShortcut.register('Control+Shift+I', () => {
       BrowserWindow.getAllWindows()[0].webContents.toggleDevTools();
-    });
-
-
-    globalShortcut.register('Control+Shift+P', () => {
-      try
-	  {
-		var gameId = new URL(BrowserWindow.getAllWindows()[0].webContents.getURL()).searchParams.get("game-id");
-		createShortcut(gameId);
-	  } catch {};
     });
 
     globalShortcut.register('Esc', async () => {
