@@ -1,4 +1,4 @@
-const { app, globalShortcut, BrowserWindow } = require('electron');
+const { app, BrowserWindow } = require('electron');
 
 var isFullScreen = false;
 var isGameStreamingScreen = false;
