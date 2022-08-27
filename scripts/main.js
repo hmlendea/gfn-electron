@@ -6,17 +6,17 @@ const { switchFullscreenState } = require('./windowManager.js');
 var homePage = 'https://play.geforcenow.com';
 
   var userAgent =
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36'; // Linux
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.101 Safari/537.36'; // Linux
 
   if (process.argv.includes('--spoof-chromeos')) {
     userAgent =
-      'Mozilla/5.0 (X11; CrOS x86_64 14588.98.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.59 Safari/537.36'; // ChromeOS
+      'Mozilla/5.0 (X11; CrOS x86_64 14909.100.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.83 Safari/537.36'; // ChromeOS
     app.commandLine.appendSwitch('disable-features', 'UserAgentClientHint');
   }
 
   if (process.argv.includes('--spoof-windows')) {
     userAgent =
-      'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4951.41 Safari/537.36'; // Windows
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36'; // Windows
     app.commandLine.appendSwitch('disable-features', 'UserAgentClientHint');
   }
 
