@@ -41,8 +41,8 @@
   "author": "Horațiu Mlendea <Horatiu.Mlendea@ProtonMail.com>",
   "license": "GPL-3.0",
   "devDependencies": {
-    "electron": "^18.3.2",
-    "electron-builder": "^22.14.13"
+    "electron": "^20.1.0",
+    "electron-builder": "^23.3.3"
   },
   "dependencies": {
     "discord-rich-presence": "^0.0.8"
