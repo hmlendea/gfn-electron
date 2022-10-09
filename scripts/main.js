@@ -23,7 +23,8 @@ var homePage = 'https://play.geforcenow.com';
   console.log('Using user agent: ' + userAgent);
   console.log('Process arguments: ' + process.argv);
 
-  app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder');
+  app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations');
+  
   app.commandLine.appendSwitch(
     'disable-features',
     'UseChromeOSDirectVideoDecoder'
