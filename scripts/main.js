@@ -1,4 +1,4 @@
-const {app, globalShortcut, BrowserWindow } = require('electron');
+const { app, globalShortcut, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { DiscordRPC } = require('./rpc.js');
 const { switchFullscreenState } = require('./windowManager.js');
@@ -11,15 +11,20 @@ const DEFAULT_UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, l
 const WIN_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36';
 const CHROME_UA = 'Mozilla/5.0 (X11; CrOS x86_64 14909.100.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.83 Safari/537.36';
 
+const DEFAULT_LANG = 'en-US';
+
 const OPT_SPOOF_WIN = '--spoof-windows';
 const OPT_SPOOF_CHROMEOS = '--spoof-chromeos';
+const OPT_LANG = '--lang';
 const OPT_DIRECT_START = '--direct-start';
 
 let userAgent = DEFAULT_UA;
+let lang = DEFAULT_LANG;
 let game;
 
 const spoofWindows = process.argv.includes(OPT_SPOOF_WIN);
 const spoofChromeOS = process.argv.includes(OPT_SPOOF_CHROMEOS);
+const changeLang = process.argv.includes(OPT_LANG);
 const directStart = process.argv.includes(OPT_DIRECT_START);
 //< Definitions
 
@@ -32,15 +37,32 @@ if (spoofChromeOS) {
   userAgent = CHROME_UA;
 }
 
+if (changeLang) {
+  lang = process.argv[process.argv.indexOf(OPT_LANG) + 1];;
+}
+
 if (directStart) {
   game = process.argv[process.argv.indexOf(OPT_DIRECT_START) + 1];;
 }
 
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
+console.log('Language: ' + lang);
 //< Retrieving cli options
 
-//> Config
+//> IPC config for communication between main and preload
+ipcMain.on('getConfigData', function (event, arg) {
+  event.sender.send('configData', {
+    lang,
+  });
+});
+
+ipcMain.on('log', function (event, arg) {
+  console.log('[Preload] ' + arg);
+});
+//< IPC config for communication between main and preload
+
+//> Main config
 if (spoofWindows || spoofChromeOS) {
   app.commandLine.appendSwitch('disable-features', 'UserAgentClientHint');
 }
@@ -56,7 +78,7 @@ app.commandLine.appendSwitch('enable-accelerated-video');
 app.commandLine.appendSwitch('ignore-gpu-blacklist');
 app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
 app.commandLine.appendSwitch('enable-gpu-rasterization');
-//< Config
+//< Main config
 
 //> Start main process
 async function createWindow() {

@@ -1,5 +1,24 @@
 // All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
+const { ipcRenderer } = require('electron');
+
+ipcRenderer.send('getConfigData');
+
+ipcRenderer.on('configData', function (event, config) {
+  const {
+    lang,
+  } = config || {};
+
+  ipcRenderer.send('log', 'Lang: ' + lang);
+
+  navigator.__defineGetter__('language', function(){
+    return lang;
+  });
+
+  navigator.__defineGetter__('languages', function(){
+    return [lang];
+  });
+});
 
 window.addEventListener("DOMContentLoaded", () => {
   const replaceText = (selector, text) => {
