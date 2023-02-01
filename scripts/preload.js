@@ -32,4 +32,16 @@ window.addEventListener("DOMContentLoaded", () => {
       return oiginalVoices;
     };
   }, 10_000);
+
+  if(navigator.userAgent.includes("Windows")){
+    Object.defineProperty(navigator,"platform", {
+        get: function () { return "Win32"; },
+        set: function (a) {}
+      })
+
+    Object.defineProperty(navigator,"userAgentData", {
+      get: function () { return null; },
+      set: function (a) {}
+    })
+  }
 })();

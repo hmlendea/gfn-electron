@@ -1,4 +1,4 @@
-const {app, globalShortcut, BrowserWindow } = require('electron');
+const {app, globalShortcut, BrowserWindow, session } = require('electron');
 const path = require('path');
 const { DiscordRPC } = require('./rpc.js');
 const { switchFullscreenState } = require('./windowManager.js');
@@ -24,7 +24,7 @@ var homePage = 'https://play.geforcenow.com';
   console.log('Process arguments: ' + process.argv);
 
   app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations');
-  
+
   app.commandLine.appendSwitch(
     'disable-features',
     'UseChromeOSDirectVideoDecoder'
@@ -62,6 +62,13 @@ var homePage = 'https://play.geforcenow.com';
   }
 
   app.whenReady().then(async () => {
+    // Add User-Agent Client hints to behave like Windows
+    if(process.argv.includes('--spoof-windows')){
+      session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+        details.requestHeaders['sec-ch-ua-platform'] = 'Windows';
+        callback({ cancel: false, requestHeaders: details.requestHeaders });
+      })
+    }
     createWindow();
 
     DiscordRPC('GeForce NOW');
