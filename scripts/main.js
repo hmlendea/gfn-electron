@@ -17,7 +17,10 @@ const OPT_SPOOF_WIN = '--spoof-windows';
 const OPT_SPOOF_CHROMEOS = '--spoof-chromeos';
 const OPT_LANG = '--lang';
 const OPT_DIRECT_START = '--direct-start';
+const OPT_DEV_TOOLS = '--open-dev-tools';
+//< Definitions
 
+//> Retrieving cli options
 let userAgent = DEFAULT_UA;
 let lang = DEFAULT_LANG;
 let game;
@@ -26,9 +29,8 @@ const spoofWindows = process.argv.includes(OPT_SPOOF_WIN);
 const spoofChromeOS = process.argv.includes(OPT_SPOOF_CHROMEOS);
 const changeLang = process.argv.includes(OPT_LANG);
 const directStart = process.argv.includes(OPT_DIRECT_START);
-//< Definitions
+const openDevTools = process.argv.includes(OPT_DEV_TOOLS);
 
-//> Retrieving cli options
 if (spoofWindows) {
   userAgent = WIN_UA;
 }
@@ -97,14 +99,9 @@ async function createWindow() {
     mainWindow.loadURL(HOME_PAGE_URL);
   }
 
-  /*
-  uncomment this to debug any errors with loading GFN landing page
-
-  mainWindow.webContents.on("will-navigate", (event, url) => {
-    console.log("will-navigate", url);
-    event.preventDefault();
-  });
-  */
+  if (openDevTools) {
+    BrowserWindow.getAllWindows()[0].webContents.openDevTools();
+  }
 }
 
 app.whenReady().then(async () => {
