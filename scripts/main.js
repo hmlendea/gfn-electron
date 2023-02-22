@@ -24,7 +24,7 @@ var homePage = 'https://play.geforcenow.com';
   console.log('Process arguments: ' + process.argv);
 
   app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations');
-  
+
   app.commandLine.appendSwitch(
     'disable-features',
     'UseChromeOSDirectVideoDecoder'
@@ -96,7 +96,16 @@ var homePage = 'https://play.geforcenow.com';
       BrowserWindow.getAllWindows()[0].webContents.toggleDevTools();
     });
 
+    var escCounter = 0;
     globalShortcut.register('Esc', async () => {
+      setTimeout(() => {
+          escCounter = 0;
+      }, 500);
+
+      escCounter += 1;
+      if (escCounter < 2)
+        return;
+
       var window = BrowserWindow.getAllWindows()[0];
 
       window.webContents.sendInputEvent({
