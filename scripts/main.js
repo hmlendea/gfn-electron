@@ -23,17 +23,19 @@ var homePage = 'https://play.geforcenow.com';
   console.log('Using user agent: ' + userAgent);
   console.log('Process arguments: ' + process.argv);
 
-  app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations');
-  
+  app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations,RawDraw');
+
   app.commandLine.appendSwitch(
     'disable-features',
     'UseChromeOSDirectVideoDecoder'
   );
   app.commandLine.appendSwitch('enable-accelerated-mjpeg-decode');
   app.commandLine.appendSwitch('enable-accelerated-video');
-  app.commandLine.appendSwitch('ignore-gpu-blacklist');
+  app.commandLine.appendSwitch('ignore-gpu-blocklist');
   app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
   app.commandLine.appendSwitch('enable-gpu-rasterization');
+  app.commandLine.appendSwitch('enable-zero-copy');
+  app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
 
   async function createWindow() {
     const mainWindow = new BrowserWindow({
