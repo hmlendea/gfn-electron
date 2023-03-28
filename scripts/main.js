@@ -36,6 +36,9 @@ var homePage = 'https://play.geforcenow.com';
   app.commandLine.appendSwitch('enable-gpu-rasterization');
   app.commandLine.appendSwitch('enable-zero-copy');
   app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
+  // TODO: This is going to depend per user, so we need to find a way to detect this
+  // egl should be a safe bet for now, as it allows for hardware video decode on most systems
+  app.commandLine.appendSwitch('use-gl', 'egl');
 
   async function createWindow() {
     const mainWindow = new BrowserWindow({
