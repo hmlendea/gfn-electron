@@ -45,7 +45,7 @@ function focusWindow() {
 }
 
 app.on('browser-window-created', async function (event, window) {
-    window.on("leave-full-screen", async function(event, window) {
+    window.on("leave-full-screen", async function (event, window) {
         event.preventDefault();
         if (isGameStreamingScreen) {
             toggleFullscreen(true);
