@@ -14,18 +14,10 @@
     "linux": {
       "target": [
         "zip",
-        "AppImage",
-        "snap"
+        "AppImage"
       ],
       "category": "Games",
       "artifactName": "${name}_${version}_linux.${ext}"
-    },
-    "snap": {
-      "plugs": [
-        "default",
-        "audio-record",
-        "joystick"
-      ]
     },
     "extraFiles": [
       "com.github.hmlendea.${name}.desktop"
