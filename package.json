@@ -2,7 +2,7 @@
   "name": "geforcenow-electron",
   "appId": "com.github.hmlendea.${name}",
   "productName": "GeForce NOW",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "A Linux desktop web app for GeForce NOW",
   "main": "scripts/main.js",
   "scripts": {
