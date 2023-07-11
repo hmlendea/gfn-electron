@@ -33,7 +33,7 @@
   "author": "Horațiu Mlendea <Horatiu.Mlendea@ProtonMail.com>",
   "license": "GPL-3.0",
   "devDependencies": {
-    "electron": "^24.5.0",
+    "electron": "^24.6.2",
     "electron-builder": "^24.4.0"
   },
   "dependencies": {
