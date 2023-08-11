@@ -2,7 +2,7 @@
   "name": "geforcenow-electron",
   "appId": "com.github.hmlendea.${name}",
   "productName": "GeForce NOW",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "A Linux desktop web app for GeForce NOW",
   "main": "scripts/main.js",
   "scripts": {
@@ -33,7 +33,7 @@
   "author": "Horațiu Mlendea <Horatiu.Mlendea@ProtonMail.com>",
   "license": "GPL-3.0",
   "devDependencies": {
-    "electron": "^24.6.2",
+    "electron": "^25.5.0",
     "electron-builder": "^24.4.0"
   },
   "dependencies": {
