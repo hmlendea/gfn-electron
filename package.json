@@ -34,7 +34,7 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "electron": "^25.5.0",
-    "electron-builder": "^24.4.0"
+    "electron-builder": "^24.6.3"
   },
   "dependencies": {
     "discord-rich-presence": "^0.0.8"
