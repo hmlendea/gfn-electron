@@ -4,21 +4,7 @@ const { DiscordRPC } = require('./rpc.js');
 const { switchFullscreenState } = require('./windowManager.js');
 
 var homePage = 'https://play.geforcenow.com';
-
-var userAgent =
-  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.101 Safari/537.36'; // Linux
-
-if (process.argv.includes('--spoof-chromeos')) {
-  userAgent =
-    'Mozilla/5.0 (X11; CrOS x86_64 14909.100.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.83 Safari/537.36'; // ChromeOS
-  app.commandLine.appendSwitch('disable-features', 'UserAgentClientHint');
-}
-
-if (process.argv.includes('--spoof-windows')) {
-  userAgent =
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'; // Windows
-  app.commandLine.appendSwitch('disable-features', 'UserAgentClientHint');
-}
+var userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.101 Safari/537.36'; // Linux
 
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
@@ -67,13 +53,6 @@ async function createWindow() {
 }
 
 app.whenReady().then(async () => {
-  // Add User-Agent Client hints to behave like Windows
-  if (process.argv.includes('--spoof-windows')) {
-    session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-      details.requestHeaders['sec-ch-ua-platform'] = 'Windows';
-      callback({ cancel: false, requestHeaders: details.requestHeaders });
-    })
-  }
   createWindow();
 
   DiscordRPC('GeForce NOW');
