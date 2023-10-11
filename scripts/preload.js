@@ -32,20 +32,4 @@ window.addEventListener("DOMContentLoaded", () => {
       return oiginalVoices;
     };
   }, 10_000);
-
-  if (navigator.userAgent.includes("Windows")) {
-    Object.defineProperty(navigator, "platform", {
-      get: function () { return "Win32"; },
-      set: function (a) { }
-    })
-
-    // If let unchecked it will report the kernel version
-    // as a windows version.
-    // 6.1.2 (linux) < 10.0.19041+ (Windows)
-    // Minimum supported is 8+
-    Object.defineProperty(navigator, "userAgentData", {
-      get: function () { return null; },
-      set: function (a) { }
-    })
-  }
 })();
