@@ -27,6 +27,6 @@ jobs:
         bun install
 
     - name: Build
-      run: bun run build --if-present
+      run: npm run build --if-present
 
 
