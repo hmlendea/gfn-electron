@@ -40,11 +40,11 @@ This project and its contributors are not affiliated with Nvidia, nor it's GeFor
 
 ## Requirements
 
-You will need to install [npm](https://www.npmjs.com/), the Node.js package manager. On most distributions, the package is simply called `npm`.
+You will need to install [bun](https://bun.sh/), a faster and better alternative to the Node.js package manager.
 
 ## Cloning the source code
 
-Once you have npm, clone the wrapper to a convenient location:
+Once you have bun, clone the wrapper to a convenient location:
 
 ```bash
 git clone https://github.com/hmlendea/gfn-electron.git
@@ -53,11 +53,11 @@ git clone https://github.com/hmlendea/gfn-electron.git
 ## Building
 
 ```bash
-npm install
-npm start
+bun install
+bun start
 ```
 
-On subsequent runs, `npm start` will be all that's required.
+On subsequent runs, `bun start` will be all that's required.
 
 ## Updating the source code
 
@@ -66,7 +66,7 @@ Simply pull the latest version of master and install any changed dependencies:
 ```bash
 git checkout master
 git pull
-npm install
+bun install
 ```
 
 # Links

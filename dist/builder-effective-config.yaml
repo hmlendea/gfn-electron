@@ -1,0 +1,15 @@
+directories:
+  output: dist
+  buildResources: build
+asar: false
+linux:
+  target:
+    - zip
+    - AppImage
+  category: Games
+  artifactName: ${name}_${version}_linux.${ext}
+extraFiles:
+  - filter:
+      - com.github.hmlendea.${name}.desktop
+files: []
+electronVersion: 27.0.3
