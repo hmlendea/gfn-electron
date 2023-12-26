@@ -1,19 +1,15 @@
+import discordRPC from 'discord-rich-presence';
+
 let client: any;
 
 export function DiscordRPC(title: string) {
     if (process.argv.includes("--disable-rpc")) return;
 
     if (!client) {
-        client = require('discord-rich-presence')('963128360219869194');
+        client = discordRPC('963128360219869194');
     }
 
-    let d: string;
-
-    if (title.includes('on GeForce NOW')) {
-        d = title;
-    } else {
-        d = "Home on GeForce NOW";
-    };
+    let d: string = title.includes('on GeForce NOW') ? title : "Home on GeForce NOW";
 
     client.updatePresence({
         details: d,
