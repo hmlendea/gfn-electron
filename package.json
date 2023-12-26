@@ -4,11 +4,11 @@
   "productName": "GeForce NOW",
   "version": "2.0.1",
   "description": "A Linux desktop web app for GeForce NOW",
-  "main": "build/main.js",
+  "main": "build/scripts/main.js",
   "scripts": {
-    "start": "npm run compile && electron .",
+    "start": "npm run compile && electron build/main.js",
     "compile": "tsc", 
-    "build": "npm run compile && electron-builder build --linux"
+    "build": "npm run compile && electron-builder --publish never"
   },
   "build": {
     "asar": false,
