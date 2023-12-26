@@ -39,7 +39,6 @@
   },
   "dependencies": {
     "discord-rich-presence": "^0.0.8",
-    "electron": "^28.1.0",
     "typescript": "^5.3.3"
   }
 }
