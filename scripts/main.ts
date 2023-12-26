@@ -15,6 +15,7 @@ app.commandLine.appendSwitch(
   'disable-features',
   'UseChromeOSDirectVideoDecoder'
 );
+
 app.commandLine.appendSwitch('enable-accelerated-mjpeg-decode');
 app.commandLine.appendSwitch('enable-accelerated-video');
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
@@ -41,6 +42,14 @@ async function createWindow() {
     mainWindow.loadURL(homePage);
   }
 }
+
+async function sendKeyEvent(window: Electron.BrowserWindow, key: string) {
+  const eventTypes: ('keyDown' | 'char' | 'keyUp')[] = ['keyDown', 'char', 'keyUp'];
+  eventTypes.forEach((type) => {
+    window.webContents.sendInputEvent({ type, keyCode: key });
+  });
+}
+
 
 app.whenReady().then(async () => {
   createWindow();
@@ -78,34 +87,11 @@ app.whenReady().then(async () => {
   });
 
   globalShortcut.register('Esc', async () => {
-    var window = BrowserWindow.getAllWindows()[0];
-
-    window.webContents.sendInputEvent({
-      type: 'keyDown',
-      keyCode: 'Esc'
-    });
-    window.webContents.sendInputEvent({
-      type: 'char',
-      keyCode: 'Esc'
-    });
-    window.webContents.sendInputEvent({
-      type: 'keyUp',
-      keyCode: 'Esc'
-    });
-
-    window.webContents.sendInputEvent({
-      type: 'keyDown',
-      keyCode: 'Esc'
-    });
-    window.webContents.sendInputEvent({
-      type: 'char',
-      keyCode: 'Esc'
-    });
-    window.webContents.sendInputEvent({
-      type: 'keyUp',
-      keyCode: 'Esc'
-    });
+    const window = BrowserWindow.getAllWindows()[0];
+    await sendKeyEvent(window, 'Esc');
+    await sendKeyEvent(window, 'Esc');
   });
+
 });
 
 app.on('browser-window-created', async function (e, window) {
