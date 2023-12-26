@@ -1,13 +1,13 @@
-var client;
+let client: any;
 
-function DiscordRPC(title) {
+export function DiscordRPC(title: string) {
     if (process.argv.includes("--disable-rpc")) return;
 
     if (!client) {
         client = require('discord-rich-presence')('963128360219869194');
     }
 
-    let d;
+    let d: string;
 
     if (title.includes('on GeForce NOW')) {
         d = title;
@@ -23,5 +23,3 @@ function DiscordRPC(title) {
         instance: true,
     });
 };
-
-module.exports = { DiscordRPC };

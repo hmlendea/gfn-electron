@@ -1,15 +1,13 @@
-// All of the Node.js APIs are available in the preload process.
-// It has the same sandbox as a Chrome extension.
-
 window.addEventListener("DOMContentLoaded", () => {
-  const replaceText = (selector, text) => {
+  const replaceText = (selector: string, text: string) => {
     const element = document.getElementById(selector);
     if (element) element.innerText = text;
   };
 
   for (const type of ["chrome", "node", "electron"]) {
-    replaceText(`${type}-version`, process.versions[type]);
+    replaceText(`${type}-version`, process.versions[type] || 'N/A');
   }
+  
 });
 
 (function mockChromeUserAgent() {
@@ -26,7 +24,6 @@ window.addEventListener("DOMContentLoaded", () => {
     ];
   };
 
-  //wait some arbitraty time before cleaning up the mess we did previously
   setTimeout(() => {
     window.speechSynthesis.getVoices = function () {
       return oiginalVoices;

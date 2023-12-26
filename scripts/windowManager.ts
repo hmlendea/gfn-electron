@@ -1,12 +1,12 @@
-const { app, BrowserWindow } = require('electron');
+import { app, BrowserWindow } from 'electron';
 
-var isFullScreen = false;
-var isGameStreamingScreen = false;
+let isFullScreen = false;
+let isGameStreamingScreen = false;
 
-function toggleFullscreen(state) {
-    var window = BrowserWindow.getAllWindows()[0];
-    var actualState = window.isFullScreen();
-    if (isFullScreen != state || actualState != state) {
+function toggleFullscreen(state: boolean) {
+    const window = BrowserWindow.getAllWindows()[0];
+    const actualState = window.isFullScreen();
+    if (isFullScreen !== state || actualState !== state) {
         if (state || !isGameStreamingScreen) {
             window.setFullScreen(state);
             isFullScreen = state;
@@ -19,8 +19,8 @@ function toggleFullscreen(state) {
     }
 }
 
-function toggleGameStreamingMode(state) {
-    if (isGameStreamingScreen != state) {
+function toggleGameStreamingMode(state: boolean) {
+    if (isGameStreamingScreen !== state) {
         isGameStreamingScreen = state;
         console.log("Game streaming mode state changed to: " + state);
     }
@@ -45,7 +45,7 @@ function focusWindow() {
 }
 
 app.on('browser-window-created', async function (event, window) {
-    window.on("leave-full-screen", async function (event, window) {
+    window.on("leave-full-screen", async function (event: Electron.Event, window: Electron.BrowserWindow) {
         event.preventDefault();
         if (isGameStreamingScreen) {
             toggleFullscreen(true);
@@ -56,4 +56,4 @@ app.on('browser-window-created', async function (event, window) {
     });
 });
 
-module.exports = { toggleFullscreen, switchFullscreenState };
+export { toggleFullscreen, switchFullscreenState };

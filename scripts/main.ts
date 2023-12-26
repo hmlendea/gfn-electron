@@ -1,10 +1,10 @@
-const { app, globalShortcut, BrowserWindow, session } = require('electron');
-const path = require('path');
-const { DiscordRPC } = require('./rpc.js');
-const { switchFullscreenState } = require('./windowManager.js');
+import { app, globalShortcut, BrowserWindow } from 'electron';
+import path from 'path';
+import { DiscordRPC } from './rpc';
+import { switchFullscreenState } from './windowManager';
 
-var homePage = 'https://play.geforcenow.com';
-var userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.3';
+let homePage: string = 'https://play.geforcenow.com';
+let userAgent: string = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.3';
 
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
@@ -22,8 +22,6 @@ app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
 app.commandLine.appendSwitch('enable-gpu-rasterization');
 app.commandLine.appendSwitch('enable-zero-copy');
 app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
-// TODO: This is going to depend per user, so we need to find a way to detect this
-// egl should be a safe bet for now, as it allows for hardware video decode on most systems
 app.commandLine.appendSwitch('use-gl', 'egl');
 
 async function createWindow() {
@@ -32,24 +30,16 @@ async function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: false,
-      userAgent: userAgent,
     },
   });
+
+  mainWindow.webContents.userAgent = userAgent;
 
   if (process.argv.includes('--direct-start')) {
     mainWindow.loadURL('https://play.geforcenow.com/mall/#/streamer?launchSource=GeForceNOW&cmsId=' + process.argv[process.argv.indexOf('--direct-start') + 1]);
   } else {
     mainWindow.loadURL(homePage);
   }
-
-  /*
-  uncomment this to debug any errors with loading GFN landing page
-
-  mainWindow.webContents.on("will-navigate", (event, url) => {
-    console.log("will-navigate", url);
-    event.preventDefault();
-  });
-  */
 }
 
 app.whenReady().then(async () => {
@@ -124,14 +114,15 @@ app.on('browser-window-created', async function (e, window) {
 
   window.webContents.setUserAgent(userAgent);
 
-  window.webContents.on('new-window', (event, url) => {
-    event.preventDefault();
-    BrowserWindow.getAllWindows()[0].loadURL(url);
+  window.webContents.setWindowOpenHandler(({ url }) => {
+    window.loadURL(url);
+    return { action: 'deny' };
   });
 
   window.on('page-title-updated', async function (e, title) {
     DiscordRPC(title);
   });
+
 });
 
 app.on('will-quit', async () => {

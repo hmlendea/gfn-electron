@@ -4,10 +4,11 @@
   "productName": "GeForce NOW",
   "version": "2.0.1",
   "description": "A Linux desktop web app for GeForce NOW",
-  "main": "scripts/main.js",
+  "main": "build/main.js",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder --publish never"
+    "start": "npm run compile && electron .",
+    "compile": "tsc", 
+    "build": "npm run compile && electron-builder build --linux"
   },
   "build": {
     "asar": false,
@@ -33,10 +34,12 @@
   "author": "Horațiu Mlendea <Horatiu.Mlendea@ProtonMail.com>",
   "license": "GPL-3.0",
   "devDependencies": {
-    "electron": "^27.1.3",
+    "@types/electron": "^1.6.10",
     "electron-builder": "^24.9.1"
   },
   "dependencies": {
-    "discord-rich-presence": "^0.0.8"
+    "discord-rich-presence": "^0.0.8",
+    "electron": "^28.1.0",
+    "typescript": "^5.3.3"
   }
 }
