@@ -4,14 +4,20 @@
   "productName": "GeForce NOW",
   "version": "2.0.1",
   "description": "A Linux desktop web app for GeForce NOW",
-  "main": "build/scripts/main.js",
+  "main": "./build/main.js",
   "scripts": {
-    "start": "npm run compile && electron build/main.js",
-    "compile": "tsc", 
-    "build": "npm run compile && electron-builder --publish never"
+    "start": "npm run compile && electron .",
+    "compile": "tsc",
+    "build": "npm run compile && electron-builder"
   },
   "build": {
     "asar": false,
+    "files": [
+      "build/**/*",
+      "package.json",
+      "main.js",
+      "com.github.hmlendea.${name}.desktop"
+    ],
     "linux": {
       "target": [
         "zip",
