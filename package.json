@@ -40,12 +40,12 @@
   "author": "Horațiu Mlendea <Horatiu.Mlendea@ProtonMail.com>",
   "license": "GPL-3.0",
   "devDependencies": {
-    "@types/discord-rich-presence": "^0.0.2",
     "@types/electron": "^1.6.10",
     "electron-builder": "^24.9.1"
   },
   "dependencies": {
-    "discord-rich-presence": "^0.0.8",
+    "@types/discord-rpc": "^4.0.8",
+    "discord-rpc": "^4.0.1",
     "typescript": "^5.3.3"
   }
 }

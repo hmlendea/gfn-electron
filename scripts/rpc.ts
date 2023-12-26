@@ -1,21 +1,20 @@
-import discordRPC from 'discord-rich-presence';
+import rpc from 'discord-rpc';
 
-let client: any;
+const clientId = '963128360219869194';
 
-export function DiscordRPC(title: string) {
+rpc.register(clientId);
+
+const rpcclient = new rpc.Client({ transport: 'ipc' });
+
+export async function DiscordRPC(title: string) {
     if (process.argv.includes("--disable-rpc")) return;
 
-    if (!client) {
-        client = discordRPC('963128360219869194');
-    }
 
-    let d: string = title.includes('on GeForce NOW') ? title : "Home on GeForce NOW";
-
-    client.updatePresence({
-        details: d,
-        state: `Not affiliated with NVIDIA`,
-        startTimestamp: Date.now(),
+    rpcclient.setActivity({
+        details: title,
+        state: 'Playing',
+        startTimestamp: new Date(),
         largeImageKey: 'icon',
         instance: true,
     });
-};
+}
