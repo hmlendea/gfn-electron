@@ -45,7 +45,7 @@ async function createWindow() {
 app.whenReady().then(async () => {
   createWindow();
 
-  DiscordRPC('GeForce NOW');
+  DiscordRPC('Browsing on GeForce NOW');
 
   app.on('activate', async function () {
     if (BrowserWindow.getAllWindows().length === 0) {
