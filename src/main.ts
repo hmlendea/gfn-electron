@@ -24,7 +24,6 @@ app.commandLine.appendSwitch('enable-gpu-rasterization');
 app.commandLine.appendSwitch('enable-zero-copy');
 app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
 app.commandLine.appendSwitch('use-gl', 'egl');
-app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder');
 
 async function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -50,7 +49,6 @@ async function sendKeyEvent(window: Electron.BrowserWindow, key: string) {
     window.webContents.sendInputEvent({ type, keyCode: key });
   });
 }
-
 
 app.whenReady().then(async () => {
   createWindow();
