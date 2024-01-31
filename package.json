@@ -2,7 +2,7 @@
   "name": "geforcenow-electron",
   "appId": "com.github.hmlendea.${name}",
   "productName": "GeForce NOW",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A Linux desktop web app for GeForce NOW",
   "main": "scripts/main.js",
   "scripts": {
@@ -37,6 +37,7 @@
     "electron-builder": "^24.9.1"
   },
   "dependencies": {
-    "discord-rich-presence": "^0.0.8"
+    "discord-rich-presence": "^0.0.8",
+    "find-process": "^1.4.7"
   }
 }

@@ -1,4 +1,5 @@
 const { app, globalShortcut, BrowserWindow, session } = require('electron');
+const findProcess = require('find-process');
 const path = require('path');
 const { DiscordRPC } = require('./rpc.js');
 const { switchFullscreenState } = require('./windowManager.js');
@@ -52,10 +53,17 @@ async function createWindow() {
   */
 }
 
+let discordIsRunning = false;
+
 app.whenReady().then(async () => {
+  // Ensure isDiscordRunning is called before createWindow to prevent the 'browser-window-created' event from triggering before the Discord check is complete.
+  discordIsRunning = await isDiscordRunning();
+
   createWindow();
 
-  DiscordRPC('GeForce NOW');
+  if (discordIsRunning) {
+    DiscordRPC('GeForce NOW');
+  }
 
   app.on('activate', async function () {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -129,9 +137,11 @@ app.on('browser-window-created', async function (e, window) {
     BrowserWindow.getAllWindows()[0].loadURL(url);
   });
 
-  window.on('page-title-updated', async function (e, title) {
-    DiscordRPC(title);
-  });
+  if (discordIsRunning) {
+    window.on('page-title-updated', async function (e, title) {
+      DiscordRPC(title);
+    });
+  }
 });
 
 app.on('will-quit', async () => {
@@ -143,3 +153,18 @@ app.on('window-all-closed', async function () {
     app.quit();
   }
 });
+
+function isDiscordRunning() {
+  return new Promise(resolve => {
+      findProcess('name', 'Discord').then(list => {
+          if (list.length > 0) {
+              resolve(true);
+          } else {
+              resolve(false);
+          }
+      }).catch(error => {
+          console.log('Error checking Discord process:', error);
+          resolve(false);
+      });
+  });
+}
