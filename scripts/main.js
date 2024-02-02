@@ -1,5 +1,6 @@
 const { app, globalShortcut, BrowserWindow, session } = require('electron');
 const findProcess = require('find-process');
+const fs = require('fs');
 const path = require('path');
 const { DiscordRPC } = require('./rpc.js');
 const { switchFullscreenState } = require('./windowManager.js');
@@ -23,9 +24,36 @@ app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
 app.commandLine.appendSwitch('enable-gpu-rasterization');
 app.commandLine.appendSwitch('enable-zero-copy');
 app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
-// TODO: This is going to depend per user, so we need to find a way to detect this
-// egl should be a safe bet for now, as it allows for hardware video decode on most systems
-app.commandLine.appendSwitch('use-gl', 'egl');
+
+// To identify a possible stable 'use-gl' switch implementation for our application, we utilize a config file that stores the number of crashes.
+// On Linux, the crash count is likely stored here: /home/[username]/.config/GeForce NOW/config.json.
+// To reset the crash count, we can delete that file.
+
+// If the 'use-gl' switch with the 'angle' implementation crashes, the app will then use the 'egl' implementation.
+// If the 'egl' implementation also crashes, the app will disable hardware acceleration.
+
+// When I try to use the 'use-gl' switch with 'desktop' or 'swiftshader', it results in an error indicating that these options are not among the permitted implementations.
+// It's possible that future versions of Electron may introduce support for 'desktop' and 'swiftshader' implementations.
+
+// Based on my current understanding (which may be incorrect), the 'angle' implementation is preferred due to its utilization of 'OpenGL ES', which ensures consistent behavior across different systems, such as Windows and Linux systems.
+// Furthermore, 'angle' includes an additional abstraction layer that could potentially mitigate bugs or circumvent limitations inherent in direct implementations.
+
+// When the 'use-gl' switch is functioning correctly, I still encounter the 'GetVSyncParametersIfAvailable() error' three times, but it does not occur thereafter (based on my testing).
+const configPath = path.join(app.getPath('userData'), 'config.json');
+const config = fs.existsSync(configPath) ?
+  JSON.parse(fs.readFileSync(configPath, 'utf-8')) :
+  { crashCount: 0 };
+
+switch(config.crashCount) {
+  case 0:
+    app.commandLine.appendSwitch('use-gl', 'angle');
+    break;
+  case 1:
+    app.commandLine.appendSwitch('use-gl', 'egl');
+    break;
+  default:
+    app.disableHardwareAcceleration();
+}
 
 async function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -141,6 +169,18 @@ app.on('browser-window-created', async function (e, window) {
     window.on('page-title-updated', async function (e, title) {
       DiscordRPC(title);
     });
+  }
+});
+
+app.on('child-process-gone', (event, details) => {
+  if (details.type === 'GPU' && details.reason === 'crashed') {
+      config.crashCount++;
+      fs.writeFileSync(configPath, JSON.stringify(config));
+
+      console.log("Initiating application restart with an alternative 'use-gl' switch implementation or with hardware acceleration disabled, aiming to improve stability or performance based on prior execution outcomes.");
+
+      app.relaunch();
+      app.exit(0);
   }
 });
 
