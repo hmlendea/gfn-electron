@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "discord-rich-presence": "^0.0.8",
+    "electron-localshortcut": "^3.2.1",
     "find-process": "^1.4.7"
   }
 }
