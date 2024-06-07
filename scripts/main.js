@@ -1,4 +1,5 @@
-const { app, globalShortcut, BrowserWindow, session } = require('electron');
+const { app, BrowserWindow, session } = require('electron');
+const electronLocalshortcut = require('electron-localshortcut');
 const findProcess = require('find-process');
 const fs = require('fs');
 const path = require('path');
@@ -99,59 +100,59 @@ app.whenReady().then(async () => {
     }
   });
 
-  globalShortcut.register('Super+F', async () => {
+  electronLocalshortcut.register('Super+F', async () => {
     switchFullscreenState();
   });
 
-  globalShortcut.register('F11', async () => {
+  electronLocalshortcut.register('F11', async () => {
     switchFullscreenState();
   });
 
-  globalShortcut.register('Alt+F4', async () => {
+  electronLocalshortcut.register('Alt+F4', async () => {
     app.quit();
   });
 
-  globalShortcut.register('Alt+Home', async () => {
+  electronLocalshortcut.register('Alt+Home', async () => {
     BrowserWindow.getAllWindows()[0].loadURL(homePage);
   });
 
-  globalShortcut.register('F4', async () => {
+  electronLocalshortcut.register('F4', async () => {
     app.quit();
   });
 
-  globalShortcut.register('Control+Shift+I', () => {
+  electronLocalshortcut.register('Control+Shift+I', () => {
     BrowserWindow.getAllWindows()[0].webContents.toggleDevTools();
   });
 
-  globalShortcut.register('Esc', async () => {
-    var window = BrowserWindow.getAllWindows()[0];
-
-    window.webContents.sendInputEvent({
-      type: 'keyDown',
-      keyCode: 'Esc'
-    });
-    window.webContents.sendInputEvent({
-      type: 'char',
-      keyCode: 'Esc'
-    });
-    window.webContents.sendInputEvent({
-      type: 'keyUp',
-      keyCode: 'Esc'
-    });
-
-    window.webContents.sendInputEvent({
-      type: 'keyDown',
-      keyCode: 'Esc'
-    });
-    window.webContents.sendInputEvent({
-      type: 'char',
-      keyCode: 'Esc'
-    });
-    window.webContents.sendInputEvent({
-      type: 'keyUp',
-      keyCode: 'Esc'
-    });
-  });
+  // electronLocalshortcut.register('Esc', async () => {
+  //   var window = BrowserWindow.getAllWindows()[0];
+  //
+  //   window.webContents.sendInputEvent({
+  //     type: 'keyDown',
+  //     keyCode: 'Esc'
+  //   });
+  //   window.webContents.sendInputEvent({
+  //     type: 'char',
+  //     keyCode: 'Esc'
+  //   });
+  //   window.webContents.sendInputEvent({
+  //     type: 'keyUp',
+  //     keyCode: 'Esc'
+  //   });
+  //
+  //   window.webContents.sendInputEvent({
+  //     type: 'keyDown',
+  //     keyCode: 'Esc'
+  //   });
+  //   window.webContents.sendInputEvent({
+  //     type: 'char',
+  //     keyCode: 'Esc'
+  //   });
+  //   window.webContents.sendInputEvent({
+  //     type: 'keyUp',
+  //     keyCode: 'Esc'
+  //   });
+  // });
 });
 
 app.on('browser-window-created', async function (e, window) {
@@ -185,7 +186,7 @@ app.on('child-process-gone', (event, details) => {
 });
 
 app.on('will-quit', async () => {
-  globalShortcut.unregisterAll();
+  electronLocalshortcut.unregisterAll();
 });
 
 app.on('window-all-closed', async function () {
