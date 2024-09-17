@@ -17,7 +17,14 @@
         "AppImage"
       ],
       "category": "Games",
-      "artifactName": "${name}_${version}_linux.${ext}"
+      "artifactName": "${name}_${version}_linux.${ext}",
+      "win": {
+        "target": [
+          "nsis",
+          "zip"
+        ],
+        "icon": "icon.ico",
+        "artifactName": "${name}_${version}_windows.${ext}"
     },
     "extraFiles": [
       "com.github.hmlendea.${name}.desktop"
