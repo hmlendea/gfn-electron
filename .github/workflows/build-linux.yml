@@ -1,0 +1,43 @@
+name: Build and Upload Linux Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build project for Linux
+        run: pnpm build -- --linux
+
+      - name: Upload Linux AppImage as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ElectronGFNLinuxAppImage
+          path: dist/*.AppImage
+
+      - name: Upload Linux ZIP as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ElectronGFNLinuxZip
+          path: dist/*.zip
