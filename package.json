@@ -51,6 +51,7 @@
     "electron-localshortcut": "^3.2.1",
     "find-process": "^1.4.7",
     "keyboardevent-from-electron-accelerator": "^2.0.0",
-    "keyboardevents-areequal": "^0.2.2"
+    "keyboardevents-areequal": "^0.2.2",
+    "ms": "^2.1.3"
   }
 }
