@@ -14,12 +14,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js 18.x
-        uses: actions/setup-node@v3
+      - name: Set up Node.js 20.x
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -31,13 +31,13 @@ jobs:
         run: pnpm build -- --win
 
       - name: Upload Windows NSIS installer as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ElectronGFNWindowsInstaller
           path: dist/*.exe
 
       - name: Upload Windows ZIP as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ElectronGFNWindowsZip
           path: dist/*.zip
