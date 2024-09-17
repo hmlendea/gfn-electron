@@ -8,15 +8,27 @@ importers:
 
   .:
     dependencies:
+      debug:
+        specifier: ^4.3.7
+        version: 4.3.7
       discord-rich-presence:
         specifier: ^0.0.8
         version: 0.0.8
+      electron-is-accelerator:
+        specifier: ^0.2.0
+        version: 0.2.0
       electron-localshortcut:
         specifier: ^3.2.1
         version: 3.2.1
       find-process:
         specifier: ^1.4.7
         version: 1.4.7
+      keyboardevent-from-electron-accelerator:
+        specifier: ^2.0.0
+        version: 2.0.0
+      keyboardevents-areequal:
+        specifier: ^0.2.2
+        version: 0.2.2
     devDependencies:
       electron:
         specifier: ^29.1.4
@@ -413,6 +425,9 @@ packages:
 
   electron-is-accelerator@0.1.2:
     resolution: {integrity: sha512-fLGSAjXZtdn1sbtZxx52+krefmtNuVwnJCV2gNiVt735/ARUboMl8jnNC9fZEqQdlAv2ZrETfmBUsoQci5evJA==}
+
+  electron-is-accelerator@0.2.0:
+    resolution: {integrity: sha512-jml8EDK0x1xuPCr8ZWr+tuCL9RwfR4lee+WhLID2WZ0ygGSlnkumF6K1zw05CgnkDvHuKhFV6/NrSDI87QWAfA==}
 
   electron-localshortcut@3.2.1:
     resolution: {integrity: sha512-DWvhKv36GsdXKnaFFhEiK8kZZA+24/yFLgtTwJJHc7AFgDjNRIBJZ/jq62Y/dWv9E4ypYwrVWN2bVrCYw1uv7Q==}
@@ -1651,6 +1666,8 @@ snapshots:
       - supports-color
 
   electron-is-accelerator@0.1.2: {}
+
+  electron-is-accelerator@0.2.0: {}
 
   electron-localshortcut@3.2.1:
     dependencies:

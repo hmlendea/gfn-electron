@@ -45,8 +45,12 @@
     "electron-builder": "^24.13.3"
   },
   "dependencies": {
+    "debug": "^4.3.7",
     "discord-rich-presence": "^0.0.8",
+    "electron-is-accelerator": "^0.2.0",
     "electron-localshortcut": "^3.2.1",
-    "find-process": "^1.4.7"
+    "find-process": "^1.4.7",
+    "keyboardevent-from-electron-accelerator": "^2.0.0",
+    "keyboardevents-areequal": "^0.2.2"
   }
 }
