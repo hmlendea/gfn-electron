@@ -2,6 +2,7 @@ const { app, BrowserWindow } = require('electron');
 
 var isFullScreen = false;
 var isGameStreamingScreen = false;
+let shouldForcePointerLock = false;
 
 function toggleFullscreen(state) {
     var window = BrowserWindow.getAllWindows()[0];
@@ -13,14 +14,19 @@ function toggleFullscreen(state) {
             console.log("Fullscreen state changed to: " + state);
 
             if (state) {
-                window.webContents.executeJavaScript(`
-                    window.addEventListener('keydown', function(event) {
-                        if (event.key === 'Escape') {
-                            event.preventDefault();
-                        }
-                    });
-                    window.document.body.requestPointerLock();
-                `);
+                 shouldForcePointerLock = true;
+                 window.webContents.executeJavaScript(`
+                     (function() {
+                         // Automatically re-engage pointer lock if it is released and the flag is true
+                        window.document.addEventListener('pointerlockchange', function() {
+                             if (window.document.pointerLockElement === null && shouldForcePointerLock) {
+                                 window.document.body.requestPointerLock();
+                             }
+                         });
+ 
+                         window.document.body.requestPointerLock();
+                     })();
+                 `);
                 focusWindow();
             } else{
                 window.webContents.executeJavaScript('window.document.body.exitPointerLock();')
