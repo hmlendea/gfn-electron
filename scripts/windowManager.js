@@ -13,7 +13,14 @@ function toggleFullscreen(state) {
             console.log("Fullscreen state changed to: " + state);
 
             if (state) {
-                window.webContents.executeJavaScript('window.document.body.requestPointerLock();')
+                window.webContents.executeJavaScript(`
+                    window.addEventListener('keydown', function(event) {
+                        if (event.key === 'Escape') {
+                            event.preventDefault();
+                        }
+                    });
+                    window.document.body.requestPointerLock();
+                `);
                 focusWindow();
             } else{
                 window.webContents.executeJavaScript('window.document.body.exitPointerLock();')
