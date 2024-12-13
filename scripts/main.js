@@ -116,10 +116,6 @@ app.whenReady().then(async () => {
     BrowserWindow.getAllWindows()[0].loadURL(homePage);
   });
 
-  electronLocalshortcut.register('F4', async () => {
-    app.quit();
-  });
-
   electronLocalshortcut.register('Control+Shift+I', () => {
     BrowserWindow.getAllWindows()[0].webContents.toggleDevTools();
   });
