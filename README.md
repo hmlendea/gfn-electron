@@ -2,11 +2,11 @@
 
 # About
 
-Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experince and some additional features such as Discord rich presence.
+Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experience and some additional features such as Discord rich presence.
 
 ## Disclaimer
 
-This project and its contributors are not affiliated with Nvidia, nor it's GeForce NOW product. This repository does not contain any Nvidia / GeForce NOW software. It is simply an Electron wrapper that loads the official GFN web application page, just as it would in a regular web browser.
+This project and its contributors are not affiliated with Nvidia, nor its GeForce NOW product. This repository does not contain any Nvidia / GeForce NOW software. It is simply an Electron wrapper that loads the official GFN web application page, just as it would in a regular web browser.
 
 # Installation
 
@@ -17,7 +17,7 @@ This project and its contributors are not affiliated with Nvidia, nor it's GeFor
 ## Manual Installation
 
  - Go to the [latest release](https://github.com/hmlendea/gfn-electron/releases/latest).
- - Download the specific file that best fits your disto.
+ - Download the specific file that best fits your distro.
 
 ***Note**: Manual installations are possible but not supported. Please use the flatpak version if you have any trouble with the manual installation!*
 
