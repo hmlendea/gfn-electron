@@ -48,9 +48,11 @@ const config = fs.existsSync(configPath) ?
 
 switch(config.crashCount) {
   case 0:
+    app.commandLine.appendArgument('enable-accelerated-video-decode');
     app.commandLine.appendSwitch('use-gl', 'angle');
     break;
   case 1:
+    app.commandLine.appendArgument('enable-accelerated-video-decode');
     app.commandLine.appendSwitch('use-gl', 'egl');
     break;
   default:
