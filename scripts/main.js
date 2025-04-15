@@ -18,6 +18,7 @@ app.commandLine.appendSwitch(
   'disable-features',
   'UseChromeOSDirectVideoDecoder'
 );
+app.commandLine.appendSwitch("enable-features", "AcceleratedVideoDecodeLinuxGL");
 app.commandLine.appendSwitch('enable-accelerated-mjpeg-decode');
 app.commandLine.appendSwitch('enable-accelerated-video');
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
@@ -47,9 +48,11 @@ const config = fs.existsSync(configPath) ?
 
 switch(config.crashCount) {
   case 0:
+    app.commandLine.appendArgument('enable-accelerated-video-decode');
     app.commandLine.appendSwitch('use-gl', 'angle');
     break;
   case 1:
+    app.commandLine.appendArgument('enable-accelerated-video-decode');
     app.commandLine.appendSwitch('use-gl', 'egl');
     break;
   default:
