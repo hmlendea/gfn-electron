@@ -18,6 +18,7 @@ app.commandLine.appendSwitch(
   'disable-features',
   'UseChromeOSDirectVideoDecoder'
 );
+app.commandLine.appendSwitch("enable-features", "AcceleratedVideoDecodeLinuxGL");
 app.commandLine.appendSwitch('enable-accelerated-mjpeg-decode');
 app.commandLine.appendSwitch('enable-accelerated-video');
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
