@@ -155,13 +155,13 @@ app.on('browser-window-created', async function (e, window) {
 
   window.webContents.setUserAgent(userAgent);
 
-  // Prevent the default action when opening a new window
+
   window.webContents.on('new-window', (event, url) => {
     event.preventDefault();
     BrowserWindow.getAllWindows()[0].loadURL(url);
   });
 
-  // Discord RPC integration
+
   if (discordIsRunning) {
     window.on('page-title-updated', async function (e, title) {
       DiscordRPC(title);
