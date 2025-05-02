@@ -101,7 +101,7 @@ app.whenReady().then(async () => {
     { urls: ["wss://*/*"] },   // Thanks AstralVixen for this.
     async (details, callback) => {
       const url = details.url;
-      const isNvidiaRequest = new URL(url).hostname.endsWith("nvidiagrid.net") && url.includes("/sign_in") && url.includes("peer_id");
+       const isNvidiaRequest = url.includes("nvidiagrid") && url.includes("/sign_in") && url.includes("peer_id");
 
       if (isNvidiaRequest) {
         const window = BrowserWindow.getAllWindows()[0];
