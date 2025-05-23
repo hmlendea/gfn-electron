@@ -43,8 +43,8 @@ app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
 // When the 'use-gl' switch is functioning correctly, I still encounter the 'GetVSyncParametersIfAvailable() error' three times, but it does not occur thereafter (based on my testing).
 const configPath = path.join(app.getPath('userData'), 'config.json');
 const config = fs.existsSync(configPath) ?
-JSON.parse(fs.readFileSync(configPath, 'utf-8')) :
-{ crashCount: 0 };
+  JSON.parse(fs.readFileSync(configPath, 'utf-8')) :
+  { crashCount: 0 };
 
 switch(config.crashCount) {
   case 0:
@@ -64,8 +64,8 @@ async function createWindow() {
     fullscreenable: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-                                       contextIsolation: false,
-                                       userAgent: userAgent,
+      contextIsolation: false,
+      userAgent: userAgent,
     },
   });
 
@@ -76,13 +76,13 @@ async function createWindow() {
   }
 
   /*
-   * uncomment this to debug any errors with loading GFN landing page
-   *
-   * mainWindow.webContents.on("will-navigate", (event, url) => {
-   *   console.log("will-navigate", url);
-   *   event.preventDefault();
-});
-*/
+  uncomment this to debug any errors with loading GFN landing page
+
+  mainWindow.webContents.on("will-navigate", (event, url) => {
+    console.log("will-navigate", url);
+    event.preventDefault();
+  });
+  */
 }
 
 let discordIsRunning = false;
@@ -96,7 +96,6 @@ app.whenReady().then(async () => {
   if (discordIsRunning) {
     DiscordRPC('GeForce NOW');
   }
-
   session.defaultSession.webRequest.onBeforeRequest(
     { urls: ["wss://*/*"] },   // Thanks AstralVixen for this.
     async (details, callback) => {
@@ -121,7 +120,6 @@ app.whenReady().then(async () => {
       callback({ cancel: false });
     }
   );
-
   app.on('activate', async function () {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
@@ -155,21 +153,17 @@ app.on('browser-window-created', async function (e, window) {
 
   window.webContents.setUserAgent(userAgent);
 
-
   window.webContents.on('new-window', (event, url) => {
     event.preventDefault();
     BrowserWindow.getAllWindows()[0].loadURL(url);
   });
-
 
   if (discordIsRunning) {
     window.on('page-title-updated', async function (e, title) {
       DiscordRPC(title);
     });
   }
-
-  // Handling page-title-updated for mainWindow
-  const mainWindow = BrowserWindow.getAllWindows()[0];
+   const mainWindow = BrowserWindow.getAllWindows()[0];
   if (mainWindow) {
     mainWindow.on('page-title-updated', async (e, title) => {
       if (title.includes(" on GeForce NOW")) {
@@ -181,13 +175,13 @@ app.on('browser-window-created', async function (e, window) {
 
 app.on('child-process-gone', (event, details) => {
   if (details.type === 'GPU' && details.reason === 'crashed') {
-    config.crashCount++;
-    fs.writeFileSync(configPath, JSON.stringify(config));
+      config.crashCount++;
+      fs.writeFileSync(configPath, JSON.stringify(config));
 
-    console.log("Initiating application restart with an alternative 'use-gl' switch implementation or with hardware acceleration disabled, aiming to improve stability or performance based on prior execution outcomes.");
+      console.log("Initiating application restart with an alternative 'use-gl' switch implementation or with hardware acceleration disabled, aiming to improve stability or performance based on prior execution outcomes.");
 
-    app.relaunch();
-    app.exit(0);
+      app.relaunch();
+      app.exit(0);
   }
 });
 
@@ -203,15 +197,15 @@ app.on('window-all-closed', async function () {
 
 function isDiscordRunning() {
   return new Promise(resolve => {
-    findProcess('name', 'Discord').then(list => {
-      if (list.length > 0) {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
-    }).catch(error => {
-      console.log('Error checking Discord process:', error);
-      resolve(false);
-    });
+      findProcess('name', 'Discord').then(list => {
+          if (list.length > 0) {
+              resolve(true);
+          } else {
+              resolve(false);
+          }
+      }).catch(error => {
+          console.log('Error checking Discord process:', error);
+          resolve(false);
+      });
   });
 }
