@@ -1,11 +1,11 @@
-const { app, BrowserWindow, session } = require('electron');
+const { app, BrowserWindow, session, Notification } = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
 const findProcess = require('find-process');
 const fs = require('fs');
 const path = require('path');
 const { DiscordRPC } = require('./rpc.js');
 const { switchFullscreenState } = require('./windowManager.js');
-
+let notified = false;
 var homePage = 'https://play.geforcenow.com';
 var userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.152 Safari/537.36 Edg/130.0.6723.152';
 
@@ -96,7 +96,30 @@ app.whenReady().then(async () => {
   if (discordIsRunning) {
     DiscordRPC('GeForce NOW');
   }
+  session.defaultSession.webRequest.onBeforeRequest(
+    { urls: ["wss://*/*"] },   // Thanks AstralVixen for this.
+    async (details, callback) => {
+      const url = details.url;
+       const isNvidiaRequest = url.includes("nvidiagrid") && url.includes("/sign_in") && url.includes("peer_id");
 
+      if (isNvidiaRequest) {
+        const window = BrowserWindow.getAllWindows()[0];
+        if (window) {
+          const title = await window.webContents.getTitle();
+          console.log(`[GeForce NOW] Current title: "${title}"`);
+          if (!notified) {
+            new Notification({
+              title: "GeForce NOW",
+              body: `${title.replace(' on GeForce NOW', '')} is ready to play`
+            }).show();
+            notified = true;
+          }
+        }
+      }
+
+      callback({ cancel: false });
+    }
+  );
   app.on('activate', async function () {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
@@ -138,6 +161,14 @@ app.on('browser-window-created', async function (e, window) {
   if (discordIsRunning) {
     window.on('page-title-updated', async function (e, title) {
       DiscordRPC(title);
+    });
+  }
+   const mainWindow = BrowserWindow.getAllWindows()[0];
+  if (mainWindow) {
+    mainWindow.on('page-title-updated', async (e, title) => {
+      if (title.includes(" on GeForce NOW")) {
+        notified = false;
+      }
     });
   }
 });
