@@ -1,14 +1,12 @@
-[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/) [![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html) [![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml) [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/releases/latest)
+[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html) [![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml) [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/releases/latest)
 
-# DISCONTINUED
+# NO LONGER DISCONTINUED
 
-Hi everyone,
+Hi everyone!
 
-I've decided to stop supporting this project. I simply don't have enough time to maintain it properly, and I haven't personally used GeForce NOW in years. Additionally, the official support for GeForce NOW has improved significantly, which has reduced the need for this project.
+The owner of this repository had discontinued and archived the project a few weeks ago but the project is back now. I will be continuing to work on this project and we welcome as much help as possible from the community!
 
-If anyone is interested in taking over, feel free to reach out.
-
-Thanks for your support!
+Thanks for everyone's support!
 
 ---
 
@@ -16,9 +14,16 @@ Thanks for your support!
 
 Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experience and some additional features such as Discord rich presence.
 
+## About us
+
 ## Disclaimer
 
 This project and its contributors are not affiliated with Nvidia, nor its GeForce NOW product. This repository does not contain any Nvidia / GeForce NOW software. It is simply an Electron wrapper that loads the official GFN web application page, just as it would in a regular web browser.
+
+## Developers
+
+Founder & Owner: Horațiu Mlendea (https://github.com/hmlendea)
+Maintainer: Goldy Yan (https://github.com/Cybertaco360)
 
 # Installation
 
