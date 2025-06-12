@@ -23,6 +23,7 @@ This project and its contributors are not affiliated with Nvidia, nor its GeForc
 ## Developers
 
 Founder & Owner: Horațiu Mlendea (https://github.com/hmlendea)
+
 Maintainer: Goldy Yan (https://github.com/Cybertaco360)
 
 # Installation
