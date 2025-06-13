@@ -57,8 +57,8 @@ Maintainer: Goldy Yan (https://github.com/Cybertaco360)
 # Building from source
 
 ## Requirements
-
-You will need to install [npm](https://www.npmjs.com/), the Node.js package manager. On most distributions, the package is simply called `npm`.
+* You will need to install [npm](https://www.npmjs.com/), the Node.js package manager. On most distributions, the package is simply called `npm`.
+* [nvm](https://github.com/nvm-sh/nvm) (node version manager) is also required to ensure using the correct node version.
 
 ## Cloning the source code
 
@@ -71,6 +71,7 @@ git clone https://github.com/hmlendea/gfn-electron.git
 ## Building
 
 ```bash
+nvm use
 npm install
 npm start
 ```
