@@ -4,7 +4,7 @@ const path = require('path');
 const { DiscordRPC } = require('./rpc.js');
 // const { switchFullscreenState } = require('./windowManager.js'); // let electron handle the fullscreen and not manually setting it
 const homePage = 'https://play.geforcenow.com/mall/';
-const userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36';
+const userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0  Safari/537.36';
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
 app.commandLine.appendSwitch('log-level', '3');
