@@ -1,4 +1,9 @@
 # Discord Rich Presence for GeForce NOW
+<img width="279" height="119" alt="Screenshot from 2025-10-07 12-48-39" src="https://github.com/user-attachments/assets/4a427f51-c07c-4ea2-aa89-3c0a52780529" />
+<img width="279" height="119" alt="Screenshot from 2025-10-07 12-48-22" src="https://github.com/user-attachments/assets/32e11b33-3e52-4a5c-8c8f-ea5186c8c805" />
+<img width="279" height="119" alt="Screenshot from 2025-10-07 12-48-12" src="https://github.com/user-attachments/assets/e80a6b68-00e2-449c-8c0e-0f0318547bf5" />
+
+
 
 This folder contains the Discord Rich Presence integration for GeForce NOW, providing automatic game detection and dynamic artwork display.
 
