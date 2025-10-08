@@ -49,27 +49,12 @@ Maintainer: Goldy Yan (https://github.com/Cybertaco360)
  - [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
    - [Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#discord)
      - [Using native GFN + flatpak Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#using-native-gfn--flatpak-discord)
+     - [Setting up a Discord Client ID](https://github.com/hmlendea/gfn-electron/wiki/Integrations#setting-up-a-discord-client-id)
+     - [Persistent Discord Client ID](scripts/README.md#persistent-client-id-setup-recommended)
      - [Disabling the Discord RPC](https://github.com/hmlendea/gfn-electron/wiki/Integrations#disabling-the-discord-rpc)
-      - [Local Discord RPC setup](#local-discord-rpc-setup)
  - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
    - [Gamepad controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#gamepad-controls-are-not-detected)
    - [Steam Deck controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#steam-deck-controls-are-not-detected)
-
-## Local Discord RPC setup
-
-For local development you can persist your Discord Application ID without setting an environment variable every time.
-
-1. Create or edit `scripts/local-config.js` and paste your application ID:
-
-```javascript
-module.exports = { DISCORD_CLIENT_ID: '1425250342890639442' }
-```
-
-2. This file is gitignored by default (`.gitignore` contains `scripts/local-config.js`) so it remains local and won't be committed.
-
-3. The code uses the client ID in this order: `process.env.DISCORD_CLIENT_ID` → `scripts/local-config.js` → placeholder (`YOUR_CLIENT_ID_HERE`).
-
-Security note: Treat this file like a secret; do not commit it to public repositories. If you prefer env vars, use `DISCORD_CLIENT_ID=... npm start` instead.
 
 # Building from source
 

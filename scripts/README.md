@@ -32,6 +32,39 @@ DISCORD_CLIENT_ID=1234567890123456789 npm start
 
 **Important**: Never commit your real client ID to the repository. The code uses `YOUR_CLIENT_ID_HERE` as a placeholder.
 
+### Persistent Client ID Setup (Recommended)
+
+Instead of setting the environment variable each time, you can store your Discord client ID in a local, gitignored file:
+
+1. Create a copy of the example config file:
+
+```bash
+cp scripts/local-config.js.example scripts/local-config.js
+```
+
+2. Edit the `scripts/local-config.js` file (this file is in .gitignore):
+
+```javascript
+// scripts/local-config.js - this file is gitignored and won't be committed
+module.exports = {
+  DISCORD_CLIENT_ID: '1234567890123456789' // Replace with your actual Discord client ID
+};
+```
+
+3. Run the app normally:
+
+```bash
+npm start
+```
+
+The app will automatically:
+
+- Look for environment variable `DISCORD_CLIENT_ID`
+- If not found, try to load from `scripts/local-config.js`
+- If neither is available, fall back to the placeholder (`YOUR_CLIENT_ID_HERE`)
+
+This approach is the most convenient for development and keeps your client ID out of the repository.
+
 ### Discord Asset Setup
 
 To display game artwork in Discord Rich Presence:

@@ -1,0 +1,15 @@
+/**
+ * Local configuration file for GeForce NOW Electron
+ * This file is excluded from git to keep sensitive information private
+ * 
+ * To use:
+ * 1. Copy this file to local-config.js (same directory)
+ * 2. Replace the placeholder with your actual Discord client ID
+ * 3. Run the app normally (no environment variables needed)
+ */
+
+module.exports = {
+  // Your Discord application client ID
+  // Get this from https://discord.com/developers/applications
+  DISCORD_CLIENT_ID: 'YOUR_CLIENT_ID_HERE'
+};
