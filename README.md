@@ -1,4 +1,81 @@
-[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html) [![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml) [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/releases/latest)
+[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](htnpm install
+```
+
+On subsequent runs, `npm start` will be all that's required.
+
+## Updating the source code
+
+Simply pull the latest version of master and install any changed dependencies:
+
+```bash
+git checkout master
+git pull
+npm install
+```
+
+## Development
+
+### Discord Rich Presence Configuration
+
+To enable Discord Rich Presence during development, set your Discord application's client ID as an environment variable:
+
+```bash
+DISCORD_CLIENT_ID=1234567890123456789 npm start
+```
+
+You can get a Discord Client ID by:
+1. Creating an application at [Discord Developer Portal](https://discord.com/developers/applications)
+2. Going to your application's "General Information" page
+3. Copying the "Application ID" (this is your client ID)
+
+**Important**: Never commit your real client ID to the repository. The code uses `YOUR_CLIENT_ID_HERE` as a placeholder.
+
+### Game Cache Location
+
+The app automatically caches Steam App ID mappings for faster subsequent launches. The cache file location depends on your environment:
+
+- **Electron environment**: `~/.config/GeForce NOW/game_cache.json` (Linux)
+- **Development fallback**: `./game_cache.json` (project root)
+
+To view the current cache contents:
+```bash
+cat ~/.config/"GeForce NOW"/game_cache.json
+```
+
+Example cache file structure:
+```json
+{
+  "Call of Duty®": "1938090",
+  "Battlefield™ 2042": "1517290",
+  "DEATH STRANDING": "1850570"
+}
+```
+
+### Debug Logging
+
+Enable verbose debug logging by setting the `DEBUG` environment variable:
+
+```bash
+DEBUG=true DISCORD_CLIENT_ID=your_id npm start
+```
+
+This will show detailed information about:
+- Cache file path resolution
+- Steam search results and scoring
+- Discord RPC client initialization
+- Game name extraction and matching
+
+### Disabling Discord RPC
+
+To run without Discord integration during development:
+
+```bash
+npm start -- --disable-rpc
+```
+
+### Testing Steam App ID Detection
+
+To manually test the Steam scraping functionality, you can create a simple test script or use the browser's developer console to verify game detection works correctly..go.ro/fund.html) [![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml) [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/releases/latest)
 
 # NO LONGER DISCONTINUED
 

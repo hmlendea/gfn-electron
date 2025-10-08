@@ -1,4 +1,5 @@
 const axios = require('axios');
+const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
 
@@ -6,9 +7,25 @@ let client;
 let gameCache = {};
 let isInitialized = false;
 
+// Debug logging flag - set DEBUG=true in environment for verbose logs
+const DEBUG = process.env.DEBUG === 'true';
+
+function log(level, ...args) {
+  if (level === 'debug' && !DEBUG) return;
+  console[level](...args);
+}
+
 function getCacheFilePath() {
-  try { const { app } = require('electron'); return path.join(app.getPath('userData'), 'game_cache.json'); }
-  catch (e) { return path.join(__dirname, '..', 'game_cache.json'); }
+  try { 
+    const { app } = require('electron'); 
+    const cachePath = path.join(app.getPath('userData'), 'game_cache.json');
+    log('debug', `Using Electron userData cache: ${cachePath}`);
+    return cachePath;
+  } catch (e) { 
+    const cachePath = path.join(__dirname, '..', 'game_cache.json');
+    log('debug', `Using fallback cache path: ${cachePath}`);
+    return cachePath;
+  }
 }
 
 const CACHE_FILE = getCacheFilePath();
@@ -19,55 +36,181 @@ function initializeRPC() {
     if (fs.existsSync(CACHE_FILE)) {
       const data = fs.readFileSync(CACHE_FILE, 'utf8');
       gameCache = JSON.parse(data);
+      log('debug', `Loaded ${Object.keys(gameCache).length} cached games`);
     }
-  } catch (e) { gameCache = {}; }
-  if (!client) client = require('discord-rich-presence')('YOUR_CLIENT_ID_HERE');
+  } catch (e) { 
+    log('warn', 'Failed to load game cache:', e.message);
+    gameCache = {}; 
+  }
+  
+  if (!client) {
+    const clientId = process.env.DISCORD_CLIENT_ID || 'YOUR_CLIENT_ID_HERE';
+    if (clientId === 'YOUR_CLIENT_ID_HERE') {
+      log('warn', 'Discord client ID not configured. Set DISCORD_CLIENT_ID environment variable.');
+      log('info', 'Example: DISCORD_CLIENT_ID=1234567890123456789 npm start');
+    }
+    try {
+      client = require('discord-rich-presence')(clientId);
+      log('debug', 'Discord RPC client initialized');
+    } catch (e) {
+      log('error', 'Failed to initialize Discord RPC client:', e.message);
+      client = null;
+    }
+  }
   isInitialized = true;
 }
 
-function saveGameCache() { try { fs.writeFileSync(CACHE_FILE, JSON.stringify(gameCache, null, 2)); } catch (e) { console.error('Error saving cache', e); } }
+function saveGameCache() { 
+  try { 
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(gameCache, null, 2)); 
+    log('debug', 'Game cache saved successfully');
+  } catch (e) { 
+    log('error', 'Error saving cache:', e.message); 
+  } 
+}
+
+function normalizeText(text) {
+  return text
+    .replace(/[™®©]/g, '') // Remove trademark symbols
+    .replace(/[''""]/g, '') // Remove smart quotes
+    .replace(/[^\w\s]/g, '') // Remove other punctuation
+    .toLowerCase()
+    .trim();
+}
 
 async function getSteamAppId(gameName) {
   try {
     const url = `https://store.steampowered.com/search/?term=${encodeURIComponent(gameName)}&category1=998`;
-    const resp = await axios.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' }, timeout: 15000 });
-    const appIdRegex = /data-ds-appid="(\d+)"/g;
-    const titleRegex = /<span class="title">([^<]+)<\/span>/g;
-    let match; const appIds = []; while ((match = appIdRegex.exec(resp.data)) !== null) appIds.push(match[1]);
-    const titles = []; while ((match = titleRegex.exec(resp.data)) !== null) titles.push(match[1].trim());
-    const results = []; for (let i = 0; i < Math.min(appIds.length, titles.length); i++) results.push({ appId: appIds[i], title: titles[i] });
-    if (results.length === 0) return null;
-    let best = null; let bestScore = 0;
-    for (const r of results) {
-      let score = 0; const rt = r.title.toLowerCase(); const sn = gameName.toLowerCase();
-      if (rt === sn) score = 100; else if (rt.includes(sn)) score = 75; else if (sn.includes(rt)) score = 50; else {
-        const sw = sn.split(/\s+/); const tw = rt.split(/\s+/); const common = sw.filter(w => tw.includes(w)); score = (common.length / sw.length) * 25;
+    log('debug', `Searching Steam for: "${gameName}"`);
+    
+    const resp = await axios.get(url, { 
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; GFN-Electron)' }, 
+      timeout: 15000 
+    });
+    
+    const $ = cheerio.load(resp.data);
+    const results = [];
+    
+    // Parse search results using cheerio for robust HTML parsing
+    $('a[data-ds-appid]').each((i, element) => {
+      const appId = $(element).attr('data-ds-appid');
+      const titleElement = $(element).find('.title');
+      const title = titleElement.text().trim();
+      
+      if (appId && title) {
+        results.push({ appId, title });
       }
-      if (score > bestScore) { best = r; bestScore = score; }
+    });
+    
+    log('debug', `Found ${results.length} Steam results`);
+    if (results.length === 0) return null;
+    
+    // Improved scoring with text normalization
+    let best = null;
+    let bestScore = 0;
+    const normalizedSearch = normalizeText(gameName);
+    
+    for (const result of results) {
+      let score = 0;
+      const normalizedTitle = normalizeText(result.title);
+      
+      // Scoring algorithm with normalized text
+      if (normalizedTitle === normalizedSearch) {
+        score = 100; // Exact match
+      } else if (normalizedTitle.includes(normalizedSearch)) {
+        score = 85; // Search term contained in title
+      } else if (normalizedSearch.includes(normalizedTitle)) {
+        score = 70; // Title contained in search term
+      } else {
+        // Word overlap scoring with normalization
+        const searchWords = normalizedSearch.split(/\s+/).filter(w => w.length > 2);
+        const titleWords = normalizedTitle.split(/\s+/).filter(w => w.length > 2);
+        const commonWords = searchWords.filter(w => titleWords.includes(w));
+        
+        if (searchWords.length > 0) {
+          score = (commonWords.length / searchWords.length) * 50;
+        }
+      }
+      
+      log('debug', `"${result.title}" -> score: ${score.toFixed(1)}`);
+      
+      if (score > bestScore) {
+        best = result;
+        bestScore = score;
+      }
     }
-    if (best && bestScore >= 25) { gameCache[gameName] = best.appId; saveGameCache(); return best.appId; }
+    
+    // Require minimum score threshold
+    if (best && bestScore >= 25) {
+      log('info', `Steam ID found: "${gameName}" -> ${best.appId} (${best.title}, score: ${bestScore.toFixed(1)})`);
+      gameCache[gameName] = best.appId;
+      saveGameCache();
+      return best.appId;
+    }
+    
+    log('warn', `No suitable Steam match found for: "${gameName}" (best score: ${bestScore.toFixed(1)})`);
     return null;
-  } catch (e) { console.error('Steam lookup error', e && e.message ? e.message : e); return null; }
+  } catch (e) { 
+    log('error', 'Steam lookup error:', e.message);
+    return null; 
+  }
 }
 
 function extractGameName(title) { if (!title || !title.includes('on GeForce NOW')) return null; return title.replace(/\s+on GeForce NOW$/i, '').trim() || null; }
 
 async function DiscordRPC(title) {
-  if (process.argv.includes('--disable-rpc')) return;
+  if (process.argv.includes('--disable-rpc')) {
+    log('debug', 'Discord RPC disabled via --disable-rpc flag');
+    return;
+  }
+  
   initializeRPC();
-  console.log('\n=== PAGE TITLE UPDATE ==='); console.log(`Page title detected: "${title}"`);
-  const gameName = extractGameName(title); console.log(`Extracted game name: "${gameName}"`);
-  const details = gameName ? title : 'Home on GeForce NOW'; let steamId = null;
-  if (gameName) { if (gameCache[gameName]) steamId = gameCache[gameName]; else steamId = await getSteamAppId(gameName); }
-  try {
-    if (steamId && /^\d{6,7}$/.test(steamId)) {
-      client.updatePresence({ details, state: 'Not affiliated with NVIDIA', startTimestamp: Date.now(), largeImageKey: steamId, instance: true });
-      console.log(`Discord RPC: Successfully using Steam ID ${steamId}`);
+  
+  log('info', '\n=== PAGE TITLE UPDATE ===');
+  log('info', `Page title detected: "${title}"`);
+  
+  const gameName = extractGameName(title);
+  log('info', `Extracted game name: "${gameName}"`);
+  
+  const details = gameName ? title : 'Home on GeForce NOW';
+  let steamId = null;
+  
+  if (gameName) {
+    if (gameCache[gameName]) {
+      steamId = gameCache[gameName];
+      log('debug', `Using cached Steam ID: ${steamId}`);
     } else {
-      client.updatePresence({ details, state: 'Not affiliated with NVIDIA', startTimestamp: Date.now(), largeImageKey: 'nvidia', instance: true });
-      console.log('Discord RPC: Using nvidia icon');
+      steamId = await getSteamAppId(gameName);
     }
-  } catch (err) { console.error('Discord RPC error:', err && err.message ? err.message : err); }
+  }
+  
+  // Guard against missing Discord RPC client
+  if (!client) {
+    log('warn', 'Discord RPC client not initialized - skipping presence update');
+    return;
+  }
+  
+  try {
+    const presenceData = {
+      details,
+      state: 'Not affiliated with NVIDIA',
+      startTimestamp: Date.now(),
+      instance: true
+    };
+    
+    if (steamId && /^\d{6,7}$/.test(steamId)) {
+      presenceData.largeImageKey = steamId;
+      client.updatePresence(presenceData);
+      log('info', `Discord RPC: Successfully using Steam ID ${steamId} for artwork`);
+    } else {
+      presenceData.largeImageKey = 'nvidia';
+      client.updatePresence(presenceData);
+      log('info', 'Discord RPC: Using nvidia fallback icon');
+    }
+  } catch (err) { 
+    log('error', 'Discord RPC update failed:', err.message);
+    log('debug', 'Full error:', err);
+  }
 }
 
 module.exports = { DiscordRPC };

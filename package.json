@@ -33,10 +33,12 @@
   "author": "Horațiu Mlendea <io.github.hmlendea.cnzq9@SimpleLogin.fr>",
   "license": "GPL-3.0",
   "devDependencies": {
-    "electron-builder": "^25.1.8",
-    "electron": "^35.0.2"
+    "electron": "^35.0.2",
+    "electron-builder": "^25.1.8"
   },
   "dependencies": {
+    "axios": "^1.12.2",
+    "cheerio": "^1.1.2",
     "discord-rich-presence": "^0.0.8",
     "electron-localshortcut": "^3.2.1",
     "find-process": "^1.4.10"
