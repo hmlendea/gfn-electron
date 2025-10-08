@@ -44,9 +44,12 @@ function initializeRPC() {
   }
   
   if (!client) {
-    const clientId = process.env.DISCORD_CLIENT_ID || 'YOUR_CLIENT_ID_HERE';
+    // Try environment variable first, then local-config.js (development), then placeholder
+    let localConfig = {};
+    try { localConfig = require('./local-config.js') || {}; } catch (e) { /* ignore missing local config */ }
+    const clientId = process.env.DISCORD_CLIENT_ID || localConfig.DISCORD_CLIENT_ID || 'YOUR_CLIENT_ID_HERE';
     if (clientId === 'YOUR_CLIENT_ID_HERE') {
-      log('warn', 'Discord client ID not configured. Set DISCORD_CLIENT_ID environment variable.');
+      log('warn', 'Discord client ID not configured. Set DISCORD_CLIENT_ID environment variable or edit scripts/local-config.js');
       log('info', 'Example: DISCORD_CLIENT_ID=1234567890123456789 npm start');
     }
     try {

@@ -1,2 +1,5 @@
 dist
 node_modules
+
+# local secrets for development
+scripts/local-config.js
