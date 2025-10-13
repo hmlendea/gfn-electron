@@ -9,7 +9,8 @@
     "start": "electron .",
     "build": "electron-builder --publish never",
     "lint": "eslint . --ext .js",
-    "test": "node scripts/test-steam-scraper.js"
+    "test": "node scripts/test-steam-scraper.js",
+    "gen-changelog": "node scripts/gen_changelog.js"
   },
   "build": {
     "asar": false,
