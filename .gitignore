@@ -1,5 +1,6 @@
 dist
 node_modules
 
+scripts/local-config.js
 # local secrets for development
 scripts/local-config.js

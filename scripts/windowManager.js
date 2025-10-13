@@ -4,7 +4,9 @@ var isFullScreen = false;
 var isGameStreamingScreen = false;
 
 function toggleFullscreen(state) {
-    var window = BrowserWindow.getAllWindows()[0];
+    const windows = BrowserWindow.getAllWindows();
+    if (!windows || windows.length === 0) return;
+    var window = windows[0];
     var actualState = window.isFullScreen();
     if (isFullScreen != state || actualState != state) {
         if (state || !isGameStreamingScreen) {
@@ -44,7 +46,9 @@ function switchFullscreenState() {
 }
 
 function focusWindow() {
-    BrowserWindow.getAllWindows()[0].focus();
+    const windows = BrowserWindow.getAllWindows();
+    if (!windows || windows.length === 0) return;
+    windows[0].focus();
 }
 
 app.on('browser-window-created', async function (event, window) {

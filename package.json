@@ -7,7 +7,8 @@
   "main": "scripts/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --publish never"
+    "build": "electron-builder --publish never",
+    "lint": "eslint . --ext .js"
   },
   "build": {
     "asar": false,
@@ -34,7 +35,8 @@
   "license": "GPL-3.0",
   "devDependencies": {
     "electron": "^35.0.2",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^25.1.8",
+    "eslint": "^8.51.0"
   },
   "dependencies": {
     "axios": "^1.12.2",

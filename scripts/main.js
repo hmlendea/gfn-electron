@@ -62,6 +62,9 @@ switch(config.crashCount) {
 async function createWindow() {
   const mainWindow = new BrowserWindow({
     fullscreenable: true,
+    // Try using server-side decorations when explicitly requested or when
+    // client-side decorations misbehave on certain Wayland setups.
+    frame: process.argv.includes('--force-frame') ? true : undefined,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: false,
@@ -137,7 +140,12 @@ app.on('browser-window-created', async function (e, window) {
 
   if (discordIsRunning) {
     window.on('page-title-updated', async function (e, title) {
-      DiscordRPC(title);
+      // Guard: ensure DiscordRPC exists and is callable
+      try {
+        DiscordRPC && typeof DiscordRPC === 'function' && DiscordRPC(title);
+      } catch (err) {
+        console.warn('DiscordRPC call failed:', err && err.message ? err.message : err);
+      }
     });
   }
 });
@@ -166,15 +174,17 @@ app.on('window-all-closed', async function () {
 
 function isDiscordRunning() {
   return new Promise(resolve => {
-      findProcess('name', 'Discord').then(list => {
-          if (list.length > 0) {
-              resolve(true);
-          } else {
-              resolve(false);
-          }
-      }).catch(error => {
-          console.log('Error checking Discord process:', error);
-          resolve(false);
-      });
+    // Check for several common Discord process names, case-insensitive
+    const namesToCheck = ['discord', 'Discord', 'discord-canary', 'DiscordCanary', 'DiscordPTB', 'discord_ptb'];
+    findProcess('name', namesToCheck.join('|')).then(list => {
+      if (list && list.length > 0) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    }).catch(error => {
+      console.log('Error checking Discord process:', error);
+      resolve(false);
+    });
   });
 }
