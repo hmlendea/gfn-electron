@@ -32,3 +32,11 @@ jobs:
       run: |
         npm run test:unit --if-present
         npm test --if-present
+    - name: Coverage
+      run: |
+        npm run coverage --if-present
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage/lcov.info
+        fail_ci_if_error: false
