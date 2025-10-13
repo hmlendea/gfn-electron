@@ -37,6 +37,25 @@ const CACHE_FILE = getCacheFilePath();
 
 function initializeRPC() {
   if (isInitialized) return;
+  // Honor environment variable to disable RPC entirely
+  if (process.env.DISABLE_RPC === 'true' || process.env.DISABLE_RPC === '1') {
+    log('info', 'Discord RPC disabled via DISABLE_RPC environment variable');
+    isInitialized = true;
+    client = null;
+    return;
+  }
+  // Honor local-config.js persistent disable flag if present
+  try {
+    const localConfig = require('./local-config.js');
+    if (localConfig && localConfig.DISABLE_RPC) {
+      log('info', 'Discord RPC disabled via scripts/local-config.js');
+      isInitialized = true;
+      client = null;
+      return;
+    }
+  } catch (e) {
+    // ignore missing local-config
+  }
   try {
     if (fs.existsSync(CACHE_FILE)) {
       const data = fs.readFileSync(CACHE_FILE, 'utf8');
@@ -73,6 +92,14 @@ function initializeRPC() {
     try {
       client = require('discord-rich-presence')(clientId);
       log('debug', 'Discord RPC client initialized');
+      // Avoid uncaught errors from the underlying transport
+      try {
+        if (client && typeof client.on === 'function') {
+          client.on('error', (err) => log('warn', 'Discord RPC client error:', err && err.message ? err.message : err));
+        }
+      } catch (e) {
+        log('debug', 'Failed to attach error handler to Discord RPC client:', e && e.message ? e.message : e);
+      }
     } catch (e) {
       log('error', 'Failed to initialize Discord RPC client:', e.message);
       client = null;

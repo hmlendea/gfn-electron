@@ -10,7 +10,9 @@
     "build": "electron-builder --publish never",
     "lint": "eslint . --ext .js",
     "test": "node scripts/test-steam-scraper.js",
-    "gen-changelog": "node scripts/gen_changelog.js"
+    "gen-changelog": "node scripts/gen_changelog.js",
+    "format": "prettier --write \"**/*.{js,md,json}\"",
+    "format:check": "prettier --check \"**/*.{js,md,json}\""
   },
   "build": {
     "asar": false,
@@ -39,7 +41,8 @@
     "electron": "^35.0.2",
     "electron-builder": "^25.1.8",
     "eslint": "^8.51.0",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "prettier": "^2.10.3"
   },
   "dependencies": {
     "axios": "^1.12.2",
