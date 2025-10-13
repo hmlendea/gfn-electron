@@ -201,6 +201,14 @@ function _getGameCache() {
   return gameCache;
 }
 
+function _setClient(c) {
+  client = c;
+}
+
+function _setInitialized(v) {
+  isInitialized = !!v;
+}
+
 async function getSteamAppId(gameName) {
   try {
     // Use cache if present and valid
@@ -345,4 +353,15 @@ async function DiscordRPC(title) {
   }
 }
 
-module.exports = { DiscordRPC, getSteamAppId, requestWithBackoff, _test: { setGameCache: _setGameCache, getGameCache: _getGameCache } };
+module.exports = {
+  DiscordRPC,
+  getSteamAppId,
+  requestWithBackoff,
+  initializeRPC,
+  _test: {
+    setGameCache: _setGameCache,
+    getGameCache: _getGameCache,
+    setClient: _setClient,
+    setInitialized: _setInitialized,
+  },
+};
