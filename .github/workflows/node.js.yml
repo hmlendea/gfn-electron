@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, steam-rpc-feature ]
   pull_request:
     branches: [ master ]
 
@@ -29,4 +29,6 @@ jobs:
     - name: Build
       run: npm run build --if-present
     - name: Test
-      run: npm test --if-present
+      run: |
+        npm run test:unit --if-present
+        npm test --if-present

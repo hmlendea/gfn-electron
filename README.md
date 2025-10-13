@@ -76,6 +76,16 @@ module.exports = {
 
 The application will honor either method and skip initializing Discord RPC when set.
 
+## Developer npm scripts
+
+Useful scripts for development:
+
+- `npm run lint` — run ESLint across the codebase
+- `npm run format` — run Prettier to format files
+- `npm run format:check` — check formatting
+- `npm test` — run the smoke test (`scripts/test-steam-scraper.js`)
+- `npm run gen-changelog` — generate a commit-based changelog (prints to stdout)
+
 - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
   - [Gamepad controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#gamepad-controls-are-not-detected)
   - [Steam Deck controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#steam-deck-controls-are-not-detected)

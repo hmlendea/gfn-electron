@@ -9,7 +9,8 @@
     "start": "electron .",
     "build": "electron-builder --publish never",
     "lint": "eslint . --ext .js",
-    "test": "node scripts/test-steam-scraper.js",
+  "test": "node scripts/test-steam-scraper.js",
+  "test:unit": "jest --runInBand",
     "gen-changelog": "node scripts/gen_changelog.js",
     "format": "prettier --write \"**/*.{js,md,json}\"",
     "format:check": "prettier --check \"**/*.{js,md,json}\""
