@@ -42,7 +42,7 @@
     "electron-builder": "^25.1.8",
     "eslint": "^8.51.0",
     "jest": "^29.7.0",
-    "prettier": "^2.10.3"
+    "prettier": "^2.8.8"
   },
   "dependencies": {
     "axios": "^1.12.2",

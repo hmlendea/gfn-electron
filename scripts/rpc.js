@@ -21,12 +21,12 @@ function log(level, ...args) {
 }
 
 function getCacheFilePath() {
-  try { 
-    const { app } = require('electron'); 
+  try {
+    const { app } = require('electron');
     const cachePath = path.join(app.getPath('userData'), 'game_cache.json');
     log('debug', `Using Electron userData cache: ${cachePath}`);
     return cachePath;
-  } catch (e) { 
+  } catch (e) {
     const cachePath = path.join(__dirname, '..', 'game_cache.json');
     log('debug', `Using fallback cache path: ${cachePath}`);
     return cachePath;
@@ -71,22 +71,34 @@ function initializeRPC() {
           gameCache = Object.assign({}, common);
           log('debug', `Loaded ${Object.keys(common).length} common cached games as fallback`);
         } catch (err) {
-          log('debug', 'Failed to load fallback common cache:', err && err.message ? err.message : err);
+          log(
+            'debug',
+            'Failed to load fallback common cache:',
+            err && err.message ? err.message : err,
+          );
         }
       }
     }
-  } catch (e) { 
+  } catch (e) {
     log('warn', 'Failed to load game cache:', e.message);
-    gameCache = {}; 
+    gameCache = {};
   }
-  
+
   if (!client) {
     // Try environment variable first, then local-config.js (development), then placeholder
     let localConfig = {};
-    try { localConfig = require('./local-config.js') || {}; } catch (e) { /* ignore missing local config */ }
-    const clientId = process.env.DISCORD_CLIENT_ID || localConfig.DISCORD_CLIENT_ID || 'YOUR_CLIENT_ID_HERE';
+    try {
+      localConfig = require('./local-config.js') || {};
+    } catch (e) {
+      /* ignore missing local config */
+    }
+    const clientId =
+      process.env.DISCORD_CLIENT_ID || localConfig.DISCORD_CLIENT_ID || 'YOUR_CLIENT_ID_HERE';
     if (clientId === 'YOUR_CLIENT_ID_HERE') {
-      log('warn', 'Discord client ID not configured. Set DISCORD_CLIENT_ID environment variable or edit scripts/local-config.js');
+      log(
+        'warn',
+        'Discord client ID not configured. Set DISCORD_CLIENT_ID environment variable or edit scripts/local-config.js',
+      );
       log('info', 'Example: DISCORD_CLIENT_ID=1234567890123456789 npm start');
     }
     try {
@@ -95,10 +107,16 @@ function initializeRPC() {
       // Avoid uncaught errors from the underlying transport
       try {
         if (client && typeof client.on === 'function') {
-          client.on('error', (err) => log('warn', 'Discord RPC client error:', err && err.message ? err.message : err));
+          client.on('error', err =>
+            log('warn', 'Discord RPC client error:', err && err.message ? err.message : err),
+          );
         }
       } catch (e) {
-        log('debug', 'Failed to attach error handler to Discord RPC client:', e && e.message ? e.message : e);
+        log(
+          'debug',
+          'Failed to attach error handler to Discord RPC client:',
+          e && e.message ? e.message : e,
+        );
       }
     } catch (e) {
       log('error', 'Failed to initialize Discord RPC client:', e.message);
@@ -108,18 +126,18 @@ function initializeRPC() {
   isInitialized = true;
 }
 
-function saveGameCache() { 
-  try { 
-    fs.writeFileSync(CACHE_FILE, JSON.stringify(gameCache, null, 2)); 
+function saveGameCache() {
+  try {
+    fs.writeFileSync(CACHE_FILE, JSON.stringify(gameCache, null, 2));
     log('debug', 'Game cache saved successfully');
-  } catch (e) { 
-    log('error', 'Error saving cache:', e.message); 
-  } 
+  } catch (e) {
+    log('error', 'Error saving cache:', e.message);
+  }
 }
 
 function isCacheEntryValid(entryTimestamp) {
   if (!entryTimestamp) return false;
-  return (Date.now() - entryTimestamp) <= CACHE_TTL_MS;
+  return Date.now() - entryTimestamp <= CACHE_TTL_MS;
 }
 
 function normalizeText(text) {
@@ -158,10 +176,15 @@ async function getSteamAppId(gameName) {
       return cached;
     }
 
-    const url = `https://store.steampowered.com/search/?term=${encodeURIComponent(gameName)}&category1=998`;
+    const url = `https://store.steampowered.com/search/?term=${encodeURIComponent(
+      gameName,
+    )}&category1=998`;
     log('debug', `Searching Steam for: "${gameName}"`);
 
-    const resp = await requestWithBackoff(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; GFN-Electron)' }, timeout: 15000 });
+    const resp = await requestWithBackoff(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; GFN-Electron)' },
+      timeout: 15000,
+    });
 
     const $ = cheerio.load(resp.data);
     const results = [];
@@ -193,17 +216,28 @@ async function getSteamAppId(gameName) {
         if (searchWords.length > 0) score = (commonWords.length / searchWords.length) * 50;
       }
       log('debug', `"${result.title}" -> score: ${score.toFixed(1)}`);
-      if (score > bestScore) { best = result; bestScore = score; }
+      if (score > bestScore) {
+        best = result;
+        bestScore = score;
+      }
     }
 
     if (best && bestScore >= 25) {
-      log('info', `Steam ID found: "${gameName}" -> ${best.appId} (${best.title}, score: ${bestScore.toFixed(1)})`);
+      log(
+        'info',
+        `Steam ID found: "${gameName}" -> ${best.appId} (${best.title}, score: ${bestScore.toFixed(
+          1,
+        )})`,
+      );
       gameCache[gameName] = { id: best.appId, ts: Date.now() };
       saveGameCache();
       return best.appId;
     }
 
-    log('warn', `No suitable Steam match found for: "${gameName}" (best score: ${bestScore.toFixed(1)})`);
+    log(
+      'warn',
+      `No suitable Steam match found for: "${gameName}" (best score: ${bestScore.toFixed(1)})`,
+    );
     return null;
   } catch (e) {
     log('error', 'Steam lookup error:', e && e.message ? e.message : e);
@@ -211,25 +245,28 @@ async function getSteamAppId(gameName) {
   }
 }
 
-function extractGameName(title) { if (!title || !title.includes('on GeForce NOW')) return null; return title.replace(/\s+on GeForce NOW$/i, '').trim() || null; }
+function extractGameName(title) {
+  if (!title || !title.includes('on GeForce NOW')) return null;
+  return title.replace(/\s+on GeForce NOW$/i, '').trim() || null;
+}
 
 async function DiscordRPC(title) {
   if (process.argv.includes('--disable-rpc')) {
     log('debug', 'Discord RPC disabled via --disable-rpc flag');
     return;
   }
-  
+
   initializeRPC();
-  
+
   log('info', '\n=== PAGE TITLE UPDATE ===');
   log('info', `Page title detected: "${title}"`);
-  
+
   const gameName = extractGameName(title);
   log('info', `Extracted game name: "${gameName}"`);
-  
+
   const details = gameName ? title : 'Home on GeForce NOW';
   let steamId = null;
-  
+
   if (gameName) {
     if (gameCache[gameName]) {
       steamId = gameCache[gameName];
@@ -238,21 +275,21 @@ async function DiscordRPC(title) {
       steamId = await getSteamAppId(gameName);
     }
   }
-  
+
   // Guard against missing Discord RPC client
   if (!client) {
     log('warn', 'Discord RPC client not initialized - skipping presence update');
     return;
   }
-  
+
   try {
     const presenceData = {
       details,
       state: 'Not affiliated with NVIDIA',
       startTimestamp: Date.now(),
-      instance: true
+      instance: true,
     };
-    
+
     if (steamId && /^\d{6,7}$/.test(steamId)) {
       presenceData.largeImageKey = steamId;
       client.updatePresence(presenceData);
@@ -262,7 +299,7 @@ async function DiscordRPC(title) {
       client.updatePresence(presenceData);
       log('info', 'Discord RPC: Using nvidia fallback icon');
     }
-  } catch (err) { 
+  } catch (err) {
     log('error', 'Discord RPC update failed:', err.message);
     log('debug', 'Full error:', err);
   }

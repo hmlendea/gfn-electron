@@ -30,31 +30,55 @@ Maintainer: Goldy Yan (https://github.com/Cybertaco360)
 
 [![Get it from the AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/aur.png)](https://aur.archlinux.org/packages/geforcenow-electron/) [![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
 
-***Note**: The main version of this project, which receives the most support, is the flatpak version hosted on FlatHub!*
+**\*Note**: The main version of this project, which receives the most support, is the flatpak version hosted on FlatHub!\*
 
 ## Manual Installation
 
- - Go to the [latest release](https://github.com/hmlendea/gfn-electron/releases/latest).
- - Download the specific file that best fits your distro.
+- Go to the [latest release](https://github.com/hmlendea/gfn-electron/releases/latest).
+- Download the specific file that best fits your distro.
 
-***Note**: Manual installations are possible but not supported. Please use the flatpak version if you have any trouble with the manual installation!*
+**\*Note**: Manual installations are possible but not supported. Please use the flatpak version if you have any trouble with the manual installation!\*
 
 # Usage
 
- - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
-   - [Keyboard shortcuts](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#keyboard-shortcuts)
-   - [Command-line arguments](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#command-line-arguments)
-   - [Changing the keyboard layout](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#changing-the-keyboard-layout)
-   - [Directly launching a game from the desktop](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#directly-launching-a-game-from-the-desktop)
- - [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
-   - [Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#discord)
-     - [Using native GFN + flatpak Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#using-native-gfn--flatpak-discord)
-     - [Setting up a Discord Client ID](https://github.com/hmlendea/gfn-electron/wiki/Integrations#setting-up-a-discord-client-id)
-     - [Persistent Discord Client ID](scripts/README.md#persistent-client-id-setup-recommended)
-     - [Disabling the Discord RPC](https://github.com/hmlendea/gfn-electron/wiki/Integrations#disabling-the-discord-rpc)
- - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
-   - [Gamepad controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#gamepad-controls-are-not-detected)
-   - [Steam Deck controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#steam-deck-controls-are-not-detected)
+- [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
+  - [Keyboard shortcuts](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#keyboard-shortcuts)
+  - [Command-line arguments](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#command-line-arguments)
+  - [Changing the keyboard layout](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#changing-the-keyboard-layout)
+  - [Directly launching a game from the desktop](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#directly-launching-a-game-from-the-desktop)
+- [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
+  - [Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#discord)
+    - [Using native GFN + flatpak Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#using-native-gfn--flatpak-discord)
+    - [Setting up a Discord Client ID](https://github.com/hmlendea/gfn-electron/wiki/Integrations#setting-up-a-discord-client-id)
+    - [Persistent Discord Client ID](scripts/README.md#persistent-client-id-setup-recommended)
+    - [Disabling the Discord RPC](https://github.com/hmlendea/gfn-electron/wiki/Integrations#disabling-the-discord-rpc)
+
+## Disabling Discord Rich Presence (RPC)
+
+You can disable Discord Rich Presence if you don't want the app to attempt to connect to a running Discord client.
+
+1. Environment variable (temporary):
+
+```fish
+# Disable for this run
+DISABLE_RPC=true npm start
+```
+
+2. Persistent (local configuration — not committed):
+
+Create `scripts/local-config.js` (it is gitignored) and add:
+
+```javascript
+module.exports = {
+  DISABLE_RPC: true,
+};
+```
+
+The application will honor either method and skip initializing Discord RPC when set.
+
+- [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
+  - [Gamepad controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#gamepad-controls-are-not-detected)
+  - [Steam Deck controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#steam-deck-controls-are-not-detected)
 
 # Building from source
 
@@ -90,8 +114,9 @@ npm install
 ```
 
 # Links
- - [GeForce NOW](https://nvidia.com/en-eu/geforce-now)
- - [FlatHub release](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
- - [FlatHub repository](https://github.com/flathub/io.github.hmlendea.geforcenow-electron)
- - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
- - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
+
+- [GeForce NOW](https://nvidia.com/en-eu/geforce-now)
+- [FlatHub release](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
+- [FlatHub repository](https://github.com/flathub/io.github.hmlendea.geforcenow-electron)
+- [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
+- [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)

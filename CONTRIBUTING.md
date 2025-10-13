@@ -1,4 +1,3 @@
-
 # Contributing to GeForce NOW Electron
 
 Thanks for helping improve this project! This document explains the recommended Git workflow and PR expectations.

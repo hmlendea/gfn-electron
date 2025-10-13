@@ -4,7 +4,9 @@ const fs = require('fs');
 
 function run(cmd) {
   try {
-    return execSync(cmd, { stdio: ['ignore', 'pipe', 'inherit'] }).toString().trim();
+    return execSync(cmd, { stdio: ['ignore', 'pipe', 'inherit'] })
+      .toString()
+      .trim();
   } catch (e) {
     return '';
   }
