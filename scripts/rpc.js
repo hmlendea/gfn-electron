@@ -6,6 +6,11 @@ const path = require('path');
 let client;
 let gameCache = {};
 let isInitialized = false;
+// Time-to-live for cache entries in milliseconds (default: 30 days)
+const CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 30;
+// Backoff configuration
+const MAX_RETRIES = 3;
+const INITIAL_BACKOFF_MS = 500;
 
 // Debug logging flag - set DEBUG=true in environment for verbose logs
 const DEBUG = process.env.DEBUG === 'true';
@@ -37,6 +42,19 @@ function initializeRPC() {
       const data = fs.readFileSync(CACHE_FILE, 'utf8');
       gameCache = JSON.parse(data);
       log('debug', `Loaded ${Object.keys(gameCache).length} cached games`);
+    } else {
+      // Fallback: try to load a pre-populated common cache shipped with the app
+      const fallback = path.join(__dirname, 'game_cache_common.json');
+      if (fs.existsSync(fallback)) {
+        try {
+          const fallbackData = fs.readFileSync(fallback, 'utf8');
+          const common = JSON.parse(fallbackData);
+          gameCache = Object.assign({}, common);
+          log('debug', `Loaded ${Object.keys(common).length} common cached games as fallback`);
+        } catch (err) {
+          log('debug', 'Failed to load fallback common cache:', err && err.message ? err.message : err);
+        }
+      }
     }
   } catch (e) { 
     log('warn', 'Failed to load game cache:', e.message);
@@ -72,6 +90,11 @@ function saveGameCache() {
   } 
 }
 
+function isCacheEntryValid(entryTimestamp) {
+  if (!entryTimestamp) return false;
+  return (Date.now() - entryTimestamp) <= CACHE_TTL_MS;
+}
+
 function normalizeText(text) {
   return text
     .replace(/[™®©]/g, '') // Remove trademark symbols
@@ -81,81 +104,83 @@ function normalizeText(text) {
     .trim();
 }
 
+async function requestWithBackoff(url, opts = {}, retries = 0) {
+  try {
+    return await axios.get(url, opts);
+  } catch (err) {
+    if (retries >= MAX_RETRIES) throw err;
+    const backoff = INITIAL_BACKOFF_MS * Math.pow(2, retries);
+    log('debug', `Request failed, retrying in ${backoff}ms (attempt ${retries + 1})`);
+    await new Promise(r => setTimeout(r, backoff));
+    return requestWithBackoff(url, opts, retries + 1);
+  }
+}
+
 async function getSteamAppId(gameName) {
   try {
+    // Use cache if present and valid
+    const cached = gameCache[gameName];
+    if (cached && typeof cached === 'object') {
+      if (isCacheEntryValid(cached.ts)) {
+        log('debug', `Using TTL-valid cached Steam ID for ${gameName}: ${cached.id}`);
+        return cached.id;
+      }
+    } else if (cached && typeof cached === 'string') {
+      // legacy simple string cache entry
+      log('debug', `Using legacy cached Steam ID for ${gameName}: ${cached}`);
+      return cached;
+    }
+
     const url = `https://store.steampowered.com/search/?term=${encodeURIComponent(gameName)}&category1=998`;
     log('debug', `Searching Steam for: "${gameName}"`);
-    
-    const resp = await axios.get(url, { 
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; GFN-Electron)' }, 
-      timeout: 15000 
-    });
-    
+
+    const resp = await requestWithBackoff(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; GFN-Electron)' }, timeout: 15000 });
+
     const $ = cheerio.load(resp.data);
     const results = [];
-    
-    // Parse search results using cheerio for robust HTML parsing
+
     $('a[data-ds-appid]').each((i, element) => {
       const appId = $(element).attr('data-ds-appid');
       const titleElement = $(element).find('.title');
       const title = titleElement.text().trim();
-      
-      if (appId && title) {
-        results.push({ appId, title });
-      }
+      if (appId && title) results.push({ appId, title });
     });
-    
+
     log('debug', `Found ${results.length} Steam results`);
     if (results.length === 0) return null;
-    
-    // Improved scoring with text normalization
+
     let best = null;
     let bestScore = 0;
     const normalizedSearch = normalizeText(gameName);
-    
+
     for (const result of results) {
       let score = 0;
       const normalizedTitle = normalizeText(result.title);
-      
-      // Scoring algorithm with normalized text
-      if (normalizedTitle === normalizedSearch) {
-        score = 100; // Exact match
-      } else if (normalizedTitle.includes(normalizedSearch)) {
-        score = 85; // Search term contained in title
-      } else if (normalizedSearch.includes(normalizedTitle)) {
-        score = 70; // Title contained in search term
-      } else {
-        // Word overlap scoring with normalization
+      if (normalizedTitle === normalizedSearch) score = 100;
+      else if (normalizedTitle.includes(normalizedSearch)) score = 85;
+      else if (normalizedSearch.includes(normalizedTitle)) score = 70;
+      else {
         const searchWords = normalizedSearch.split(/\s+/).filter(w => w.length > 2);
         const titleWords = normalizedTitle.split(/\s+/).filter(w => w.length > 2);
         const commonWords = searchWords.filter(w => titleWords.includes(w));
-        
-        if (searchWords.length > 0) {
-          score = (commonWords.length / searchWords.length) * 50;
-        }
+        if (searchWords.length > 0) score = (commonWords.length / searchWords.length) * 50;
       }
-      
       log('debug', `"${result.title}" -> score: ${score.toFixed(1)}`);
-      
-      if (score > bestScore) {
-        best = result;
-        bestScore = score;
-      }
+      if (score > bestScore) { best = result; bestScore = score; }
     }
-    
-    // Require minimum score threshold
+
     if (best && bestScore >= 25) {
       log('info', `Steam ID found: "${gameName}" -> ${best.appId} (${best.title}, score: ${bestScore.toFixed(1)})`);
-      gameCache[gameName] = best.appId;
+      gameCache[gameName] = { id: best.appId, ts: Date.now() };
       saveGameCache();
       return best.appId;
     }
-    
+
     log('warn', `No suitable Steam match found for: "${gameName}" (best score: ${bestScore.toFixed(1)})`);
     return null;
-  } catch (e) { 
-    log('error', 'Steam lookup error:', e.message);
-    return null; 
+  } catch (e) {
+    log('error', 'Steam lookup error:', e && e.message ? e.message : e);
+    return null;
   }
 }
 

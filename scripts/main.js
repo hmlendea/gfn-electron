@@ -59,6 +59,21 @@ switch(config.crashCount) {
     app.disableHardwareAcceleration();
 }
 
+// CLI: allow forcing ozone platform via --ozone=wayland or --ozone=x11
+const ozoneFlag = process.argv.find(a => a.startsWith('--ozone='));
+if (ozoneFlag) {
+  const value = ozoneFlag.split('=')[1];
+  if (value === 'wayland') {
+    process.env.OZONE_PLATFORM = 'wayland';
+    console.log('OZONE forced to: wayland');
+  } else if (value === 'x11') {
+    process.env.OZONE_PLATFORM = 'x11';
+    console.log('OZONE forced to: x11');
+  }
+}
+
+console.log('Session type:', process.env.XDG_SESSION_TYPE || 'unknown');
+
 async function createWindow() {
   const mainWindow = new BrowserWindow({
     fullscreenable: true,
