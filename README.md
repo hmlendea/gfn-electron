@@ -1,13 +1,14 @@
 [![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html) [![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml) [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/releases/latest)
 
-# NO LONGER DISCONTINUED
+# DISCONTINUED
 
-Hi everyone!
+Hi everyone,
 
-The owner of this repository had discontinued and archived the project a few weeks ago but the project is back now. I will be continuing to work on this project and we welcome as much help as possible from the community!
+I've decided to stop supporting this project. I simply don't have enough time to maintain it properly, and I haven't personally used GeForce NOW in years. Additionally, there is now an official GeForce NOW application for both the Steam Deck and regular desktop Linux, which has solved the main issue that prompted the start of this project.
 
-Thanks for everyone's support!
+There had beed a few attempts at transfering this repository to a new owner/maintainer in the past, but they unfortunately all failed. As such, this repository will now stay archived for good. If anyone wants to continue it, they can fork it instead. You don't need permission for that, but if you do, please credit the contributors of this project, who kept this project alive for years while Nvidia did not yet consider Linux a worthwhile endaevour.
 
+Thanks for your support!
 ---
 
 # About
