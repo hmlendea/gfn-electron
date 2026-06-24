@@ -5,13 +5,19 @@ var isGameStreamingScreen = false;
 
 function getMainWindow() {
     const windows = BrowserWindow.getAllWindows();
+
     return windows.length > 0 ? windows[0] : null;
 }
 
 function toggleFullscreen(state) {
     var window = getMainWindow();
-    if (!window || window.isDestroyed()) return;
+
+    if (!window || window.isDestroyed()) {
+        return;
+    }
+
     var actualState = window.isFullScreen();
+
     if (isFullScreen != state || actualState != state) {
         if (state || !isGameStreamingScreen) {
             window.setFullScreen(state);
@@ -60,10 +66,12 @@ function focusWindow() {
 app.on('browser-window-created', async function (event, window) {
     window.on("leave-full-screen", async function (event, window) {
         event.preventDefault();
+
         if (isGameStreamingScreen) {
             toggleFullscreen(true);
         }
     });
+
     window.on('page-title-updated', async function (event, title) {
         toggleGameStreamingMode(title.includes('on GeForce NOW'));
     });

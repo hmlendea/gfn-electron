@@ -3,7 +3,7 @@ const electronLocalshortcut = require('electron-localshortcut');
 const findProcess = require('find-process');
 const fs = require('fs');
 const path = require('path');
-const { DiscordRPC } = require('./rpc.js');
+const { DiscordRPC, destroyDiscordRPC } = require('./rpc.js');
 const { switchFullscreenState, setFullscreenState } = require('./windowManager.js');
 
 var homePage = 'https://play.geforcenow.com';
@@ -156,11 +156,17 @@ app.whenReady().then(async () => {
   });
 
   electronLocalshortcut.register('Alt+Home', async () => {
-    BrowserWindow.getAllWindows()[0].loadURL(homePage);
+    const win = BrowserWindow.getAllWindows()[0];
+    if (win && !win.isDestroyed()) {
+      win.loadURL(homePage);
+    }
   });
 
   electronLocalshortcut.register('Control+Shift+I', () => {
-    BrowserWindow.getAllWindows()[0].webContents.toggleDevTools();
+    const win = BrowserWindow.getAllWindows()[0];
+    if (win && !win.isDestroyed()) {
+      win.webContents.toggleDevTools();
+    }
   });
 });
 
@@ -197,17 +203,18 @@ app.on('child-process-gone', (event, details) => {
     console.log("Initiating application restart with an alternative 'use-gl' switch implementation or with hardware acceleration disabled, aiming to improve stability or performance based on prior execution outcomes.");
 
     app.relaunch();
-    app.exit(0);
+    app.quit();
   }
 });
 
 app.on('will-quit', () => {
+  destroyDiscordRPC();
   try {
     electronLocalshortcut.unregisterAll();
   } catch (_) {}
 });
 
-app.on('window-all-closed', async function () {
+app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit();
   }
