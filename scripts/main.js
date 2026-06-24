@@ -12,13 +12,12 @@ var userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
 
-app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations,RawDraw');
+app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations,RawDraw,AcceleratedVideoDecodeLinuxGL');
 
 app.commandLine.appendSwitch(
   'disable-features',
   'UseChromeOSDirectVideoDecoder'
 );
-app.commandLine.appendSwitch("enable-features", "AcceleratedVideoDecodeLinuxGL");
 app.commandLine.appendSwitch('enable-accelerated-mjpeg-decode');
 app.commandLine.appendSwitch('enable-accelerated-video');
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
@@ -48,11 +47,11 @@ const config = fs.existsSync(configPath) ?
 
 switch(config.crashCount) {
   case 0:
-    app.commandLine.appendArgument('enable-accelerated-video-decode');
+    app.commandLine.appendSwitch('enable-accelerated-video-decode');
     app.commandLine.appendSwitch('use-gl', 'angle');
     break;
   case 1:
-    app.commandLine.appendArgument('enable-accelerated-video-decode');
+    app.commandLine.appendSwitch('enable-accelerated-video-decode');
     app.commandLine.appendSwitch('use-gl', 'egl');
     break;
   default:
@@ -130,9 +129,9 @@ app.on('browser-window-created', async function (e, window) {
 
   window.webContents.setUserAgent(userAgent);
 
-  window.webContents.on('new-window', (event, url) => {
-    event.preventDefault();
+  window.webContents.setWindowOpenHandler(({ url }) => {
     BrowserWindow.getAllWindows()[0].loadURL(url);
+    return { action: 'deny' };
   });
 
   if (discordIsRunning) {

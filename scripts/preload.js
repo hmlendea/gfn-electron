@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 (function mockChromeUserAgent() {
-  let oiginalVoices = window.speechSynthesis.getVoices();
+  let originalVoices = window.speechSynthesis.getVoices();
   window.speechSynthesis.getVoices = function () {
     return [
       {
@@ -26,10 +26,10 @@ window.addEventListener("DOMContentLoaded", () => {
     ];
   };
 
-  //wait some arbitraty time before cleaning up the mess we did previously
+  //wait some arbitrary time before cleaning up the mess we did previously
   setTimeout(() => {
     window.speechSynthesis.getVoices = function () {
-      return oiginalVoices;
+      return originalVoices;
     };
   }, 10_000);
 })();

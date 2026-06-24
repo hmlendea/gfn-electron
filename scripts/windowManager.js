@@ -16,7 +16,7 @@ function toggleFullscreen(state) {
                 window.webContents.executeJavaScript('window.document.body.requestPointerLock();')
                 focusWindow();
             } else{
-                window.webContents.executeJavaScript('window.document.body.exitPointerLock();')
+                window.webContents.executeJavaScript('document.exitPointerLock();')
             }
         }
     }
