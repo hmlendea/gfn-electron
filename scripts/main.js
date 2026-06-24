@@ -3,7 +3,7 @@ const electronLocalshortcut = require('electron-localshortcut');
 const findProcess = require('find-process');
 const fs = require('fs');
 const path = require('path');
-const { DiscordRPC } = require('./rpc.js');
+const { DiscordRPC, destroyDiscordRPC } = require('./rpc.js');
 const { switchFullscreenState, setFullscreenState } = require('./windowManager.js');
 
 var homePage = 'https://play.geforcenow.com';
@@ -15,21 +15,30 @@ const isWayland = !!process.env.WAYLAND_DISPLAY;
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
 
-// Run as a native Wayland client when a Wayland compositor is available.
-// This ensures the compositor can properly layer overlays (e.g. the Steam Deck
-// virtual keyboard) above the app, and avoids XWayland overhead on any distro.
+// Run as a native Wayland client, avoiding XWayland overhead and enabling compositor overlays.
 if (isWayland) {
   app.commandLine.appendSwitch('ozone-platform', 'wayland');
   app.commandLine.appendSwitch('enable-wayland-ime');
   app.commandLine.appendSwitch('enable-features', 'WaylandTextInputV3,TouchEventsAPI');
+  // ANGLE's Vulkan backend is incompatible with ozone-wayland; force OpenGL ES.
+  app.commandLine.appendSwitch('use-angle', 'gl');
+  // Use EGL for native Wayland surfaces rather than the X11 path.
+  app.commandLine.appendSwitch('use-gl', 'egl');
 }
 
-app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations,RawDraw,AcceleratedVideoDecodeLinuxGL');
+const disabledFeatures = ['UseChromeOSDirectVideoDecoder'];
+if (isWayland) {
+  // Disable all features that activate Vulkan, which is incompatible with ozone-wayland.
+  disabledFeatures.push('Vulkan', 'DefaultANGLEVulkan', 'VulkanFromANGLE');
+}
 
-app.commandLine.appendSwitch(
-  'disable-features',
-  'UseChromeOSDirectVideoDecoder'
-);
+const enabledFeatures = ['VaapiVideoDecoder', 'WaylandWindowDecorations', 'AcceleratedVideoDecodeLinuxGL'];
+if (!isWayland) {
+  // RawDraw uses a GPU raster path that can activate Vulkan; skip it on Wayland.
+  enabledFeatures.push('RawDraw');
+}
+app.commandLine.appendSwitch('enable-features', enabledFeatures.join(','));
+app.commandLine.appendSwitch('disable-features', disabledFeatures.join(','));
 app.commandLine.appendSwitch('enable-accelerated-mjpeg-decode');
 app.commandLine.appendSwitch('enable-accelerated-video');
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
@@ -38,24 +47,16 @@ app.commandLine.appendSwitch('enable-gpu-rasterization');
 app.commandLine.appendSwitch('enable-zero-copy');
 app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
 
-// To identify a possible stable 'use-gl' switch implementation for our application, we utilize a config file that stores the number of crashes.
-// On Linux, the crash count is likely stored here: /home/[username]/.config/GeForce NOW/config.json.
-// To reset the crash count, we can delete that file.
-
-// If the 'use-gl' switch with the 'angle' implementation crashes, the app will then use the 'egl' implementation.
-// If the 'egl' implementation also crashes, the app will disable hardware acceleration.
-
-// When I try to use the 'use-gl' switch with 'desktop' or 'swiftshader', it results in an error indicating that these options are not among the permitted implementations.
-// It's possible that future versions of Electron may introduce support for 'desktop' and 'swiftshader' implementations.
-
-// Based on my current understanding (which may be incorrect), the 'angle' implementation is preferred due to its utilization of 'OpenGL ES', which ensures consistent behavior across different systems, such as Windows and Linux systems.
-// Furthermore, 'angle' includes an additional abstraction layer that could potentially mitigate bugs or circumvent limitations inherent in direct implementations.
-
-// When the 'use-gl' switch is functioning correctly, I still encounter the 'GetVSyncParametersIfAvailable() error' three times, but it does not occur thereafter (based on my testing).
+// Tracks GPU crashes to progressively fall back: ANGLE → EGL → disabled hardware acceleration.
 const configPath = path.join(app.getPath('userData'), 'config.json');
-const config = fs.existsSync(configPath) ?
-  JSON.parse(fs.readFileSync(configPath, 'utf-8')) :
-  { crashCount: 0 };
+let config = { crashCount: 0 };
+try {
+  if (fs.existsSync(configPath)) {
+    config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+  }
+} catch (error) {
+  console.error('Failed to read config, using defaults:', error);
+}
 
 switch(config.crashCount) {
   case 0:
@@ -82,25 +83,23 @@ async function createWindow() {
   });
 
   if (process.argv.includes('--direct-start')) {
-    mainWindow.loadURL('https://play.geforcenow.com/mall/#/streamer?launchSource=GeForceNOW&cmsId=' + process.argv[process.argv.indexOf('--direct-start') + 1]);
+    const cmsId = process.argv[process.argv.indexOf('--direct-start') + 1];
+    if (cmsId) {
+      mainWindow.loadURL('https://play.geforcenow.com/mall/#/streamer?launchSource=GeForceNOW&cmsId=' + cmsId);
+    } else {
+      console.error('--direct-start requires a cmsId argument');
+      mainWindow.loadURL(homePage);
+    }
   } else {
     mainWindow.loadURL(homePage);
   }
 
-  /*
-  uncomment this to debug any errors with loading GFN landing page
-
-  mainWindow.webContents.on("will-navigate", (event, url) => {
-    console.log("will-navigate", url);
-    event.preventDefault();
-  });
-  */
 }
 
 let discordIsRunning = false;
 
 app.whenReady().then(async () => {
-  // Ensure isDiscordRunning is called before createWindow to prevent the 'browser-window-created' event from triggering before the Discord check is complete.
+  // Check Discord before creating the window so browser-window-created fires after.
   discordIsRunning = await isDiscordRunning();
 
   createWindow();
@@ -132,11 +131,17 @@ app.whenReady().then(async () => {
   });
 
   electronLocalshortcut.register('Alt+Home', async () => {
-    BrowserWindow.getAllWindows()[0].loadURL(homePage);
+    const win = BrowserWindow.getAllWindows()[0];
+    if (win && !win.isDestroyed()) {
+      win.loadURL(homePage);
+    }
   });
 
   electronLocalshortcut.register('Control+Shift+I', () => {
-    BrowserWindow.getAllWindows()[0].webContents.toggleDevTools();
+    const win = BrowserWindow.getAllWindows()[0];
+    if (win && !win.isDestroyed()) {
+      win.webContents.toggleDevTools();
+    }
   });
 });
 
@@ -147,7 +152,10 @@ app.on('browser-window-created', async function (e, window) {
   window.webContents.setUserAgent(userAgent);
 
   window.webContents.setWindowOpenHandler(({ url }) => {
-    BrowserWindow.getAllWindows()[0].loadURL(url);
+    const win = BrowserWindow.getAllWindows()[0];
+    if (win && !win.isDestroyed()) {
+      win.loadURL(url);
+    }
     return { action: 'deny' };
   });
 
@@ -160,21 +168,28 @@ app.on('browser-window-created', async function (e, window) {
 
 app.on('child-process-gone', (event, details) => {
   if (details.type === 'GPU' && details.reason === 'crashed') {
-      config.crashCount++;
+    config.crashCount++;
+    try {
       fs.writeFileSync(configPath, JSON.stringify(config));
+    } catch (error) {
+      console.error('Failed to write crash config:', error);
+    }
 
-      console.log("Initiating application restart with an alternative 'use-gl' switch implementation or with hardware acceleration disabled, aiming to improve stability or performance based on prior execution outcomes.");
+    console.log('GPU crashed; restarting with fallback rendering settings.');
 
-      app.relaunch();
-      app.exit(0);
+    app.relaunch();
+    app.quit();
   }
 });
 
-app.on('will-quit', async () => {
-  electronLocalshortcut.unregisterAll();
+app.on('will-quit', () => {
+  destroyDiscordRPC();
+  try {
+    electronLocalshortcut.unregisterAll();
+  } catch (_) {}
 });
 
-app.on('window-all-closed', async function () {
+app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit();
   }

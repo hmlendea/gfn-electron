@@ -30,4 +30,17 @@ function DiscordRPC(title) {
     }
 };
 
-module.exports = { DiscordRPC };
+function destroyDiscordRPC() {
+    if (!client) {
+        return;
+    }
+
+    try {
+        client.disconnect();
+    } catch (_) {
+    }
+
+    client = null;
+}
+
+module.exports = { DiscordRPC, destroyDiscordRPC };
