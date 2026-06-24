@@ -7,12 +7,16 @@
 
 Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experience with Wayland support, Steam Deck integration, and Discord rich presence.
 
+![Screenshot](screenshot.png)
+
 ## Table of Contents
 
 - [Installation](#installation)
   - [Manual Installation](#manual-installation)
 - [Features](#features)
 - [Usage](#usage)
+  - [Keyboard Shortcuts](#keyboard-shortcuts)
+  - [Command-line Arguments](#command-line-arguments)
 - [Development](#development)
   - [Requirements](#requirements)
   - [Clone](#clone)
@@ -49,15 +53,30 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
 
 ## Usage
 
+### Keyboard Shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `F11` / `Super+F` | Toggle fullscreen |
+| `Alt+Home` | Go to home page |
+| `Alt+F4` | Quit |
+| `Ctrl+Shift+I` | Toggle developer tools |
+
+### Command-line Arguments
+
+| Argument | Description |
+|---|---|
+| `--direct-start <cmsId>` | Launch directly into a game by its CMS ID |
+| `--disable-rpc` | Disable Discord rich presence |
+
+### More
+
  - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
-   - [Keyboard shortcuts](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#keyboard-shortcuts)
-   - [Command-line arguments](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#command-line-arguments)
    - [Changing the keyboard layout](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#changing-the-keyboard-layout)
    - [Directly launching a game from the desktop](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#directly-launching-a-game-from-the-desktop)
  - [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
    - [Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#discord)
      - [Using native GFN + flatpak Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#using-native-gfn--flatpak-discord)
-     - [Disabling the Discord RPC](https://github.com/hmlendea/gfn-electron/wiki/Integrations#disabling-the-discord-rpc)
  - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
    - [Gamepad controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#gamepad-controls-are-not-detected)
    - [Steam Deck controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#steam-deck-controls-are-not-detected)
@@ -66,7 +85,7 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
 
 ### Requirements
 
-You will need to install [npm](https://www.npmjs.com/), the Node.js package manager. On most distributions, the package is simply called `npm`.
+You will need [Node.js](https://nodejs.org/) 20 or later and [npm](https://www.npmjs.com/) (bundled with Node.js). On most distributions, installing the `nodejs` and `npm` packages is sufficient.
 
 ### Clone
 
