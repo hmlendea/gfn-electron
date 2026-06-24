@@ -15,24 +15,20 @@ const isWayland = !!process.env.WAYLAND_DISPLAY;
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
 
-// Run as a native Wayland client when a Wayland compositor is available.
-// This ensures the compositor can properly layer overlays (e.g. the Steam Deck
-// virtual keyboard) above the app, and avoids XWayland overhead on any distro.
+// Run as a native Wayland client, avoiding XWayland overhead and enabling compositor overlays.
 if (isWayland) {
   app.commandLine.appendSwitch('ozone-platform', 'wayland');
   app.commandLine.appendSwitch('enable-wayland-ime');
   app.commandLine.appendSwitch('enable-features', 'WaylandTextInputV3,TouchEventsAPI');
-  // ANGLE defaults to its Vulkan backend on Linux, which is incompatible with
-  // --ozone-platform=wayland. Force it to use OpenGL ES instead.
+  // ANGLE's Vulkan backend is incompatible with ozone-wayland; force OpenGL ES.
   app.commandLine.appendSwitch('use-angle', 'gl');
-  // Use EGL directly for native Wayland surfaces rather than the X11 path.
+  // Use EGL for native Wayland surfaces rather than the X11 path.
   app.commandLine.appendSwitch('use-gl', 'egl');
 }
 
 const disabledFeatures = ['UseChromeOSDirectVideoDecoder'];
 if (isWayland) {
-  // Vulkan is incompatible with --ozone-platform=wayland. Disable all three
-  // features that can activate Vulkan via ANGLE or the Chrome GPU stack.
+  // Disable all features that activate Vulkan, which is incompatible with ozone-wayland.
   disabledFeatures.push('Vulkan', 'DefaultANGLEVulkan', 'VulkanFromANGLE');
 }
 
@@ -51,20 +47,7 @@ app.commandLine.appendSwitch('enable-gpu-rasterization');
 app.commandLine.appendSwitch('enable-zero-copy');
 app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
 
-// To identify a possible stable 'use-gl' switch implementation for our application, we utilize a config file that stores the number of crashes.
-// On Linux, the crash count is likely stored here: /home/[username]/.config/GeForce NOW/config.json.
-// To reset the crash count, we can delete that file.
-
-// If the 'use-gl' switch with the 'angle' implementation crashes, the app will then use the 'egl' implementation.
-// If the 'egl' implementation also crashes, the app will disable hardware acceleration.
-
-// When I try to use the 'use-gl' switch with 'desktop' or 'swiftshader', it results in an error indicating that these options are not among the permitted implementations.
-// It's possible that future versions of Electron may introduce support for 'desktop' and 'swiftshader' implementations.
-
-// Based on my current understanding (which may be incorrect), the 'angle' implementation is preferred due to its utilization of 'OpenGL ES', which ensures consistent behavior across different systems, such as Windows and Linux systems.
-// Furthermore, 'angle' includes an additional abstraction layer that could potentially mitigate bugs or circumvent limitations inherent in direct implementations.
-
-// When the 'use-gl' switch is functioning correctly, I still encounter the 'GetVSyncParametersIfAvailable() error' three times, but it does not occur thereafter (based on my testing).
+// Tracks GPU crashes to progressively fall back: ANGLE → EGL → disabled hardware acceleration.
 const configPath = path.join(app.getPath('userData'), 'config.json');
 let config = { crashCount: 0 };
 try {
@@ -111,20 +94,12 @@ async function createWindow() {
     mainWindow.loadURL(homePage);
   }
 
-  /*
-  uncomment this to debug any errors with loading GFN landing page
-
-  mainWindow.webContents.on("will-navigate", (event, url) => {
-    console.log("will-navigate", url);
-    event.preventDefault();
-  });
-  */
 }
 
 let discordIsRunning = false;
 
 app.whenReady().then(async () => {
-  // Ensure isDiscordRunning is called before createWindow to prevent the 'browser-window-created' event from triggering before the Discord check is complete.
+  // Check Discord before creating the window so browser-window-created fires after.
   discordIsRunning = await isDiscordRunning();
 
   createWindow();
@@ -200,7 +175,7 @@ app.on('child-process-gone', (event, details) => {
       console.error('Failed to write crash config:', error);
     }
 
-    console.log("Initiating application restart with an alternative 'use-gl' switch implementation or with hardware acceleration disabled, aiming to improve stability or performance based on prior execution outcomes.");
+    console.log('GPU crashed; restarting with fallback rendering settings.');
 
     app.relaunch();
     app.quit();

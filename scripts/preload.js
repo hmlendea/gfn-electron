@@ -1,6 +1,3 @@
-// All of the Node.js APIs are available in the preload process.
-// It has the same sandbox as a Chrome extension.
-
 window.addEventListener("DOMContentLoaded", () => {
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector);
@@ -26,7 +23,7 @@ window.addEventListener("DOMContentLoaded", () => {
     ];
   };
 
-  //wait some arbitrary time before cleaning up the mess we did previously
+  // Restore original voices after a short delay.
   setTimeout(() => {
     window.speechSynthesis.getVoices = function () {
       return originalVoices;
