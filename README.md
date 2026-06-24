@@ -50,6 +50,7 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
  - **Stability fallback** — automatically recovers from GPU crashes by retrying with a different OpenGL backend, falling back to software rendering if needed
  - **Keyboard shortcuts** — fullscreen toggle (`F11` / `Super+F`), home (`Alt+Home`), quit (`Alt+F4`), devtools (`Ctrl+Shift+I`)
  - **Direct game launch** — supports `--direct-start <cmsId>` (or `GFN_DIRECT_START_ID=<cmsId>`) to jump straight into a game
+ - **Stream quality override** — intercepts session requests to report your true physical resolution and a configurable refresh rate, overcoming the web client's defaults (`GFN_RESOLUTION_WIDTH`, `GFN_RESOLUTION_HEIGHT`, `GFN_REFRESH_RATE`)
 
 ## Usage
 
@@ -68,6 +69,9 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
 |---|---|---|
 | `--direct-start <cmsId>` | `GFN_DIRECT_START_ID=<cmsId>` | Launch directly into a game by its CMS ID |
 | `--disable-rpc` | `GFN_DISABLE_RPC=1` | Disable Discord rich presence |
+| — | `GFN_RESOLUTION_WIDTH=<px>` | Override reported stream width in pixels (default: physical screen width) |
+| — | `GFN_RESOLUTION_HEIGHT=<px>` | Override reported stream height in pixels (default: physical screen height) |
+| — | `GFN_REFRESH_RATE=<hz>` | Override reported refresh rate in Hz (default: 60) |
 
 ### More
 

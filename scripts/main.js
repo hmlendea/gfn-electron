@@ -7,7 +7,9 @@ const { DiscordRPC, destroyDiscordRPC } = require('./rpc.js');
 const { switchFullscreenState, setFullscreenState } = require('./windowManager.js');
 
 var homePage = 'https://play.geforcenow.com';
-var userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.152 Safari/537.36 Edg/130.0.6723.152';
+const chromeVersion = process.versions.chrome;
+const chromeMajor = chromeVersion.split('.')[0];
+var userAgent = `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${chromeVersion} Safari/537.36 Edg/${chromeVersion}`;
 
 const isSteamDeck = process.env.SteamDeck === '1';
 const isWayland = !!process.env.WAYLAND_DISPLAY;
@@ -97,6 +99,15 @@ async function createWindow() {
 let discordIsRunning = false;
 
 app.whenReady().then(async () => {
+  // Override sec-ch-ua client hint headers to match the spoofed user agent.
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    const h = details.requestHeaders;
+    h['sec-ch-ua'] = `"Microsoft Edge";v="${chromeMajor}", "Chromium";v="${chromeMajor}", "Not?A_Brand";v="99"`;
+    h['sec-ch-ua-mobile'] = '?0';
+    h['sec-ch-ua-platform'] = '"Linux"';
+    callback({ requestHeaders: h });
+  });
+
   // Check Discord before creating the window so browser-window-created fires after.
   discordIsRunning = await isDiscordRunning();
 
