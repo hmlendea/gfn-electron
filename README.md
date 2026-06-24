@@ -5,11 +5,12 @@
 
 # GFN Electron
 
-Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experience and some additional features such as Discord rich presence.
+Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experience with Wayland support, Steam Deck integration, and Discord rich presence.
 
 ## Table of Contents
 
 - [Disclaimer](#disclaimer)
+- [Features](#features)
 - [Installation](#installation)
   - [Manual Installation](#manual-installation)
 - [Usage](#usage)
@@ -25,6 +26,16 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
 ## Disclaimer
 
 This project and its contributors are not affiliated with Nvidia, nor its GeForce NOW product. This repository does not contain any Nvidia / GeForce NOW software. It is simply an Electron wrapper that loads the official GFN web application page, just as it would in a regular web browser.
+
+## Features
+
+ - **Native Wayland support** — runs as a native Wayland client when a Wayland compositor is detected, avoiding XWayland overhead and enabling proper compositor overlays
+ - **Steam Deck integration** — automatically launches in fullscreen and enables the virtual keyboard overlay when running on Steam Deck
+ - **Discord rich presence** — shows what you're playing via Discord RPC (can be disabled with `--disable-rpc`)
+ - **Hardware-accelerated video** — enables VA-API, GPU rasterisation, and zero-copy video decode for smooth streaming
+ - **Stability fallback** — automatically recovers from GPU crashes by retrying with a different OpenGL backend, falling back to software rendering if needed
+ - **Keyboard shortcuts** — fullscreen toggle (`F11` / `Super+F`), home (`Alt+Home`), quit (`Alt+F4`), devtools (`Ctrl+Shift+I`)
+ - **Direct game launch** — supports `--direct-start <cmsId>` to jump straight into a game
 
 ## Installation
 
