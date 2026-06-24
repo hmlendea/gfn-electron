@@ -22,14 +22,27 @@ if (isWayland) {
   app.commandLine.appendSwitch('ozone-platform', 'wayland');
   app.commandLine.appendSwitch('enable-wayland-ime');
   app.commandLine.appendSwitch('enable-features', 'WaylandTextInputV3,TouchEventsAPI');
+  // ANGLE defaults to its Vulkan backend on Linux, which is incompatible with
+  // --ozone-platform=wayland. Force it to use OpenGL ES instead.
+  app.commandLine.appendSwitch('use-angle', 'gl');
+  // Use EGL directly for native Wayland surfaces rather than the X11 path.
+  app.commandLine.appendSwitch('use-gl', 'egl');
 }
 
-app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations,RawDraw,AcceleratedVideoDecodeLinuxGL');
+const disabledFeatures = ['UseChromeOSDirectVideoDecoder'];
+if (isWayland) {
+  // Vulkan is incompatible with --ozone-platform=wayland. Disable all three
+  // features that can activate Vulkan via ANGLE or the Chrome GPU stack.
+  disabledFeatures.push('Vulkan', 'DefaultANGLEVulkan', 'VulkanFromANGLE');
+}
 
-app.commandLine.appendSwitch(
-  'disable-features',
-  'UseChromeOSDirectVideoDecoder'
-);
+const enabledFeatures = ['VaapiVideoDecoder', 'WaylandWindowDecorations', 'AcceleratedVideoDecodeLinuxGL'];
+if (!isWayland) {
+  // RawDraw uses a GPU raster path that can activate Vulkan; skip it on Wayland.
+  enabledFeatures.push('RawDraw');
+}
+app.commandLine.appendSwitch('enable-features', enabledFeatures.join(','));
+app.commandLine.appendSwitch('disable-features', disabledFeatures.join(','));
 app.commandLine.appendSwitch('enable-accelerated-mjpeg-decode');
 app.commandLine.appendSwitch('enable-accelerated-video');
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
@@ -170,8 +183,10 @@ app.on('child-process-gone', (event, details) => {
   }
 });
 
-app.on('will-quit', async () => {
-  electronLocalshortcut.unregisterAll();
+app.on('will-quit', () => {
+  try {
+    electronLocalshortcut.unregisterAll();
+  } catch (_) {}
 });
 
 app.on('window-all-closed', async function () {
