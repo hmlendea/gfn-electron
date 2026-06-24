@@ -1,67 +1,93 @@
-[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/fund.html) [![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml) [![Latest GitHub release](https://img.shields.io/github/v/release/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/releases/latest)
+[![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/funding)
+[![Latest Release](https://img.shields.io/github/v/release/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/releases/latest)
+[![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://gnu.org/licenses/gpl-3.0)
 
-# DISCONTINUED
+# GFN Electron
 
-Hi everyone,
+Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experience with Wayland support, Steam Deck integration, and Discord rich presence.
 
-I've decided to stop supporting this project. I simply don't have enough time to maintain it properly, and I haven't personally used GeForce NOW in years. Additionally, there is now an official GeForce NOW application for both the Steam Deck and regular desktop Linux, which has solved the main issue that prompted the start of this project.
+![Screenshot](screenshot.png)
 
-There had beed a few attempts at transfering this repository to a new owner/maintainer in the past, but they unfortunately all failed. As such, this repository will now stay archived for good. If anyone wants to continue it, they can fork it instead. You don't need permission for that, but if you do, please credit the contributors of this project, who kept this project alive for years while Nvidia did not yet consider Linux a worthwhile endaevour.
+## Table of Contents
 
-Thanks for your support!
----
+- [Installation](#installation)
+  - [Manual Installation](#manual-installation)
+- [Features](#features)
+- [Usage](#usage)
+  - [Keyboard Shortcuts](#keyboard-shortcuts)
+  - [Command-line Arguments](#command-line-arguments)
+- [Development](#development)
+  - [Requirements](#requirements)
+  - [Clone](#clone)
+  - [Build](#build)
+- [Update](#update)
+- [Contributing](#contributing)
+- [Disclaimer](#disclaimer)
+- [Links](#links)
+- [License](#license)
 
-# About
+## Installation
 
-Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experience and some additional features such as Discord rich presence.
-
-## About us
-
-## Disclaimer
-
-This project and its contributors are not affiliated with Nvidia, nor its GeForce NOW product. This repository does not contain any Nvidia / GeForce NOW software. It is simply an Electron wrapper that loads the official GFN web application page, just as it would in a regular web browser.
-
-## Developers
-
-Founder & Owner: Horațiu Mlendea (https://github.com/hmlendea)
-
-Maintainer: Goldy Yan (https://github.com/Cybertaco360)
-
-# Installation
-
-[![Get it from the AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/aur.png)](https://aur.archlinux.org/packages/geforcenow-electron/) [![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
+[![Get it from the AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/aur.png)](https://aur.archlinux.org/packages/geforcenow-electron/)
+[![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
 
 ***Note**: The main version of this project, which receives the most support, is the flatpak version hosted on FlatHub!*
 
-## Manual Installation
+### Manual Installation
 
  - Go to the [latest release](https://github.com/hmlendea/gfn-electron/releases/latest).
  - Download the specific file that best fits your distro.
 
 ***Note**: Manual installations are possible but not supported. Please use the flatpak version if you have any trouble with the manual installation!*
 
-# Usage
+## Features
+
+ - **Native Wayland support** — runs as a native Wayland client when a Wayland compositor is detected, avoiding XWayland overhead and enabling proper compositor overlays
+ - **Steam Deck integration** — automatically launches in fullscreen and enables the virtual keyboard overlay when running on Steam Deck
+ - **Discord rich presence** — shows what you're playing via Discord RPC (can be disabled with `--disable-rpc`)
+ - **Hardware-accelerated video** — enables VA-API, GPU rasterisation, and zero-copy video decode for smooth streaming
+ - **Stability fallback** — automatically recovers from GPU crashes by retrying with a different OpenGL backend, falling back to software rendering if needed
+ - **Keyboard shortcuts** — fullscreen toggle (`F11` / `Super+F`), home (`Alt+Home`), quit (`Alt+F4`), devtools (`Ctrl+Shift+I`)
+ - **Direct game launch** — supports `--direct-start <cmsId>` to jump straight into a game
+
+## Usage
+
+### Keyboard Shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `F11` / `Super+F` | Toggle fullscreen |
+| `Alt+Home` | Go to home page |
+| `Alt+F4` | Quit |
+| `Ctrl+Shift+I` | Toggle developer tools |
+
+### Command-line Arguments
+
+| Argument | Description |
+|---|---|
+| `--direct-start <cmsId>` | Launch directly into a game by its CMS ID |
+| `--disable-rpc` | Disable Discord rich presence |
+
+### More
 
  - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
-   - [Keyboard shortcuts](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#keyboard-shortcuts)
-   - [Command-line arguments](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#command-line-arguments)
    - [Changing the keyboard layout](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#changing-the-keyboard-layout)
    - [Directly launching a game from the desktop](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#directly-launching-a-game-from-the-desktop)
  - [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
    - [Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#discord)
      - [Using native GFN + flatpak Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#using-native-gfn--flatpak-discord)
-     - [Disabling the Discord RPC](https://github.com/hmlendea/gfn-electron/wiki/Integrations#disabling-the-discord-rpc)
  - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
    - [Gamepad controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#gamepad-controls-are-not-detected)
    - [Steam Deck controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#steam-deck-controls-are-not-detected)
 
-# Building from source
+## Development
 
-## Requirements
+### Requirements
 
-You will need to install [npm](https://www.npmjs.com/), the Node.js package manager. On most distributions, the package is simply called `npm`.
+You will need [Node.js](https://nodejs.org/) 20 or later and [npm](https://www.npmjs.com/) (bundled with Node.js). On most distributions, installing the `nodejs` and `npm` packages is sufficient.
 
-## Cloning the source code
+### Clone
 
 Once you have npm, clone the wrapper to a convenient location:
 
@@ -69,7 +95,7 @@ Once you have npm, clone the wrapper to a convenient location:
 git clone https://github.com/hmlendea/gfn-electron.git
 ```
 
-## Building
+### Build
 
 ```bash
 npm install
@@ -78,7 +104,7 @@ npm start
 
 On subsequent runs, `npm start` will be all that's required.
 
-## Updating the source code
+## Update
 
 Simply pull the latest version of master and install any changed dependencies:
 
@@ -88,9 +114,27 @@ git pull
 npm install
 ```
 
-# Links
+## Contributing
+
+Contributions are welcome.
+
+Please:
+
+- keep the pull requests focused and consistent with the existing style
+- update the documentation when the behaviour changes
+
+## Disclaimer
+
+This project and its contributors are not affiliated with Nvidia, nor its GeForce NOW product. This repository does not contain any Nvidia / GeForce NOW software. It is simply an Electron wrapper that loads the official GFN web application page, just as it would in a regular web browser.
+
+## Links
  - [GeForce NOW](https://nvidia.com/en-eu/geforce-now)
  - [FlatHub release](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
  - [FlatHub repository](https://github.com/flathub/io.github.hmlendea.geforcenow-electron)
  - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
  - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
+
+## License
+
+Licensed under the GNU General Public License v3.0 or later.
+See [LICENSE](./LICENSE) for details.
