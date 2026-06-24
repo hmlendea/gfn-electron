@@ -48,7 +48,7 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
  - **Discord rich presence** — shows what you're playing via Discord RPC (disable with `--disable-rpc` or `GFN_DISABLE_RPC=1`)
  - **Hardware-accelerated video** — enables VA-API, GPU rasterisation, and zero-copy video decode for smooth streaming
  - **Stability fallback** — automatically recovers from GPU crashes by retrying with a different OpenGL backend, falling back to software rendering if needed
- - **Keyboard shortcuts** — fullscreen toggle (`F11` / `Super+F`), home (`Alt+Home`), quit (`Alt+F4`), devtools (`Ctrl+Shift+I`)
+ - **Keyboard shortcuts** — fullscreen toggle (`F11` / `Super+F`), home (`Alt+Home`), quit (`Alt+F4`), devtools (`Ctrl+Shift+I`), create desktop shortcut (`Ctrl+Shift+P`)
  - **Direct game launch** — supports `--direct-start <cmsId>` (or `GFN_DIRECT_START_ID=<cmsId>`) to jump straight into a game
  - **Stream quality override** — intercepts session requests to report your true physical resolution and a configurable refresh rate, overcoming the web client's defaults (`GFN_RESOLUTION_WIDTH`, `GFN_RESOLUTION_HEIGHT`, `GFN_REFRESH_RATE`)
 
@@ -62,6 +62,7 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
 | `Alt+Home` | Go to home page |
 | `Alt+F4` | Quit |
 | `Ctrl+Shift+I` | Toggle developer tools |
+| `Ctrl+Shift+P` | Create a desktop shortcut for the currently running game |
 
 ### Command-line Arguments & Environment Variables
 
