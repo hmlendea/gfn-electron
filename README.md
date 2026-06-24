@@ -7,32 +7,25 @@
 
 Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experience and some additional features such as Discord rich presence.
 
-## About us
-
 ## Disclaimer
 
 This project and its contributors are not affiliated with Nvidia, nor its GeForce NOW product. This repository does not contain any Nvidia / GeForce NOW software. It is simply an Electron wrapper that loads the official GFN web application page, just as it would in a regular web browser.
 
-## Developers
+## Installation
 
-Founder & Owner: Horațiu Mlendea (https://github.com/hmlendea)
-
-Maintainer: Goldy Yan (https://github.com/Cybertaco360)
-
-# Installation
-
-[![Get it from the AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/aur.png)](https://aur.archlinux.org/packages/geforcenow-electron/) [![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
+[![Get it from the AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/aur.png)](https://aur.archlinux.org/packages/geforcenow-electron/)
+[![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
 
 ***Note**: The main version of this project, which receives the most support, is the flatpak version hosted on FlatHub!*
 
-## Manual Installation
+### Manual Installation
 
  - Go to the [latest release](https://github.com/hmlendea/gfn-electron/releases/latest).
  - Download the specific file that best fits your distro.
 
 ***Note**: Manual installations are possible but not supported. Please use the flatpak version if you have any trouble with the manual installation!*
 
-# Usage
+## Usage
 
  - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
    - [Keyboard shortcuts](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#keyboard-shortcuts)
@@ -47,13 +40,13 @@ Maintainer: Goldy Yan (https://github.com/Cybertaco360)
    - [Gamepad controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#gamepad-controls-are-not-detected)
    - [Steam Deck controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#steam-deck-controls-are-not-detected)
 
-# Building from source
+## Development
 
-## Requirements
+### Requirements
 
 You will need to install [npm](https://www.npmjs.com/), the Node.js package manager. On most distributions, the package is simply called `npm`.
 
-## Cloning the source code
+### Clone
 
 Once you have npm, clone the wrapper to a convenient location:
 
@@ -61,7 +54,7 @@ Once you have npm, clone the wrapper to a convenient location:
 git clone https://github.com/hmlendea/gfn-electron.git
 ```
 
-## Building
+### Build
 
 ```bash
 npm install
@@ -70,7 +63,7 @@ npm start
 
 On subsequent runs, `npm start` will be all that's required.
 
-## Updating the source code
+## Update
 
 Simply pull the latest version of master and install any changed dependencies:
 
@@ -80,9 +73,23 @@ git pull
 npm install
 ```
 
-# Links
+## Contributing
+
+Contributions are welcome.
+
+Please:
+
+- keep the pull requests focused and consistent with the existing style
+- update the documentation when the behaviour changes
+
+## Links
  - [GeForce NOW](https://nvidia.com/en-eu/geforce-now)
  - [FlatHub release](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
  - [FlatHub repository](https://github.com/flathub/io.github.hmlendea.geforcenow-electron)
  - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
  - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
+
+## License
+
+Licensed under the GNU General Public License v3.0 or later.
+See [LICENSE](./LICENSE) for details.
