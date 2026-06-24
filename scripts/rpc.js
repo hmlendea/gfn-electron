@@ -1,10 +1,12 @@
 var client;
+var startTimestamp;
 
 function DiscordRPC(title) {
     if (process.argv.includes("--disable-rpc")) return;
 
     if (!client) {
         client = require('discord-rich-presence')('963128360219869194');
+        startTimestamp = Date.now();
     }
 
     let d;
@@ -13,15 +15,19 @@ function DiscordRPC(title) {
         d = title;
     } else {
         d = "Home on GeForce NOW";
-    };
+    }
 
-    client.updatePresence({
-        details: d,
-        state: `Not affiliated with NVIDIA`,
-        startTimestamp: Date.now(),
-        largeImageKey: 'icon',
-        instance: true,
-    });
+    try {
+        client.updatePresence({
+            details: d,
+            state: `Not affiliated with NVIDIA`,
+            startTimestamp: startTimestamp,
+            largeImageKey: 'icon',
+            instance: true,
+        });
+    } catch (error) {
+        console.log('Discord RPC error:', error);
+    }
 };
 
 module.exports = { DiscordRPC };
