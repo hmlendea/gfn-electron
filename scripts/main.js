@@ -10,9 +10,19 @@ var homePage = 'https://play.geforcenow.com';
 var userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.152 Safari/537.36 Edg/130.0.6723.152';
 
 const isSteamDeck = process.env.SteamDeck === '1';
+const isWayland = !!process.env.WAYLAND_DISPLAY;
 
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
+
+// Run as a native Wayland client when a Wayland compositor is available.
+// This ensures the compositor can properly layer overlays (e.g. the Steam Deck
+// virtual keyboard) above the app, and avoids XWayland overhead on any distro.
+if (isWayland) {
+  app.commandLine.appendSwitch('ozone-platform', 'wayland');
+  app.commandLine.appendSwitch('enable-wayland-ime');
+  app.commandLine.appendSwitch('enable-features', 'WaylandTextInputV3,TouchEventsAPI');
+}
 
 app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations,RawDraw,AcceleratedVideoDecodeLinuxGL');
 
