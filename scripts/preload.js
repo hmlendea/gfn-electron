@@ -1,3 +1,6 @@
+// Suppress the Electron/webdriver fingerprint that sites use to detect non-browser clients.
+Object.defineProperty(navigator, 'webdriver', { get: () => false });
+
 window.addEventListener("DOMContentLoaded", () => {
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector);
@@ -10,7 +13,6 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 (function mockChromeUserAgent() {
-  let originalVoices = window.speechSynthesis.getVoices();
   window.speechSynthesis.getVoices = function () {
     return [
       {
@@ -22,11 +24,4 @@ window.addEventListener("DOMContentLoaded", () => {
       },
     ];
   };
-
-  // Restore original voices after a short delay.
-  setTimeout(() => {
-    window.speechSynthesis.getVoices = function () {
-      return originalVoices;
-    };
-  }, 10_000);
 })();
