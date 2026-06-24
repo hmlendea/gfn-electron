@@ -59,4 +59,8 @@ app.on('browser-window-created', async function (event, window) {
     });
 });
 
-module.exports = { toggleFullscreen, switchFullscreenState };
+function setFullscreenState(state) {
+    isFullScreen = state;
+}
+
+module.exports = { toggleFullscreen, switchFullscreenState, setFullscreenState };

@@ -4,10 +4,12 @@ const findProcess = require('find-process');
 const fs = require('fs');
 const path = require('path');
 const { DiscordRPC } = require('./rpc.js');
-const { switchFullscreenState } = require('./windowManager.js');
+const { switchFullscreenState, setFullscreenState } = require('./windowManager.js');
 
 var homePage = 'https://play.geforcenow.com';
 var userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.152 Safari/537.36 Edg/130.0.6723.152';
+
+const isSteamDeck = process.env.SteamDeck === '1';
 
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
@@ -61,6 +63,7 @@ switch(config.crashCount) {
 async function createWindow() {
   const mainWindow = new BrowserWindow({
     fullscreenable: true,
+    fullscreen: isSteamDeck,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: false,
@@ -91,6 +94,10 @@ app.whenReady().then(async () => {
   discordIsRunning = await isDiscordRunning();
 
   createWindow();
+
+  if (isSteamDeck) {
+    setFullscreenState(true);
+  }
 
   if (discordIsRunning) {
     DiscordRPC('GeForce NOW');
