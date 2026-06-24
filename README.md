@@ -3,18 +3,7 @@
 [![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://gnu.org/licenses/gpl-3.0)
 
-# DISCONTINUED
-
-Hi everyone,
-
-I've decided to stop supporting this project. I simply don't have enough time to maintain it properly, and I haven't personally used GeForce NOW in years. Additionally, there is now an official GeForce NOW application for both the Steam Deck and regular desktop Linux, which has solved the main issue that prompted the start of this project.
-
-There had beed a few attempts at transfering this repository to a new owner/maintainer in the past, but they unfortunately all failed. As such, this repository will now stay archived for good. If anyone wants to continue it, they can fork it instead. You don't need permission for that, but if you do, please credit the contributors of this project, who kept this project alive for years while Nvidia did not yet consider Linux a worthwhile endaevour.
-
-Thanks for your support!
----
-
-# About
+# GFN Electron
 
 Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experience and some additional features such as Discord rich presence.
 
