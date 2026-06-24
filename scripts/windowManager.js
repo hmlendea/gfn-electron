@@ -3,8 +3,14 @@ const { app, BrowserWindow } = require('electron');
 var isFullScreen = false;
 var isGameStreamingScreen = false;
 
+function getMainWindow() {
+    const windows = BrowserWindow.getAllWindows();
+    return windows.length > 0 ? windows[0] : null;
+}
+
 function toggleFullscreen(state) {
-    var window = BrowserWindow.getAllWindows()[0];
+    var window = getMainWindow();
+    if (!window || window.isDestroyed()) return;
     var actualState = window.isFullScreen();
     if (isFullScreen != state || actualState != state) {
         if (state || !isGameStreamingScreen) {
@@ -44,7 +50,11 @@ function switchFullscreenState() {
 }
 
 function focusWindow() {
-    BrowserWindow.getAllWindows()[0].focus();
+    const window = getMainWindow();
+
+    if (window && !window.isDestroyed()) {
+        window.focus();
+    }
 }
 
 app.on('browser-window-created', async function (event, window) {

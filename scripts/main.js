@@ -66,9 +66,14 @@ app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
 
 // When the 'use-gl' switch is functioning correctly, I still encounter the 'GetVSyncParametersIfAvailable() error' three times, but it does not occur thereafter (based on my testing).
 const configPath = path.join(app.getPath('userData'), 'config.json');
-const config = fs.existsSync(configPath) ?
-  JSON.parse(fs.readFileSync(configPath, 'utf-8')) :
-  { crashCount: 0 };
+let config = { crashCount: 0 };
+try {
+  if (fs.existsSync(configPath)) {
+    config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+  }
+} catch (error) {
+  console.error('Failed to read config, using defaults:', error);
+}
 
 switch(config.crashCount) {
   case 0:
@@ -95,7 +100,13 @@ async function createWindow() {
   });
 
   if (process.argv.includes('--direct-start')) {
-    mainWindow.loadURL('https://play.geforcenow.com/mall/#/streamer?launchSource=GeForceNOW&cmsId=' + process.argv[process.argv.indexOf('--direct-start') + 1]);
+    const cmsId = process.argv[process.argv.indexOf('--direct-start') + 1];
+    if (cmsId) {
+      mainWindow.loadURL('https://play.geforcenow.com/mall/#/streamer?launchSource=GeForceNOW&cmsId=' + cmsId);
+    } else {
+      console.error('--direct-start requires a cmsId argument');
+      mainWindow.loadURL(homePage);
+    }
   } else {
     mainWindow.loadURL(homePage);
   }
@@ -160,7 +171,10 @@ app.on('browser-window-created', async function (e, window) {
   window.webContents.setUserAgent(userAgent);
 
   window.webContents.setWindowOpenHandler(({ url }) => {
-    BrowserWindow.getAllWindows()[0].loadURL(url);
+    const win = BrowserWindow.getAllWindows()[0];
+    if (win && !win.isDestroyed()) {
+      win.loadURL(url);
+    }
     return { action: 'deny' };
   });
 
@@ -173,13 +187,17 @@ app.on('browser-window-created', async function (e, window) {
 
 app.on('child-process-gone', (event, details) => {
   if (details.type === 'GPU' && details.reason === 'crashed') {
-      config.crashCount++;
+    config.crashCount++;
+    try {
       fs.writeFileSync(configPath, JSON.stringify(config));
+    } catch (error) {
+      console.error('Failed to write crash config:', error);
+    }
 
-      console.log("Initiating application restart with an alternative 'use-gl' switch implementation or with hardware acceleration disabled, aiming to improve stability or performance based on prior execution outcomes.");
+    console.log("Initiating application restart with an alternative 'use-gl' switch implementation or with hardware acceleration disabled, aiming to improve stability or performance based on prior execution outcomes.");
 
-      app.relaunch();
-      app.exit(0);
+    app.relaunch();
+    app.exit(0);
   }
 });
 
