@@ -9,15 +9,8 @@ const { switchFullscreenState } = require('./windowManager.js');
 var homePage = 'https://play.geforcenow.com';
 var userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.152 Safari/537.36 Edg/130.0.6723.152';
 
-<<<<<<< Updated upstream
-||||||| Stash base
-const isSteamDeck = process.env.SteamDeck === '1';
-
-=======
-const isSteamDeck = process.env.SteamDeck === '1';
 const isWayland = !!process.env.WAYLAND_DISPLAY;
 
->>>>>>> Stashed changes
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
 
