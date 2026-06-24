@@ -2,7 +2,7 @@ var client;
 var startTimestamp;
 
 function DiscordRPC(title) {
-    if (process.argv.includes("--disable-rpc")) return;
+    if (process.argv.includes("--disable-rpc") || process.env.GFN_DISABLE_RPC === '1') return;
 
     if (!client) {
         client = require('discord-rich-presence')('963128360219869194');

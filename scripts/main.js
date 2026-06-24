@@ -82,17 +82,15 @@ async function createWindow() {
     },
   });
 
-  if (process.argv.includes('--direct-start')) {
-    const cmsId = process.argv[process.argv.indexOf('--direct-start') + 1];
-    if (cmsId) {
-      mainWindow.loadURL('https://play.geforcenow.com/mall/#/streamer?launchSource=GeForceNOW&cmsId=' + cmsId);
-    } else {
-      console.error('--direct-start requires a cmsId argument');
-      mainWindow.loadURL(homePage);
-    }
-  } else {
-    mainWindow.loadURL(homePage);
+  const argIdx = process.argv.indexOf('--direct-start');
+  const cmsId = (argIdx !== -1 && process.argv[argIdx + 1]) || process.env.GFN_DIRECT_START_ID || null;
+
+  if (argIdx !== -1 && !cmsId) {
+    console.error('--direct-start requires a cmsId argument');
   }
+  mainWindow.loadURL(cmsId
+    ? 'https://play.geforcenow.com/mall/#/streamer?launchSource=GeForceNOW&cmsId=' + cmsId
+    : homePage);
 
 }
 
