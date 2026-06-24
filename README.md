@@ -16,7 +16,7 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
 - [Features](#features)
 - [Usage](#usage)
   - [Keyboard Shortcuts](#keyboard-shortcuts)
-  - [Command-line Arguments](#command-line-arguments)
+  - [Command-line Arguments & Environment Variables](#command-line-arguments--environment-variables)
 - [Development](#development)
   - [Requirements](#requirements)
   - [Clone](#clone)
@@ -45,11 +45,11 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
 
  - **Native Wayland support** — runs as a native Wayland client when a Wayland compositor is detected, avoiding XWayland overhead and enabling proper compositor overlays
  - **Steam Deck integration** — automatically launches in fullscreen and enables the virtual keyboard overlay when running on Steam Deck
- - **Discord rich presence** — shows what you're playing via Discord RPC (can be disabled with `--disable-rpc`)
+ - **Discord rich presence** — shows what you're playing via Discord RPC (disable with `--disable-rpc` or `GFN_DISABLE_RPC=1`)
  - **Hardware-accelerated video** — enables VA-API, GPU rasterisation, and zero-copy video decode for smooth streaming
  - **Stability fallback** — automatically recovers from GPU crashes by retrying with a different OpenGL backend, falling back to software rendering if needed
  - **Keyboard shortcuts** — fullscreen toggle (`F11` / `Super+F`), home (`Alt+Home`), quit (`Alt+F4`), devtools (`Ctrl+Shift+I`)
- - **Direct game launch** — supports `--direct-start <cmsId>` to jump straight into a game
+ - **Direct game launch** — supports `--direct-start <cmsId>` (or `GFN_DIRECT_START_ID=<cmsId>`) to jump straight into a game
 
 ## Usage
 
@@ -62,12 +62,12 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
 | `Alt+F4` | Quit |
 | `Ctrl+Shift+I` | Toggle developer tools |
 
-### Command-line Arguments
+### Command-line Arguments & Environment Variables
 
-| Argument | Description |
-|---|---|
-| `--direct-start <cmsId>` | Launch directly into a game by its CMS ID |
-| `--disable-rpc` | Disable Discord rich presence |
+| Argument | Env var | Description |
+|---|---|---|
+| `--direct-start <cmsId>` | `GFN_DIRECT_START_ID=<cmsId>` | Launch directly into a game by its CMS ID |
+| `--disable-rpc` | `GFN_DISABLE_RPC=1` | Disable Discord rich presence |
 
 ### More
 
