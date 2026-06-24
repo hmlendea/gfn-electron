@@ -20,6 +20,7 @@ console.log('Process arguments: ' + process.argv);
 if (isWayland) {
   app.commandLine.appendSwitch('ozone-platform', 'wayland');
   app.commandLine.appendSwitch('enable-wayland-ime');
+  app.commandLine.appendSwitch('enable-features', 'WaylandTextInputV3,TouchEventsAPI');
 }
 
 app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,WaylandWindowDecorations,RawDraw,AcceleratedVideoDecodeLinuxGL');
