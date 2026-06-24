@@ -1,7 +1,8 @@
-const { app, BrowserWindow, session } = require('electron');
+const { app, BrowserWindow, session, Notification } = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
 const findProcess = require('find-process');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { DiscordRPC, destroyDiscordRPC } = require('./rpc.js');
 const { switchFullscreenState, setFullscreenState } = require('./windowManager.js');
@@ -143,6 +144,53 @@ app.whenReady().then(async () => {
     const win = BrowserWindow.getAllWindows()[0];
     if (win && !win.isDestroyed()) {
       win.loadURL(homePage);
+    }
+  });
+
+  electronLocalshortcut.register('Control+Shift+P', () => {
+    const win = BrowserWindow.getAllWindows()[0];
+    if (!win || win.isDestroyed()) return;
+
+    const url = win.webContents.getURL();
+    const cmsMatch = url.match(/[?&]cmsId=(\d+)/);
+    if (!cmsMatch) {
+      console.error('Ctrl+Shift+P: no cmsId in current URL, are you in a game?');
+      return;
+    }
+    const cmsId = cmsMatch[1];
+    const gameTitle = win.getTitle().replace(/ on GeForce NOW$/i, '').trim() || `Game ${cmsId}`;
+
+    const execCmd = process.env.FLATPAK_ID
+      ? `flatpak run ${process.env.FLATPAK_ID} --direct-start ${cmsId}`
+      : `"${app.getPath('exe')}" --direct-start ${cmsId}`;
+
+    const desktopEntry = [
+      '[Desktop Entry]',
+      'Encoding=UTF-8',
+      `Name=${gameTitle}`,
+      'Comment=Stream this game using the Nvidia GeForce NOW service',
+      'Type=Application',
+      `Exec=${execCmd}`,
+      'Icon=nvidia',
+      'StartupWMClass=geforce now',
+      'Categories=Network;Game;',
+      `Keywords=Game;Streaming;Nvidia;GeForce;NOW;GFN;${gameTitle};`,
+    ].join('\n') + '\n';
+
+    const appsDir = path.join(os.homedir(), '.local', 'share', 'applications');
+    const fileName = `geforcenow-${gameTitle.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase()}.desktop`;
+    const desktopPath = path.join(appsDir, fileName);
+
+    try {
+      fs.mkdirSync(appsDir, { recursive: true });
+      fs.writeFileSync(desktopPath, desktopEntry, { mode: 0o644 });
+      console.log(`Desktop shortcut created: ${desktopPath}`);
+      new Notification({
+        title: 'Shortcut created',
+        body: `"${gameTitle}" has been added to your application launcher.`,
+      }).show();
+    } catch (err) {
+      console.error('Failed to create desktop shortcut:', err);
     }
   });
 
