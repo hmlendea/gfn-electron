@@ -11,6 +11,9 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
 
 ## Table of Contents
 
+- [Disclaimers](#disclaimers)
+  - [Legal](#legal)
+  - [Expectations](#expectations)
 - [Installation](#installation)
   - [Manual Installation](#manual-installation)
 - [Features](#features)
@@ -23,9 +26,20 @@ Unofficial client for Nvidia's GeForce NOW game streaming service, providing a n
   - [Build](#build)
 - [Update](#update)
 - [Contributing](#contributing)
-- [Disclaimer](#disclaimer)
 - [Links](#links)
 - [License](#license)
+
+## Disclaimers
+
+### Affiliation
+
+This project and its contributors are not affiliated with Nvidia, nor its GeForce NOW product. This repository does not contain any Nvidia / GeForce NOW software. It is simply an Electron wrapper that loads the official GFN web application page, just as it would in a regular web browser.
+
+### Expectations
+
+This is a free and open-source project. Everyone who has contributed to it has done so voluntarily, out of their own free time and goodwill. Contributors are under no obligation to keep working on or maintaining the project, and cannot be expected to do so when life does not afford them that luxury.
+
+If things slow down or go quiet for a while, please be understanding. If you find the project useful, consider contributing yourself.
 
 ## Installation
 
@@ -127,10 +141,6 @@ Please:
 
 - keep the pull requests focused and consistent with the existing style
 - update the documentation when the behaviour changes
-
-## Disclaimer
-
-This project and its contributors are not affiliated with Nvidia, nor its GeForce NOW product. This repository does not contain any Nvidia / GeForce NOW software. It is simply an Electron wrapper that loads the official GFN web application page, just as it would in a regular web browser.
 
 ## Links
  - [GeForce NOW](https://nvidia.com/en-eu/geforce-now)
