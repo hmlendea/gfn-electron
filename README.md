@@ -39,7 +39,7 @@ This project and its contributors are not affiliated with Nvidia, nor its GeForc
 
 This is a free and open-source project. Everyone who has contributed to it has done so voluntarily, out of their own free time and goodwill. Contributors are under no obligation to keep working on or maintaining the project, and cannot be expected to do so when life does not afford them that luxury.
 
-If things slow down or go quiet for a while, please be understanding. If you find the project useful, consider contributing yourself.
+If things slow down or go quiet for a while, please be understanding. Documentation may occasionally fall behind, and some issues may linger without an immediate fix — we ask for your patience. If you find the project useful and have some time and development experience, please consider contributing yourself.
 
 ## Installation
 
