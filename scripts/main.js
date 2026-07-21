@@ -61,6 +61,8 @@ try {
   console.error('Failed to read config, using defaults:', error);
 }
 
+let isQuittingDueToGpuCrash = false;
+
 switch(config.crashCount) {
   case 0:
     app.commandLine.appendSwitch('enable-accelerated-video-decode');
@@ -234,13 +236,24 @@ app.on('child-process-gone', (event, details) => {
 
     console.log('GPU crashed; restarting with fallback rendering settings.');
 
+    isQuittingDueToGpuCrash = true;
     app.relaunch();
     app.quit();
   }
 });
 
 app.on('will-quit', () => {
+  if (!isQuittingDueToGpuCrash) {
+    config.crashCount = 0;
+    try {
+      fs.writeFileSync(configPath, JSON.stringify(config));
+    } catch (error) {
+      console.error('Failed to reset crash config:', error);
+    }
+  }
+
   destroyDiscordRPC();
+
   try {
     electronLocalshortcut.unregisterAll();
   } catch (_) {}
