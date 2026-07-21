@@ -22,7 +22,6 @@ console.log('Process arguments: ' + process.argv);
 if (isWayland) {
   app.commandLine.appendSwitch('ozone-platform', 'wayland');
   app.commandLine.appendSwitch('enable-wayland-ime');
-  app.commandLine.appendSwitch('enable-features', 'WaylandTextInputV3,TouchEventsAPI');
   // ANGLE's Vulkan backend is incompatible with ozone-wayland; force OpenGL ES.
   app.commandLine.appendSwitch('use-angle', 'gl');
   // Use EGL for native Wayland surfaces rather than the X11 path.
@@ -36,7 +35,9 @@ if (isWayland) {
 }
 
 const enabledFeatures = ['VaapiVideoDecoder', 'WaylandWindowDecorations', 'AcceleratedVideoDecodeLinuxGL'];
-if (!isWayland) {
+if (isWayland) {
+  enabledFeatures.push('WaylandTextInputV3', 'TouchEventsAPI');
+} else {
   // RawDraw uses a GPU raster path that can activate Vulkan; skip it on Wayland.
   enabledFeatures.push('RawDraw');
 }
