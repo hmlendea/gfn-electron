@@ -84,6 +84,7 @@ If things slow down or go quiet for a while, please be understanding. Documentat
 |---|---|---|
 | `--direct-start <cmsId>` | `GFN_DIRECT_START_ID=<cmsId>` | Launch directly into a game by its CMS ID |
 | `--disable-rpc` | `GFN_DISABLE_RPC=1` | Disable Discord rich presence |
+| — | `GFN_ENABLE_EXPERIMENTAL_GPU_FLAGS=1` | Re-enable aggressive GPU raster and zero-copy flags (disabled by default for rendering stability) |
 | — | `GFN_RESOLUTION_WIDTH=<px>` | Override reported stream width in pixels (default: physical screen width) |
 | — | `GFN_RESOLUTION_HEIGHT=<px>` | Override reported stream height in pixels (default: physical screen height) |
 | — | `GFN_REFRESH_RATE=<hz>` | Override reported refresh rate in Hz (default: 60) |
