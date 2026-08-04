@@ -5,152 +5,206 @@
 
 # GFN Electron
 
-Unofficial client for Nvidia's GeForce NOW game streaming service, providing a native Linux desktop experience with Wayland support, Steam Deck integration, and Discord rich presence.
+Unofficial desktop client for Nvidia GeForce NOW on Linux, delivering a native Electron-based experience with Wayland support, Steam Deck integration, and optional Discord rich presence.
 
-![Screenshot](screenshot.png)
+![Preview screenshot](preview.png)
 
-## Table of Contents
+## 📑 Table of Contents
 
-- [Disclaimers](#disclaimers)
-  - [Legal](#legal)
+- [Features](#-features)
+- [Disclaimers](#-disclaimers)
+  - [Affiliation](#affiliation)
   - [Expectations](#expectations)
-- [Installation](#installation)
-  - [Manual Installation](#manual-installation)
-- [Features](#features)
-- [Usage](#usage)
+- [Usage](#-usage)
   - [Keyboard Shortcuts](#keyboard-shortcuts)
-  - [Command-line Arguments & Environment Variables](#command-line-arguments--environment-variables)
-- [Development](#development)
+  - [Command-line Arguments and Environment Variables](#command-line-arguments-and-environment-variables)
+  - [More Documentation](#more-documentation)
+- [Known Limitations](#-known-limitations)
+- [System Requirements](#-system-requirements)
+- [Installation](#-installation)
+  - [CLI Installation](#cli-installation)
+- [Development](#-development)
   - [Requirements](#requirements)
-  - [Clone](#clone)
+  - [Setup](#setup)
   - [Build](#build)
-- [Update](#update)
-- [Contributing](#contributing)
-- [Links](#links)
-- [License](#license)
+  - [Run](#run)
+  - [Dependencies](#dependencies)
+- [Project Structure](#-project-structure)
+- [Documentation](#-documentation)
+- [Contributing](#-contributing)
+- [Security](#-security)
+- [Helping out](#-helping-out)
+- [License](#-license)
 
-## Disclaimers
+## ✨ Features
+
+- Native Wayland support with compositor-aware behaviour
+- Steam Deck integration with automatic fullscreen and virtual keyboard overlay
+- Discord rich presence integration (optional)
+- Hardware-accelerated video pipeline using VA-API and GPU rendering flags
+- GPU crash fallback strategy for rendering stability
+- Keyboard shortcuts for fullscreen, navigation, and developer tooling
+- Direct game launch via CMS identifier
+- Stream quality override for resolution and refresh rate reporting
+
+## ⚖️ Disclaimers
 
 ### Affiliation
 
-This project and its contributors are not affiliated with Nvidia, nor its GeForce NOW product. This repository does not contain any Nvidia / GeForce NOW software. It is simply an Electron wrapper that loads the official GFN web application page, just as it would in a regular web browser.
+This project and its contributors are not affiliated with Nvidia, nor with the GeForce NOW product. This repository does not include Nvidia or GeForce NOW software. It provides an Electron wrapper that loads the official GeForce NOW web application.
 
 ### Expectations
 
-This is a free and open-source project. Everyone who has contributed to it has done so voluntarily, out of their own free time and goodwill. Contributors are under no obligation to keep working on or maintaining the project, and cannot be expected to do so when life does not afford them that luxury.
+This is a free and open-source project maintained by volunteers. Contributions occur as contributor availability permits.
 
-If things slow down or go quiet for a while, please be understanding. Documentation may occasionally fall behind, and some issues may linger without an immediate fix — we ask for your patience. If you find the project useful and have some time and development experience, please consider contributing yourself.
+## 🚀 Usage
 
-## Installation
+Launch the client from a terminal:
 
-[![Get it from the AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/aur.png)](https://aur.archlinux.org/packages/geforcenow-electron/)
-[![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
-
-***Note**: The main version of this project, which receives the most support, is the flatpak version hosted on FlatHub!*
-
-### Manual Installation
-
- - Go to the [latest release](https://github.com/hmlendea/gfn-electron/releases/latest).
- - Download the specific file that best fits your distro.
-
-***Note**: Manual installations are possible but not supported. Please use the flatpak version if you have any trouble with the manual installation!*
-
-## Features
-
- - **Native Wayland support** — runs as a native Wayland client when a Wayland compositor is detected, avoiding XWayland overhead and enabling proper compositor overlays
- - **Steam Deck integration** — automatically launches in fullscreen and enables the virtual keyboard overlay when running on Steam Deck
- - **Discord rich presence** — shows what you're playing via Discord RPC (disable with `--disable-rpc` or `GFN_DISABLE_RPC=1`)
- - **Hardware-accelerated video** — enables VA-API, GPU rasterisation, and zero-copy video decode for smooth streaming
- - **Stability fallback** — automatically recovers from GPU crashes by retrying with a different OpenGL backend, falling back to software rendering if needed
- - **Keyboard shortcuts** — fullscreen toggle (`F11` / `Super+F`), home (`Alt+Home`), quit (`Alt+F4`), devtools (`Ctrl+Shift+I`), create desktop shortcut (`Ctrl+Shift+P`)
- - **Direct game launch** — supports `--direct-start <cmsId>` (or `GFN_DIRECT_START_ID=<cmsId>`) to jump straight into a game
- - **Stream quality override** — intercepts session requests to report your true physical resolution and a configurable refresh rate, overcoming the web client's defaults (`GFN_RESOLUTION_WIDTH`, `GFN_RESOLUTION_HEIGHT`, `GFN_REFRESH_RATE`)
-
-## Usage
+```bash
+npm start
+```
 
 ### Keyboard Shortcuts
 
 | Shortcut | Action |
 |---|---|
 | `F11` / `Super+F` | Toggle fullscreen |
-| `Alt+Home` | Go to home page |
-| `Alt+F4` | Quit |
+| `Alt+Home` | Navigate to the home page |
+| `Alt+F4` | Exit the application |
 | `Ctrl+Shift+I` | Toggle developer tools |
-| `Ctrl+Shift+P` | Create a desktop shortcut for the currently running game |
+| `Ctrl+Shift+P` | Create a desktop shortcut for the active game |
 
-### Command-line Arguments & Environment Variables
+### Command-line Arguments and Environment Variables
 
-| Argument | Env var | Description |
+| Argument | Environment Variable | Description |
 |---|---|---|
-| `--direct-start <cmsId>` | `GFN_DIRECT_START_ID=<cmsId>` | Launch directly into a game by its CMS ID |
+| `--direct-start <cmsId>` | `GFN_DIRECT_START_ID=<cmsId>` | Launch directly into a game by CMS identifier |
 | `--disable-rpc` | `GFN_DISABLE_RPC=1` | Disable Discord rich presence |
-| — | `GFN_ENABLE_EXPERIMENTAL_GPU_FLAGS=1` | Re-enable aggressive GPU raster and zero-copy flags (disabled by default for rendering stability) |
-| — | `GFN_RESOLUTION_WIDTH=<px>` | Override reported stream width in pixels (default: physical screen width) |
-| — | `GFN_RESOLUTION_HEIGHT=<px>` | Override reported stream height in pixels (default: physical screen height) |
-| — | `GFN_REFRESH_RATE=<hz>` | Override reported refresh rate in Hz (default: 60) |
+| - | `GFN_ENABLE_EXPERIMENTAL_GPU_FLAGS=1` | Re-enable aggressive GPU flags for experimentation |
+| - | `GFN_RESOLUTION_WIDTH=<px>` | Override reported stream width |
+| - | `GFN_RESOLUTION_HEIGHT=<px>` | Override reported stream height |
+| - | `GFN_REFRESH_RATE=<hz>` | Override reported stream refresh rate |
 
-### More
+### More Documentation
 
- - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
-   - [Changing the keyboard layout](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#changing-the-keyboard-layout)
-   - [Directly launching a game from the desktop](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage#directly-launching-a-game-from-the-desktop)
- - [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
-   - [Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#discord)
-     - [Using native GFN + flatpak Discord](https://github.com/hmlendea/gfn-electron/wiki/Integrations#using-native-gfn--flatpak-discord)
- - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
-   - [Gamepad controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#gamepad-controls-are-not-detected)
-   - [Steam Deck controls are not detected](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting#steam-deck-controls-are-not-detected)
+- [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
+- [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
+- [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
 
-## Development
+## ⚠️ Known Limitations
+
+- Application behaviour depends on the current GeForce NOW web interface and can change when upstream web functionality changes.
+- Manual installation packages receive less maintainer support than the Flatpak distribution.
+
+## 🖥️ System Requirements
+
+- **OS:** Linux
+- **Runtime:** Node.js 20 or later
+- **Graphics:** GPU drivers with WebGL and hardware video decode support are recommended
+
+## 📦 Installation
+
+[![Obtain it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
+[![Obtain it from AUR](https://raw.githubusercontent.com/hmlendea/readme-assets/master/install_from_aur.png)](https://aur.archlinux.org/packages/geforcenow-electron)
+[![Obtain it from GitHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/github.png)](https://github.com/hmlendea/gfn-electron/releases)
+
+### CLI Installation
+
+```bash
+flatpak install flathub io.github.hmlendea.geforcenow-electron
+```
+
+or, for Arch Linux users via AUR:
+
+```bash
+paru -S geforcenow-electron
+```
+
+or, if you use `yay`:
+
+```bash
+yay -S geforcenow-electron
+```
+
+## 🛠️ Development
 
 ### Requirements
 
-You will need [Node.js](https://nodejs.org/) 20 or later and [npm](https://www.npmjs.com/) (bundled with Node.js). On most distributions, installing the `nodejs` and `npm` packages is sufficient.
+- [Node.js 20+](https://nodejs.org/)
+- [npm](https://www.npmjs.com/)
 
-### Clone
-
-Once you have npm, clone the wrapper to a convenient location:
+### Setup
 
 ```bash
-git clone https://github.com/hmlendea/gfn-electron.git
+npm install
 ```
 
 ### Build
 
 ```bash
-npm install
+npm run build
+```
+
+### Run
+
+```bash
 npm start
 ```
 
-On subsequent runs, `npm start` will be all that's required.
+### Dependencies
 
-## Update
+| Package | Purpose |
+|---------|---------|
+| `discord-rich-presence` | Discord RPC integration |
+| `electron-localshortcut` | Application-local keyboard shortcuts |
+| `find-process` | Process discovery for integration logic |
 
-Simply pull the latest version of master and install any changed dependencies:
+## 🗂️ Project Structure
 
-```bash
-git checkout master
-git pull
-npm install
-```
+The key directories and files are:
 
-## Contributing
+| Path | Purpose |
+|------|---------|
+| `scripts/main.js` | Electron main-process lifecycle, window initialisation, and runtime flags |
+| `scripts/preload.js` | Safe bridge between renderer and Electron APIs |
+| `scripts/renderer.js` | Renderer-side interactions and UI behaviour |
+| `scripts/rpc.js` | Discord rich presence integration |
+| `scripts/windowManager.js` | Window creation and management logic |
+| `com.github.hmlendea.geforcenow-electron.desktop` | Desktop entry metadata |
 
-Contributions are welcome.
+## 📚 Documentation
 
-Please:
+Full documentation is available in the project Wiki:
 
-- keep the pull requests focused and consistent with the existing style
-- update the documentation when the behaviour changes
+- [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
+- [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
+- [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
 
-## Links
- - [GeForce NOW](https://nvidia.com/en-eu/geforce-now)
- - [FlatHub release](https://flathub.org/apps/details/io.github.hmlendea.geforcenow-electron)
- - [FlatHub repository](https://github.com/flathub/io.github.hmlendea.geforcenow-electron)
- - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
- - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
+## 🤝 Contributing
 
-## License
+You are welcome to bring any suggestion, feedback or modification to this project.
 
-Licensed under the GNU General Public License v3.0 or later.
+When doing so, please:
+- Maintain cross-platform compatibility
+- Maintain the pull requests as focused and consistent with the existing code style
+- Maintain your branch up-to-date with `master`
+- Revise the documentation when behaviour changes
+- Properly test all changes
+
+## 🔒 Security
+
+For information on reporting security vulnerabilities, see [SECURITY.md](./SECURITY.md).
+
+## 💝 Helping out
+
+Discovered a problem or have a suggestion? [Open an issue](https://github.com/hmlendea/gfn-electron/issues)!
+
+If you find this project useful, consider [funding it](https://hmlendea.go.ro/funding) or starring ⭐️ it on GitHub!
+
+[![Donate](https://raw.githubusercontent.com/hmlendea/readme-assets/master/donate_generic.png)](https://hmlendea.go.ro/funding)
+
+## 📄 License
+
+This project is being distributed under the `GNU General Public License v3.0` or later.
 See [LICENSE](./LICENSE) for details.
