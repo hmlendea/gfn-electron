@@ -14,6 +14,8 @@ var userAgent = `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like
 
 const isSteamDeck = process.env.SteamDeck === '1';
 const isWayland = !!process.env.WAYLAND_DISPLAY;
+const hasExperimentalGpuFlagsEnabled =
+  process.env.GFN_ENABLE_EXPERIMENTAL_GPU_FLAGS === '1';
 
 console.log('Using user agent: ' + userAgent);
 console.log('Process arguments: ' + process.argv);
@@ -46,12 +48,18 @@ app.commandLine.appendSwitch('disable-features', disabledFeatures.join(','));
 app.commandLine.appendSwitch('enable-accelerated-mjpeg-decode');
 app.commandLine.appendSwitch('enable-accelerated-video');
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
-app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
-app.commandLine.appendSwitch('enable-gpu-rasterization');
-app.commandLine.appendSwitch('enable-zero-copy');
-app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
 
-// Tracks GPU crashes to progressively fall back: ANGLE → EGL → disabled hardware acceleration.
+// Keep aggressive GPU flags opt-in, as they can cause missing text and
+// textures on specific Linux driver stacks.
+if (hasExperimentalGpuFlagsEnabled) {
+  app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
+  app.commandLine.appendSwitch('enable-gpu-rasterization');
+  app.commandLine.appendSwitch('enable-zero-copy');
+  app.commandLine.appendSwitch('enable-gpu-memory-buffer-video-frames');
+}
+
+// Tracks GPU crashes to progressively fall back across GL backends, then to
+// disabled hardware acceleration.
 const configPath = path.join(app.getPath('userData'), 'config.json');
 let config = { crashCount: 0 };
 try {
@@ -64,17 +72,24 @@ try {
 
 let isQuittingDueToGpuCrash = false;
 
-switch(config.crashCount) {
-  case 0:
-    app.commandLine.appendSwitch('enable-accelerated-video-decode');
-    app.commandLine.appendSwitch('use-gl', 'angle');
-    break;
-  case 1:
-    app.commandLine.appendSwitch('enable-accelerated-video-decode');
+if (config.crashCount <= 1) {
+  app.commandLine.appendSwitch('enable-accelerated-video-decode');
+}
+
+if (isWayland) {
+  if (config.crashCount === 0) {
     app.commandLine.appendSwitch('use-gl', 'egl');
-    break;
-  default:
+  } else if (config.crashCount === 1) {
+    app.commandLine.appendSwitch('use-gl', 'desktop');
+  } else {
     app.disableHardwareAcceleration();
+  }
+} else if (config.crashCount === 0) {
+  app.commandLine.appendSwitch('use-gl', 'egl');
+} else if (config.crashCount === 1) {
+  app.commandLine.appendSwitch('use-gl', 'angle');
+} else {
+  app.disableHardwareAcceleration();
 }
 
 async function createWindow() {
