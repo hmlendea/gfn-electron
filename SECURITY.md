@@ -1,47 +1,65 @@
 # Security Policy
 
-## Supported Versions
+This policy defines vulnerability reporting principles for this repository and clarifies that security maintenance is provided for the latest maintained release line only.
 
-Security fixes are generally provided for the latest release only.
+## 📑 Table of Contents
 
-| Version | Supported |
-| --- | --- |
-| Latest release | :white_check_mark: |
-| Older releases | :x: |
-| Development builds from `master` | Best effort |
+- Supported Versions
+- Reporting a Vulnerability
+- Scope
+- Disclosure Policy
+- Safe Harbour
+- Recognition
 
-## Reporting a Vulnerability
+## 🛡️ Supported Versions
 
-Please do not report security vulnerabilities via public GitHub issues.
+Use this table to indicate which project versions currently receive security maintenance.
 
-Use one of these private channels:
+| Version | Distribution Method | Supported |
+|---------|--------------------|-----------|
+| Latest release | FlatHub | ✅ |
+| Latest release | GitHub Releases | ❌ |
+| Latest release | Unofficial third-party distribution channels | ❌ |
+| Older releases | Any distribution channel | ❌ |
 
-- GitHub Security Advisories (preferred):
-  - Open a private advisory report via this repository's Security tab.
+## 🚨 Reporting a Vulnerability
 
-Please include:
+Please do not disclose suspected vulnerabilities publicly before maintainers have had an opportunity to validate and remediate them.
 
-- A clear summary of the vulnerability.
-- Impact assessment (what an attacker could do).
-- Steps to reproduce.
-- A proof of concept (if available).
-- Affected version(s) and installation method (Flatpak, AppImage, zip, distro package).
-- Any suggested remediation.
+To report a vulnerability, contact the maintainers directly
 
-## Disclosure Process
+Preferred private channel:
+- GitHub Security Advisories via this repository Security tab
 
-- You will receive an acknowledgement as soon as possible.
-- We will investigate and validate the report.
-- If confirmed, we will prepare and release a fix as soon as practical.
-- We request coordinated disclosure and ask that details remain private until a fix is published.
+Include the following details where possible:
+- Vulnerability summary
+- Impact assessment
+- Reproduction steps
+- Proof of concept
+- Affected version and distribution method
 
-## Scope Notes
+## 📌 Scope
 
-This project is an Electron wrapper around NVIDIA GeForce NOW web services.
+The subsequent report categories are in scope for this repository:
+- Electron application wrapper vulnerabilities (for example IPC boundaries, preload exposure, and desktop integration)
+- Project packaging and distribution security defects (for example release artefacts and launch-flag handling)
 
-- Vulnerabilities in NVIDIA infrastructure, account systems, or the GeForce NOW backend should be reported directly to NVIDIA.
-- Vulnerabilities introduced by this wrapper (desktop integration, Electron runtime usage, IPC, packaging, launch flags, and similar areas) are in scope for this repository.
+The subsequent categories are out of scope unless explicitly stated to the contrary:
+- NVIDIA GeForce NOW backend, infrastructure, or account-system vulnerabilities
+- Security issues in unrelated third-party systems not maintained in this repository
 
-## Security Updates
+## 📢 Disclosure Policy
 
-When possible, security-relevant fixes will be noted in release notes.
+This project follows coordinated disclosure:
+1. Vulnerabilities are investigated privately.
+2. A remediation plan is prepared and validated.
+3. Public disclosure is published after a fix, mitigation, or agreed risk decision is available.
+4. Credit is attributed in accordance with reporter preference and project policy.
+
+## 🧾 Safe Harbour
+
+If your research is conducted in good faith, confined to authorised scope, and disclosed responsibly, the maintainers will not pursue action for policy-compliant activity.
+
+## 🙏 Recognition
+
+We appreciate responsible disclosure. Reporters who desire public attribution may be acknowledged in release notes, advisories, or a dedicated acknowledgements section.
