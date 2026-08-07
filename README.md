@@ -7,7 +7,7 @@
 
 Unofficial desktop client for Nvidia GeForce NOW on Linux, delivering a native Electron-based experience with Wayland support, Steam Deck integration, and optional Discord rich presence.
 
-![Preview screenshot](preview.png)
+![Preview screenshot](screenshot.png)
 
 ## 📑 Table of Contents
 
