@@ -31,6 +31,7 @@ Unofficial desktop client for Nvidia GeForce NOW on Linux, delivering a native E
   - [Dependencies](#dependencies)
 - [Project Structure](#-project-structure)
 - [Documentation](#-documentation)
+- [Architecture](#architecture)
 - [Contributing](#-contributing)
 - [Security](#-security)
 - [Helping out](#-helping-out)
@@ -180,6 +181,10 @@ Full documentation is available in the project Wiki:
 - [Basic usage](https://github.com/hmlendea/gfn-electron/wiki/Basic-usage)
 - [Integrations](https://github.com/hmlendea/gfn-electron/wiki/Integrations)
 - [Troubleshooting](https://github.com/hmlendea/gfn-electron/wiki/Troubleshooting)
+
+## 🏗️ Architecture
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for a structural synopsis and component interactions.
 
 ## 🤝 Contributing
 
