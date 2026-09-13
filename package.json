@@ -33,7 +33,7 @@
   "author": "Horațiu Mlendea <io.github.hmlendea.cnzq9@SimpleLogin.fr>",
   "license": "GPL-3.0",
   "devDependencies": {
-    "electron": "^40.10.6",
+    "electron": "^41.10.3",
     "electron-builder": "^26.15.3"
   },
   "dependencies": {
