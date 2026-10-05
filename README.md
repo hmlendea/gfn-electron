@@ -201,6 +201,10 @@ When doing so, please:
 
 For information on reporting security vulnerabilities, see [SECURITY.md](./SECURITY.md).
 
+## 🛡️ Privacy
+
+For information on how this application handles personal data, see [PRIVACY.md](./PRIVACY.md).
+
 ## 💝 Helping out
 
 Discovered a problem or have a suggestion? [Open an issue](https://github.com/hmlendea/gfn-electron/issues)!

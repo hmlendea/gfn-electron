@@ -4,12 +4,12 @@ This policy defines vulnerability reporting principles for this repository and c
 
 ## 📑 Table of Contents
 
-- Supported Versions
-- Reporting a Vulnerability
-- Scope
-- Disclosure Policy
-- Safe Harbour
-- Recognition
+- [Supported Versions](#-supported-versions)
+- [Reporting a Vulnerability](#-reporting-a-vulnerability)
+- [Scope](#-scope)
+- [Disclosure Policy](#-disclosure-policy)
+- [Safe Harbour](#-safe-harbour)
+- [Recognition](#-recognition)
 
 ## 🛡️ Supported Versions
 
