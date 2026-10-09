@@ -197,6 +197,8 @@ When doing so, please:
 - Revise the documentation when behaviour changes
 - Properly test all changes
 
+Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute to this project.
+
 ## 🔒 Security
 
 For information on reporting security vulnerabilities, see [SECURITY.md](./SECURITY.md).
