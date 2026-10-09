@@ -1,7 +1,7 @@
 [![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/funding)
 [![Latest Release](https://img.shields.io/github/v/release/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/releases/latest)
 [![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://gnu.org/licenses/gpl-3.0)
+[![License](https://img.shields.io/github/license/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/blob/master/LICENSE)
 
 # GFN Electron
 
@@ -11,42 +11,21 @@ Unofficial desktop client for Nvidia GeForce NOW on Linux, delivering a native E
 
 ## 📑 Table of Contents
 
-- [Features](#-features)
 - [Disclaimers](#-disclaimers)
-  - [Affiliation](#affiliation)
-  - [Expectations](#expectations)
+- [Capabilities](#-capabilities)
 - [Usage](#-usage)
-  - [Keyboard Shortcuts](#keyboard-shortcuts)
-  - [Command-line Arguments and Environment Variables](#command-line-arguments-and-environment-variables)
-  - [More Documentation](#more-documentation)
 - [Known Limitations](#-known-limitations)
 - [System Requirements](#-system-requirements)
 - [Installation](#-installation)
-  - [CLI Installation](#cli-installation)
 - [Development](#-development)
-  - [Requirements](#requirements)
-  - [Setup](#setup)
-  - [Build](#build)
-  - [Run](#run)
-  - [Dependencies](#dependencies)
 - [Project Structure](#-project-structure)
 - [Documentation](#-documentation)
 - [Architecture](#architecture)
 - [Contributing](#-contributing)
 - [Security](#-security)
-- [Helping out](#-helping-out)
+- [Privacy](#-privacy)
+- [Project Engagement](#-project-engagement)
 - [License](#-license)
-
-## ✨ Features
-
-- Native Wayland support with compositor-aware behaviour
-- Steam Deck integration with automatic fullscreen and virtual keyboard overlay
-- Discord rich presence integration (optional)
-- Hardware-accelerated video pipeline using VA-API and GPU rendering flags
-- GPU crash fallback strategy for rendering stability
-- Keyboard shortcuts for fullscreen, navigation, and developer tooling
-- Direct game launch via CMS identifier
-- Stream quality override for resolution and refresh rate reporting
 
 ## ⚖️ Disclaimers
 
@@ -57,6 +36,17 @@ This project and its contributors are not affiliated with Nvidia, nor with the G
 ### Expectations
 
 This is a free and open-source project maintained by volunteers. Contributions occur as contributor availability permits.
+
+## ✨ Capabilities
+
+- Native Wayland support with compositor-aware behaviour
+- Steam Deck integration with automatic fullscreen and virtual keyboard overlay
+- Discord rich presence integration (optional)
+- Hardware-accelerated video pipeline using VA-API and GPU rendering flags
+- GPU crash fallback strategy for rendering stability
+- Keyboard shortcuts for fullscreen, navigation, and developer tooling
+- Direct game launch via CMS identifier
+- Stream quality override for resolution and refresh rate reporting
 
 ## 🚀 Usage
 
@@ -188,16 +178,17 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for a structural synopsis and component
 
 ## 🤝 Contributing
 
-You are welcome to bring any suggestion, feedback or modification to this project.
+You are welcome to submit any suggestion, feedback, or modification to this project.
 
 When doing so, please:
 - Maintain cross-platform compatibility
-- Maintain the pull requests as focused and consistent with the existing code style
-- Maintain your branch up-to-date with `master`
-- Revise the documentation when behaviour changes
-- Properly test all changes
+- Submit focused pull requests that conform to the existing code style
+- Maintain your branch synchronised with `master`
+- Revise the documentation when functionality changes
+- Properly test all modifications, including edge cases and error conditions
+- Raise a new [issue](https://github.com/hmlendea/gfn-electron/issues) for problems or suggestions
 
-Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute to this project.
+See the [contributing guidelines](./CONTRIBUTING.md) for details on how to report issues, suggest enhancements, and submit changes.
 
 ## 🔒 Security
 
@@ -207,7 +198,7 @@ For information on reporting security vulnerabilities, see [SECURITY.md](./SECUR
 
 For information on how this application handles personal data, see [PRIVACY.md](./PRIVACY.md).
 
-## 💝 Helping out
+## 💝 Project Engagement
 
 Discovered a problem or have a suggestion? [Open an issue](https://github.com/hmlendea/gfn-electron/issues)!
 
