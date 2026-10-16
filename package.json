@@ -13,8 +13,18 @@
     "asar": false,
     "linux": {
       "target": [
-        "zip",
-        "AppImage"
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
       ],
       "category": "Games",
       "artifactName": "${name}_${version}_linux.${ext}"
