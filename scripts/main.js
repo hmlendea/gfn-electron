@@ -255,9 +255,11 @@ app.on('browser-window-created', async function (e, window) {
   window.webContents.setUserAgent(userAgent);
 
   window.webContents.on('will-navigate', (event, url) => {
-    if (isTrustedApplicationUrl(url)) return;
-    event.preventDefault();
-    openExternalUrl(url);
+    handleNavigation(event, url);
+  });
+
+  window.webContents.on('will-redirect', (event, url) => {
+    handleNavigation(event, url);
   });
 
   window.webContents.addScriptToExecuteOnNewDocument(createPageCompatibilityScript({
@@ -404,6 +406,12 @@ function isTrustedApplicationUrl(value) {
   } catch (_) {
     return false;
   }
+}
+
+function handleNavigation(event, value) {
+  if (isTrustedApplicationUrl(value)) return;
+  event.preventDefault();
+  openExternalUrl(value);
 }
 
 function openExternalUrl(value) {

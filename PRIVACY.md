@@ -108,7 +108,7 @@ Verified technical and operational safeguards:
 - Desktop launcher filenames and CMS identifiers are sanitised (digits extracted, non-alphanumeric characters replaced with `-`).
 
 Known gaps (not guarantees):
-- `contextIsolation: false` — preload and page scripts share a JavaScript context; page code can interfere with preload-installed globals.
+- Context isolation and the renderer sandbox are enabled; compatibility hooks that must modify browser APIs are injected into the page world without exposing a privileged preload bridge.
 - Direct-start values are concatenated into URLs without URI encoding or format validation.
 - Remote page titles are inserted into Desktop Entry fields without escaping.
 - No origin allow-list for new-window navigation; new-window requests are denied but navigated in the existing window.
