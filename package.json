@@ -11,6 +11,7 @@
   },
   "build": {
     "asar": false,
+    "desktopName": "geforcenow-electron",
     "linux": {
       "target": [
         {
@@ -27,7 +28,8 @@
         }
       ],
       "category": "Games",
-      "artifactName": "${name}_${version}_linux.${ext}"
+      "artifactName": "${name}_${version}_linux.${ext}",
+      "syncDesktopName": true
     },
     "extraFiles": [
       "com.github.hmlendea.${name}.desktop"
