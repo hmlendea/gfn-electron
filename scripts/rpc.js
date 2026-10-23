@@ -28,13 +28,17 @@ function DiscordRPC(title) {
         d = "Home on GeForce NOW";
     }
 
+    const discordClient = client;
     try {
-        client.updatePresence({
+        const updateResult = client.updatePresence({
             details: d,
             state: `Not affiliated with NVIDIA`,
             startTimestamp: startTimestamp,
             largeImageKey: 'icon',
             instance: true,
+        });
+        Promise.resolve(updateResult).catch(error => {
+            handleClientError(discordClient, error);
         });
     } catch (error) {
         console.log('Discord RPC error:', error);
@@ -51,7 +55,9 @@ function handleClientError(discordClient, error) {
     client = null;
 
     try {
-        discordClient.disconnect();
+        Promise.resolve(discordClient.disconnect()).catch(disconnectError => {
+            console.log('Discord RPC disconnect error:', disconnectError);
+        });
     } catch (disconnectError) {
         console.log('Discord RPC disconnect error:', disconnectError);
     }
@@ -66,8 +72,11 @@ function destroyDiscordRPC() {
     client = null;
 
     try {
-        discordClient.disconnect();
-    } catch (_) {
+        Promise.resolve(discordClient.disconnect()).catch(disconnectError => {
+            console.log('Discord RPC disconnect error:', disconnectError);
+        });
+    } catch (disconnectError) {
+        console.log('Discord RPC disconnect error:', disconnectError);
     }
 }
 

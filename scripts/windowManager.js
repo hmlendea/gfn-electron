@@ -51,7 +51,12 @@ function toggleGameStreamingMode(state) {
 }
 
 function switchFullscreenState() {
-    if (isFullScreen) {
+    const window = getMainWindow();
+    if (!window || window.isDestroyed()) {
+        return;
+    }
+
+    if (window.isFullScreen()) {
         toggleFullscreen(false);
     } else {
         toggleFullscreen(true);
@@ -89,7 +94,7 @@ app.on('browser-window-created', async function (event, window) {
         isFullScreen = false;
 
         if (isGameStreamingScreen) {
-            toggleFullscreen(true);
+            setImmediate(() => toggleFullscreen(true));
         }
     });
 
