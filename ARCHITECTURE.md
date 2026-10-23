@@ -146,7 +146,7 @@ sequenceDiagram
     Main->>Discord: Initialise or revise rich presence
   end
   User->>Main: Invoke shortcut or close the application
-  Main->>Config: Reset crashCount after a non-crash quit
+  Main->>Config: Preserve crashCount after a non-crash quit
   Main->>Discord: Disconnect an active RPC client
 ```
 
@@ -157,7 +157,7 @@ The principal runtime sequence is:
 4. The main process creates one `BrowserWindow`, attaches [scripts/preload.js](scripts/preload.js), and navigates either to the fixed home page or a URL derived from a direct-start CMS identifier.
 5. Preload installs Fetch and XMLHttpRequest wrappers before the remote page uses them. The hosted GeForce NOW page then owns the interactive workflow.
 6. Browser-window and page-title events drive fullscreen state, pointer lock, and optional rich-presence updates; registered keyboard shortcuts drive navigation, fullscreen, developer tools, launcher creation, and termination.
-7. A normal quit resets the crash counter, disconnects Discord, and unregisters shortcuts. A GPU crash instead persists the incremented counter and relaunches the application at the subsequent fallback tier.
+7. A normal quit preserves the crash counter, disconnects Discord, and unregisters shortcuts. A GPU crash instead persists the incremented counter and relaunches the application at the subsequent fallback tier when recovery remains available.
 
 ## 🧩 Components
 
@@ -283,7 +283,7 @@ sequenceDiagram
   end
 ```
 
-Direct-start invocation gives a command-line value precedence over `GFN_DIRECT_START_ID` and concatenates the selected value into the streamer URL. Launcher creation is stricter: it extracts only digits from the active URL's `cmsId` query parameter, removes the standard title suffix, sanitises the filename, and selects either a Flatpak command or the current executable. The desktop file's display title and keyword value remain derived from the page title without Desktop Entry escaping.
+Direct-start invocation gives a command-line value precedence over `GFN_DIRECT_START_ID` and concatenates the selected value into the streamer URL. Launcher creation is stricter: it extracts only digits from the active URL's `cmsId` query parameter, removes the standard title suffix, sanitises the filename, and selects either a Flatpak command or the current executable. Desktop Entry display fields and executable arguments are escaped before writing.
 
 ## ⚙️ Rendering and Fullscreen Policy
 
@@ -319,11 +319,11 @@ Direct-start values and shortcut-derived CMS identifiers are restricted to numer
 ### Error Handling
 
 Error ownership remains local to each integration:
-- Configuration read failures log and retain the default crash state; write failures log without preventing quit or relaunch.
+- Configuration read failures log and retain the default crash state; write failures log and stop automatic GPU recovery.
 - Discord process-probe failures resolve as "not running"; update failures log; disconnect failures are suppressed.
 - Session-body parse failures return the original body so the upstream request can continue.
 - Desktop-launcher filesystem failures log and omit the success notification.
-- GPU process crashes activate persisted relaunch and progressive graphics degradation.
+- GPU process crashes activate bounded persisted relaunch and progressive graphics degradation.
 
 There is no central exception boundary, user-facing error model, retry scheduler, or failure correlation identifier. Several asynchronous Electron operations, including URL loading and renderer JavaScript execution, are invoked without awaiting or translating rejected promises.
 

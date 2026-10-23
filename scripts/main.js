@@ -8,6 +8,11 @@ const { DiscordRPC, destroyDiscordRPC } = require('./rpc.js');
 const { switchFullscreenState, setFullscreenState } = require('./windowManager.js');
 const { createPageCompatibilityScript } = require('./pageCompat.js');
 
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+  process.exit(0);
+}
+
 var homePage = 'https://play.geforcenow.com';
 const chromeVersion = process.versions.chrome;
 const chromeMajor = chromeVersion.split('.')[0];
