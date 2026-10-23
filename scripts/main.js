@@ -180,7 +180,9 @@ app.whenReady().then(async () => {
   electronLocalshortcut.register('Alt+Home', async () => {
     const win = BrowserWindow.getAllWindows()[0];
     if (win && !win.isDestroyed()) {
-      win.loadURL(homePage);
+      win.loadURL(homePage).catch(error => {
+        console.error('Failed to load the GeForce NOW home page:', error);
+      });
     }
   });
 

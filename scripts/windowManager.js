@@ -17,20 +17,23 @@ function toggleFullscreen(state) {
     }
 
     var actualState = window.isFullScreen();
+    isFullScreen = actualState;
 
-    if (isFullScreen != state || actualState != state) {
-        if (state || !isGameStreamingScreen) {
-            window.setFullScreen(state);
-            isFullScreen = state;
-            console.log("Fullscreen state changed to: " + state);
+    if (actualState == state || (!state && isGameStreamingScreen)) {
+        return;
+    }
 
-            if (state) {
-                window.webContents.executeJavaScript('window.document.body.requestPointerLock();')
-                focusWindow();
-            } else{
-                window.webContents.executeJavaScript('document.exitPointerLock();')
-            }
-        }
+    window.setFullScreen(state);
+    console.log("Fullscreen state changed to: " + state);
+
+    if (state) {
+        executeWindowScript(
+            window,
+            'if (document.readyState !== "loading" && document.body) document.body.requestPointerLock();',
+            'request pointer lock');
+        focusWindow();
+    } else {
+        executeWindowScript(window, 'document.exitPointerLock();', 'exit pointer lock');
     }
 }
 
@@ -48,7 +51,12 @@ function toggleGameStreamingMode(state) {
 }
 
 function switchFullscreenState() {
-    if (isFullScreen) {
+    const window = getMainWindow();
+    if (!window || window.isDestroyed()) {
+        return;
+    }
+
+    if (window.isFullScreen()) {
         toggleFullscreen(false);
     } else {
         toggleFullscreen(true);
@@ -63,13 +71,39 @@ function focusWindow() {
     }
 }
 
+function executeWindowScript(window, script, operation) {
+    if (!window || window.isDestroyed()) {
+        return;
+    }
+
+    try {
+        window.webContents.executeJavaScript(script).catch(error => {
+            console.error('Failed to ' + operation + ':', error);
+        });
+    } catch (error) {
+        console.error('Failed to ' + operation + ':', error);
+    }
+}
+
 app.on('browser-window-created', async function (event, window) {
-    window.on("leave-full-screen", async function (event, window) {
-        event.preventDefault();
+    window.on("enter-full-screen", function () {
+        isFullScreen = true;
+    });
+
+    window.on("leave-full-screen", function () {
+        isFullScreen = false;
 
         if (isGameStreamingScreen) {
-            toggleFullscreen(true);
+            setImmediate(() => toggleFullscreen(true));
         }
+    });
+
+    window.on("enter-html-full-screen", function () {
+        console.log("HTML fullscreen state changed to: true");
+    });
+
+    window.on("leave-html-full-screen", function () {
+        console.log("HTML fullscreen state changed to: false");
     });
 
     window.on('page-title-updated', async function (event, title) {
