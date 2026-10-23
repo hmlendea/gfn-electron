@@ -189,7 +189,7 @@ flowchart LR
 
 | Data or Store | Owner | Representation and Storage | Lifecycle or Consistency |
 |---------------|-------|----------------------------|--------------------------|
-| GPU crash state | [scripts/main.js](scripts/main.js) | JSON object containing `crashCount` at `path.join(app.getPath('userData'), 'config.json')` | Read synchronously during module initialisation, incremented before GPU-crash relaunch, and reset on a non-crash `will-quit`; malformed or unreadable content falls back to the in-memory default |
+| GPU crash state | [scripts/main.js](scripts/main.js) | JSON object containing a bounded `crashCount` at `path.join(app.getPath('userData'), 'config.json')` | Read synchronously during module initialisation; malformed, unreadable, or out-of-range content falls back to `{ "crashCount": 0 }`; updates are written to a temporary file and atomically renamed |
 | Stream session request | [scripts/preload.js](scripts/preload.js) | Transient JSON request body containing `sessionRequestData` | Revised immediately before supported Fetch or XMLHttpRequest transmission; malformed and unsupported bodies pass through unchanged; never persisted by repository code |
 | Window state | [scripts/windowManager.js](scripts/windowManager.js) | Module-scoped booleans `isFullScreen` and `isGameStreamingScreen` | Process-local and event-driven; reconciled with `BrowserWindow.isFullScreen()` when a transition is requested |
 | Desktop launcher | [scripts/main.js](scripts/main.js) | Freedesktop `.desktop` text beneath `~/.local/share/applications` with mode `0644` | Created or replaced synchronously on `Ctrl+Shift+P`; no deletion or stale-launcher maintenance exists |
@@ -240,7 +240,7 @@ sequenceDiagram
 
   GPU-->>Main: child-process-gone with GPU crashed
   Main->>Main: Increment in-memory crashCount
-  Main->>Config: Persist crashCount synchronously
+  Main->>Config: Persist bounded crashCount through an atomic replacement
   Main->>Electron: Request relaunch, then quit
   Electron->>Main: Start a replacement process
   Main->>Config: Read persisted crashCount
@@ -251,7 +251,7 @@ sequenceDiagram
   end
 ```
 
-Only a child-process event with `type === 'GPU'` and `reason === 'crashed'` activates recovery. The relaunching process preserves the incremented counter because `isQuittingDueToGpuCrash` prevents normal shutdown from resetting it. A subsequent non-crash quit resets the counter to zero, so the next independent launch retries the preferred EGL tier. If persistence fails, relaunch still proceeds, but the subsequent process may repeat an earlier tier.
+Only a child-process event with `type === 'GPU'` and `reason === 'crashed'` activates recovery. The relaunching process preserves the incremented counter because `isQuittingDueToGpuCrash` prevents normal shutdown from resetting it. A subsequent non-crash quit resets the counter to zero, so the next independent launch retries the preferred EGL tier. The persisted counter is restricted to the non-negative fallback range `0` through `2`; invalid state is replaced in memory with the default. If persistence fails, relaunch still proceeds, but the subsequent process may repeat an earlier tier.
 
 ### Direct Launch and Desktop Shortcut Creation
 

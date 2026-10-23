@@ -69,14 +69,9 @@ if (hasExperimentalGpuFlagsEnabled) {
 // Tracks GPU crashes to progressively fall back across GL backends, then to
 // disabled hardware acceleration.
 const configPath = path.join(app.getPath('userData'), 'config.json');
-let config = { crashCount: 0 };
-try {
-  if (fs.existsSync(configPath)) {
-    config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-  }
-} catch (error) {
-  console.error('Failed to read config, using defaults:', error);
-}
+const defaultConfig = { crashCount: 0 };
+const maximumCrashCount = 2;
+const config = readCrashConfig(configPath);
 
 let isQuittingDueToGpuCrash = false;
 
@@ -286,12 +281,8 @@ app.on('browser-window-created', async function (e, window) {
 
 app.on('child-process-gone', (event, details) => {
   if (details.type === 'GPU' && details.reason === 'crashed') {
-    config.crashCount++;
-    try {
-      fs.writeFileSync(configPath, JSON.stringify(config));
-    } catch (error) {
-      console.error('Failed to write crash config:', error);
-    }
+    config.crashCount = Math.min(config.crashCount + 1, maximumCrashCount);
+    writeCrashConfig(configPath, config);
 
     console.log('GPU crashed; restarting with fallback rendering settings.');
 
@@ -304,11 +295,7 @@ app.on('child-process-gone', (event, details) => {
 app.on('will-quit', () => {
   if (!isQuittingDueToGpuCrash) {
     config.crashCount = 0;
-    try {
-      fs.writeFileSync(configPath, JSON.stringify(config));
-    } catch (error) {
-      console.error('Failed to reset crash config:', error);
-    }
+    writeCrashConfig(configPath, config);
   }
 
   destroyDiscordRPC();
@@ -337,6 +324,38 @@ function isDiscordRunning() {
           resolve(false);
       });
   });
+}
+
+function readCrashConfig(filePath) {
+  try {
+    const parsedConfig = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    if (isValidCrashConfig(parsedConfig)) return parsedConfig;
+  } catch (error) {
+    console.error('Failed to read crash config, using defaults:', error);
+  }
+
+  return { ...defaultConfig };
+}
+
+function isValidCrashConfig(value) {
+  return value !== null && !Array.isArray(value) &&
+    Number.isSafeInteger(value.crashCount) &&
+    value.crashCount >= 0 && value.crashCount <= maximumCrashCount;
+}
+
+function writeCrashConfig(filePath, value) {
+  const temporaryFilePath = `${filePath}.tmp`;
+  try {
+    fs.writeFileSync(temporaryFilePath, JSON.stringify(value), 'utf-8');
+    fs.renameSync(temporaryFilePath, filePath);
+  } catch (error) {
+    console.error('Failed to write crash config:', error);
+    try {
+      fs.unlinkSync(temporaryFilePath);
+    } catch (_) {
+      // The temporary file may not exist after a failed write or rename.
+    }
+  }
 }
 
 function isValidCmsId(value) {
