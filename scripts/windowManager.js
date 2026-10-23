@@ -27,10 +27,13 @@ function toggleFullscreen(state) {
     console.log("Fullscreen state changed to: " + state);
 
     if (state) {
-        window.webContents.executeJavaScript('window.document.body.requestPointerLock();');
+        executeWindowScript(
+            window,
+            'if (document.readyState !== "loading" && document.body) document.body.requestPointerLock();',
+            'request pointer lock');
         focusWindow();
     } else {
-        window.webContents.executeJavaScript('document.exitPointerLock();');
+        executeWindowScript(window, 'document.exitPointerLock();', 'exit pointer lock');
     }
 }
 
@@ -60,6 +63,20 @@ function focusWindow() {
 
     if (window && !window.isDestroyed()) {
         window.focus();
+    }
+}
+
+function executeWindowScript(window, script, operation) {
+    if (!window || window.isDestroyed()) {
+        return;
+    }
+
+    try {
+        window.webContents.executeJavaScript(script).catch(error => {
+            console.error('Failed to ' + operation + ':', error);
+        });
+    } catch (error) {
+        console.error('Failed to ' + operation + ':', error);
     }
 }
 
