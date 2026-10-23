@@ -73,7 +73,7 @@ const defaultConfig = { crashCount: 0 };
 const maximumCrashCount = 2;
 const config = readCrashConfig(configPath);
 
-let isQuittingDueToGpuCrash = false;
+let isHandlingGpuCrash = false;
 
 if (config.crashCount <= 1) {
   app.commandLine.appendSwitch('enable-accelerated-video-decode');
@@ -280,24 +280,30 @@ app.on('browser-window-created', async function (e, window) {
 });
 
 app.on('child-process-gone', (event, details) => {
-  if (details.type === 'GPU' && details.reason === 'crashed') {
-    config.crashCount = Math.min(config.crashCount + 1, maximumCrashCount);
-    writeCrashConfig(configPath, config);
+  if (isHandlingGpuCrash || details.type !== 'GPU' || details.reason !== 'crashed') return;
 
-    console.log('GPU crashed; restarting with fallback rendering settings.');
+  isHandlingGpuCrash = true;
+  const nextCrashCount = Math.min(config.crashCount + 1, maximumCrashCount);
+  config.crashCount = nextCrashCount;
 
-    isQuittingDueToGpuCrash = true;
-    app.relaunch();
+  if (!writeCrashConfig(configPath, config)) {
+    console.error('GPU crash state could not be persisted; stopping automatic recovery.');
     app.quit();
+    return;
   }
+
+  if (nextCrashCount >= maximumCrashCount) {
+    console.error('GPU crash recovery exhausted; stopping automatic recovery.');
+    app.quit();
+    return;
+  }
+
+  console.log('GPU crashed; restarting with fallback rendering settings.');
+  app.relaunch();
+  app.quit();
 });
 
 app.on('will-quit', () => {
-  if (!isQuittingDueToGpuCrash) {
-    config.crashCount = 0;
-    writeCrashConfig(configPath, config);
-  }
-
   destroyDiscordRPC();
 
   try {
@@ -348,6 +354,7 @@ function writeCrashConfig(filePath, value) {
   try {
     fs.writeFileSync(temporaryFilePath, JSON.stringify(value), 'utf-8');
     fs.renameSync(temporaryFilePath, filePath);
+    return true;
   } catch (error) {
     console.error('Failed to write crash config:', error);
     try {
@@ -355,6 +362,7 @@ function writeCrashConfig(filePath, value) {
     } catch (_) {
       // The temporary file may not exist after a failed write or rename.
     }
+    return false;
   }
 }
 

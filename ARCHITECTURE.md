@@ -241,7 +241,11 @@ sequenceDiagram
   GPU-->>Main: child-process-gone with GPU crashed
   Main->>Main: Increment in-memory crashCount
   Main->>Config: Persist bounded crashCount through an atomic replacement
-  Main->>Electron: Request relaunch, then quit
+  alt Persisted count is below the terminal tier
+    Main->>Electron: Request relaunch, then quit
+  else Terminal tier or persistence failure
+    Main->>Electron: Quit without relaunch
+  end
   Electron->>Main: Start a replacement process
   Main->>Config: Read persisted crashCount
   alt crashCount is 1
@@ -251,7 +255,7 @@ sequenceDiagram
   end
 ```
 
-Only a child-process event with `type === 'GPU'` and `reason === 'crashed'` activates recovery. The relaunching process preserves the incremented counter because `isQuittingDueToGpuCrash` prevents normal shutdown from resetting it. A subsequent non-crash quit resets the counter to zero, so the next independent launch retries the preferred EGL tier. The persisted counter is restricted to the non-negative fallback range `0` through `2`; invalid state is replaced in memory with the default. If persistence fails, relaunch still proceeds, but the subsequent process may repeat an earlier tier.
+Only a child-process event with `type === 'GPU'` and `reason === 'crashed'` activates recovery. The incremented counter is atomically persisted before a relaunch. Recovery relaunches only while the counter is below the terminal tier; a terminal-tier crash or persistence failure quits without another automatic retry. Normal shutdown preserves the selected recovery tier, so the next independent launch does not immediately retry a known-failing backend. The persisted counter is restricted to the non-negative fallback range `0` through `2`; invalid state is replaced in memory with the default.
 
 ### Direct Launch and Desktop Shortcut Creation
 
@@ -396,8 +400,8 @@ At runtime, one Electron main process owns one active `BrowserWindow`; Electron 
 | Process topology | One main process, one presumed active window, Electron-managed child processes, and optional local Discord IPC | Main-process termination concludes the application; GPU-child failure is recoverable through relaunch |
 | Artefacts | Unarchived x64 Linux ZIP and AppImage production plus desktop metadata; electron-builder `desktopName` is not configured | Source files remain separate in packaged output, and window-to-launcher association is not guaranteed by the package configuration |
 | Persistent state | Electron default-session data, `userData/config.json`, and optional user desktop launchers | Recovery and web-session state are local to the OS account; there is no migration, synchronisation, or central persistence service |
-| Startup and shutdown | Platform switches are appended before readiness; shutdown resets crash state after normal termination, disconnects RPC, and unregisters shortcuts | Lifecycle ordering is part of correctness and changes require full process-level verification |
-| Recovery | GPU crashes relaunch at progressively more conservative graphics tiers | Recovery can reduce acceleration and stream performance; persistence failure may prevent tier progression |
+| Startup and shutdown | Platform switches are appended before readiness; shutdown preserves crash recovery state, disconnects RPC, and unregisters shortcuts | Lifecycle ordering is part of correctness and changes require full process-level verification |
+| Recovery | GPU crashes relaunch at progressively more conservative graphics tiers until the terminal tier | Recovery can reduce acceleration and stream performance; terminal crashes and persistence failures stop automatic retries |
 | Availability | Interactive rendering depends on the local graphics environment, Chromium compatibility, network access, and upstream GeForce NOW | The client provides no offline mode, local service substitute, or upstream failover |
 | Continuous integration | Node.js 20 CI executes `npm ci` and `npm run build --if-present`; CodeQL analyses JavaScript and TypeScript | CI proves dependency installation, packaging, and static analysis only; it does not exercise an interactive Electron session |
 | Security maintenance | [SECURITY.md](SECURITY.md) designates only the latest FlatHub release as supported | Operators using GitHub Releases, AUR, other channels, or previous releases are outside the documented maintenance commitment |
@@ -410,7 +414,7 @@ At runtime, one Electron main process owns one active `BrowserWindow`; Electron 
 | Browser identity | [scripts/main.js](scripts/main.js) | Window user agent and `sec-ch-ua`, `sec-ch-ua-mobile`, and `sec-ch-ua-platform` headers describe a consistent Linux Edge/Chromium client using the current Chromium major version | Inspect browser developer tools and request headers manually | Revise user agent and client hints together whenever browser-compatibility policy changes |
 | GeForce NOW session adaptation | [scripts/preload.js](scripts/preload.js) | Supported `/v2/session` POST bodies retain valid JSON while monitor and physical-resolution fields receive consistent dimensions | Inspect requests in developer tools and exercise Fetch and XMLHttpRequest paths manually | Treat upstream URL and JSON-shape changes as compatibility migrations; preserve pass-through for unsupported bodies |
 | Streaming title convention | [scripts/windowManager.js](scripts/windowManager.js) and [scripts/rpc.js](scripts/rpc.js) | The phrase `on GeForce NOW` identifies active streaming and detailed Discord activity | Navigate between home and a game while observing title, fullscreen, and presence | Coordinate both consumers if the upstream title convention changes |
-| GPU crash state | [scripts/main.js](scripts/main.js) | `config.json` remains readable as JSON with a numeric-compatible `crashCount`, and crash relaunch must not reset it before the replacement process reads it | Force or simulate GPU child crashes and inspect tier progression manually | Add validation or migration before changing the persisted shape; malformed state currently falls back to defaults only when parsing fails |
+| GPU crash state | [scripts/main.js](scripts/main.js) | `config.json` remains readable as JSON with a bounded `crashCount`; crash recovery persists it atomically and never resets it during shutdown | Force or simulate GPU child crashes, persistence failure, and terminal-tier failure; inspect tier progression manually | Add validation or migration before changing the persisted shape; malformed state falls back to defaults |
 | Generated desktop launcher | [scripts/main.js](scripts/main.js) | A numeric shortcut-derived CMS identifier maps to a direct-start command in a Freedesktop Desktop Entry file | Create a launcher in executable and Flatpak environments, then invoke it manually | Preserve valid Desktop Entry syntax and both launch modes; revise sanitisation and escaping with compatibility checks |
 
 ## ✅ Testing and Verification
@@ -439,7 +443,7 @@ Architecture-sensitive modifications additionally require manual verification:
 - **Linux graphics matrix:** Display-server and graphics switches are determined at process start and require relaunch to change. Correctness depends on Electron, Chromium, compositor, VA-API, and driver interactions that packaging alone does not verify.
 - **Single-window premise:** Shortcut handlers and the window manager select `BrowserWindow.getAllWindows()[0]`. Secondary windows are denied for `window.open`, and multi-window state is neither modelled nor supported.
 - **Heuristic streaming state:** Fullscreen protection and Discord details depend on a literal page-title phrase rather than an explicit upstream event or protocol.
-- **Ephemeral recovery policy:** Crash fallback persists across crash-induced relaunches but resets after any normal quit, intentionally retrying the preferred graphics tier on the next independent launch.
+- **Bounded recovery policy:** Crash fallback persists across relaunches and normal shutdown; terminal-tier failure or persistence failure stops automatic recovery.
 - **Main-thread filesystem access:** Configuration and launcher files use synchronous APIs in the main process. The volume is minor, but slow storage can delay interface events.
 - **Desktop identity configuration:** The installed Desktop Entry declares `StartupWMClass`, but electron-builder reports that `desktopName` is absent. Association between a running packaged window and its launcher consequently requires platform verification.
 - **No extension registry:** Integrations, shortcuts, and configuration are directly composed in the main module. Additional capabilities require source modification rather than registration through a plugin or dependency-injection boundary.
