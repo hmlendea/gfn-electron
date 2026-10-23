@@ -1,7 +1,7 @@
 [![Donate](https://img.shields.io/badge/-%E2%99%A5%20Donate-%23ff69b4)](https://hmlendea.go.ro/funding)
 [![Latest Release](https://img.shields.io/github/v/release/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/releases/latest)
 [![Build Status](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml/badge.svg)](https://github.com/hmlendea/gfn-electron/actions/workflows/node.js.yml)
-[![License](https://img.shields.io/github/license/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/hmlendea/gfn-electron)](https://github.com/hmlendea/gfn-electron/blob/master/LICENSE.md)
 
 # GFN Electron
 
@@ -158,8 +158,8 @@ The key directories and files are:
 | Path | Purpose |
 |------|---------|
 | `scripts/main.js` | Electron main-process lifecycle, window initialisation, and runtime flags |
-| `scripts/preload.js` | Safe bridge between renderer and Electron APIs |
-| `scripts/renderer.js` | Renderer-side interactions and UI behaviour |
+| `scripts/preload.js` | Preload entry point; the page compatibility script is installed by the main process |
+| `scripts/renderer.js` | Reserved renderer module; the hosted GeForce NOW page owns the UI |
 | `scripts/rpc.js` | Discord rich presence integration |
 | `scripts/windowManager.js` | Window creation and management logic |
 | `com.github.hmlendea.geforcenow-electron.desktop` | Desktop entry metadata |
@@ -209,4 +209,4 @@ If you find this project useful, consider [funding it](https://hmlendea.go.ro/fu
 ## 📄 License
 
 This project is being distributed under the `GNU General Public License v3.0` or later.
-See [LICENSE](./LICENSE) for details.
+See [LICENSE.md](./LICENSE.md) for details.

@@ -304,13 +304,13 @@ The window manager treats a page title containing `on GeForce NOW` as the stream
 
 ### Security and Privacy
 
-The renderer loads remote executable content. `BrowserWindow` explicitly configures `contextIsolation: false`, so preload and page scripts share a JavaScript context rather than an isolated bridge. The window does not explicitly configure `nodeIntegration` or `sandbox`; their effective values consequently follow the installed Electron release defaults. No repository-defined IPC channel exposes main-process operations to the page, but the shared context permits page code to interfere with preload-installed globals and request wrappers.
+The renderer loads remote executable content. `BrowserWindow` explicitly disables Node integration, enables context isolation, and enables the renderer sandbox. Compatibility hooks are injected into the page world because they must wrap browser APIs used by the hosted page; the preload itself exposes no privileged bridge or IPC channel. Navigation and permission handlers restrict the application container to HTTPS NVIDIA and GeForce NOW origins.
 
-New-window requests are denied as separate windows but are navigated in the existing `BrowserWindow` without a repository-maintained origin allow-list. The preload therefore remains a compatibility boundary whose conduct may apply after navigation beyond the expected origin.
+New-window requests are denied as separate windows. Untrusted navigations and redirects are prevented and opened externally only after HTTPS URL validation.
 
 The application does not implement local authentication or read GeForce NOW credentials. Authentication data and web storage remain under the remote page and Electron default-session boundary. Discord integration transmits a page-title-derived activity string to the local Discord client when enabled. Startup logs include the complete process argument list, which can expose launch identifiers in console output. No application-specific telemetry, metrics exporter, or remote logging client exists in repository code.
 
-Input validation is limited. Direct-start values are concatenated without URI encoding or format validation, and remote page titles are inserted into Desktop Entry fields without escaping, although launcher filenames and shortcut-derived CMS identifiers are sanitised. These are current verification and hardening gaps, not guarantees supplied by the architecture.
+Direct-start values and shortcut-derived CMS identifiers are restricted to numeric strings. Generated desktop-entry values and executable arguments are escaped according to the Freedesktop format, and shortcut creation requires a trusted game URL.
 
 ### Error Handling
 
