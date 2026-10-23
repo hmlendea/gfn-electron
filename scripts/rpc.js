@@ -5,7 +5,18 @@ function DiscordRPC(title) {
     if (process.argv.includes("--disable-rpc") || process.env.GFN_DISABLE_RPC === '1') return;
 
     if (!client) {
-        client = require('discord-rich-presence')('963128360219869194');
+        try {
+            const discordClient = require('discord-rich-presence')('963128360219869194');
+            discordClient.on('error', error => {
+                handleClientError(discordClient, error);
+            });
+            client = discordClient;
+        } catch (error) {
+            console.log('Discord RPC initialization error:', error);
+            client = null;
+            return;
+        }
+
         startTimestamp = Date.now();
     }
 
@@ -30,17 +41,34 @@ function DiscordRPC(title) {
     }
 };
 
+function handleClientError(discordClient, error) {
+    console.log('Discord RPC error:', error);
+
+    if (client !== discordClient) {
+        return;
+    }
+
+    client = null;
+
+    try {
+        discordClient.disconnect();
+    } catch (disconnectError) {
+        console.log('Discord RPC disconnect error:', disconnectError);
+    }
+}
+
 function destroyDiscordRPC() {
     if (!client) {
         return;
     }
 
+    const discordClient = client;
+    client = null;
+
     try {
-        client.disconnect();
+        discordClient.disconnect();
     } catch (_) {
     }
-
-    client = null;
 }
 
 module.exports = { DiscordRPC, destroyDiscordRPC };
