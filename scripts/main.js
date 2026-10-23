@@ -189,37 +189,42 @@ app.whenReady().then(async () => {
     if (!win || win.isDestroyed()) return;
 
     const url = win.webContents.getURL();
-    const cmsMatch = url.match(/[?&]cmsId=(\d+)/);
-    if (!cmsMatch) {
+    const cmsMatch = url.match(/[?&]cmsId=(\d+)(?:&|$)/);
+    if (!cmsMatch || !isGameUrl(url)) {
       console.error('Ctrl+Shift+P: no cmsId in current URL, are you in a game?');
-      return;
-    }
-    if (!isTrustedApplicationUrl(url)) {
-      console.error('Ctrl+Shift+P: current page is not a trusted GeForce NOW page');
       return;
     }
     const cmsId = cmsMatch[1];
     const gameTitle = win.getTitle().replace(/ on GeForce NOW$/i, '').trim() || `Game ${cmsId}`;
+    if (containsDesktopEntryControlCharacter(gameTitle)) {
+      console.error('Ctrl+Shift+P: the game title contains unsupported control characters');
+      return;
+    }
 
-    const execCmd = process.env.FLATPAK_ID
-      ? `flatpak run ${process.env.FLATPAK_ID} --direct-start ${cmsId}`
-      : `"${app.getPath('exe')}" --direct-start ${cmsId}`;
+    const execCmd = createDesktopExecCommand(cmsId);
+    if (!execCmd) {
+      console.error('Ctrl+Shift+P: the application path or Flatpak identifier is invalid');
+      return;
+    }
 
     const desktopEntry = [
       '[Desktop Entry]',
       'Encoding=UTF-8',
-      `Name=${gameTitle}`,
+      `Name=${escapeDesktopEntryValue(gameTitle)}`,
       'Comment=Stream this game using the Nvidia GeForce NOW service',
       'Type=Application',
       `Exec=${execCmd}`,
       'Icon=nvidia',
       'StartupWMClass=geforce now',
       'Categories=Network;Game;',
-      `Keywords=Game;Streaming;Nvidia;GeForce;NOW;GFN;${gameTitle};`,
+      `Keywords=${['Game', 'Streaming', 'Nvidia', 'GeForce', 'NOW', 'GFN', gameTitle]
+        .map(escapeDesktopEntryValue)
+        .join(';')};`,
     ].join('\n') + '\n';
 
     const appsDir = path.join(os.homedir(), '.local', 'share', 'applications');
-    const fileName = `geforcenow-${gameTitle.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase()}.desktop`;
+    const safeTitle = gameTitle.replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase() || 'game';
+    const fileName = `geforenow-${cmsId}-${safeTitle}.desktop`;
     const desktopPath = path.join(appsDir, fileName);
 
     try {
@@ -338,6 +343,54 @@ function getPositiveInteger(value) {
   if (!/^\d+$/.test(value || '')) return null;
   const parsedValue = Number(value);
   return Number.isSafeInteger(parsedValue) && parsedValue > 0 ? parsedValue : null;
+}
+
+function isGameUrl(value) {
+  try {
+    const parsedUrl = new URL(value);
+    return isTrustedApplicationUrl(value) && parsedUrl.pathname === '/mall/' &&
+      parsedUrl.hash.startsWith('#/streamer');
+  } catch (_) {
+    return false;
+  }
+}
+
+function containsDesktopEntryControlCharacter(value) {
+  return /[\u0000-\u001F\u007F]/.test(value);
+}
+
+function escapeDesktopEntryValue(value) {
+  return value.replace(/([\\;\n\r\t])/g, character => {
+    const escapedCharacters = {
+      '\\': '\\\\',
+      ';': '\\;',
+      '\n': '\\n',
+      '\r': '\\r',
+      '\t': '\\t',
+    };
+    return escapedCharacters[character];
+  });
+}
+
+function escapeDesktopExecArgument(value) {
+  return `"${value.replace(/([\\"%])/g, character => {
+    if (character === '%') return '%%';
+    return `\\${character}`;
+  })}"`;
+}
+
+function createDesktopExecCommand(cmsId) {
+  const flatpakId = process.env.FLATPAK_ID;
+  if (flatpakId && /^[a-zA-Z0-9][a-zA-Z0-9.-]*$/.test(flatpakId)) {
+    return ['flatpak', 'run', flatpakId, '--direct-start', cmsId]
+      .map(escapeDesktopExecArgument)
+      .join(' ');
+  }
+
+  if (flatpakId) return null;
+  return [app.getPath('exe'), '--direct-start', cmsId]
+    .map(escapeDesktopExecArgument)
+    .join(' ');
 }
 
 function isTrustedApplicationUrl(value) {
