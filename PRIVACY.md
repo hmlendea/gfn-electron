@@ -64,7 +64,7 @@ The application processes the data described above for these verified functions:
 
 | Data | Location | Retention |
 |------|----------|-----------|
-| GPU crash counter | `userData/config.json` (Electron user data directory) | Persists until a non-crash quit resets it to `0` |
+| GPU crash counter | `userData/config.json` (Electron user data directory) | Persists until deliberate state removal or replacement by a later GPU-crash update |
 | Desktop launchers | `~/.local/share/applications/*.desktop` | Persistent; no deletion or stale-launcher maintenance exists |
 | Browser session state | Electron default session (Chromium-managed cookies, cache, storage) | Follows Electron default-session behaviour; no custom retention policy |
 | Console logs | Terminal output | Not persisted by the application |
