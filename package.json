@@ -17,18 +17,20 @@
         {
           "target": "zip",
           "arch": [
-            "x64"
+            "x64",
+            "arm64"
           ]
         },
         {
           "target": "AppImage",
           "arch": [
-            "x64"
+            "x64",
+            "arm64"
           ]
         }
       ],
       "category": "Games",
-      "artifactName": "${name}_${version}_linux.${ext}"
+      "artifactName": "${name}_${version}_linux_${arch}.${ext}"
     },
     "extraFiles": [
       "com.github.hmlendea.${name}.desktop"
