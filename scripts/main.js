@@ -1,5 +1,6 @@
 const { app, BrowserWindow, session, shell, Notification } = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
+const { autoUpdater } = require('electron-updater');
 const findProcess = require('find-process');
 const fs = require('fs');
 const os = require('os');
@@ -158,6 +159,8 @@ app.whenReady().then(async () => {
   if (discordIsRunning) {
     DiscordRPC('GeForce NOW');
   }
+
+  initializeAutoUpdater();
 
   app.on('activate', async function () {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -458,4 +461,46 @@ function openExternalUrl(value) {
   } catch (_) {
     console.error('Blocked invalid external URL');
   }
+}
+
+function initializeAutoUpdater() {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Auto-updater disabled in development mode');
+    return;
+  }
+
+  autoUpdater.logger = console;
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for updates...');
+  });
+
+  autoUpdater.on('update-available', (info) => {
+    console.log('Update available:', info.version);
+  });
+
+  autoUpdater.on('update-not-available', (info) => {
+    console.log('Update not available:', info.version);
+  });
+
+  autoUpdater.on('error', (err) => {
+    console.error('Auto-updater error:', err);
+  });
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    const logMessage = `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred}/${progressObj.total})`;
+    console.log(logMessage);
+  });
+
+  autoUpdater.on('update-downloaded', (info) => {
+    console.log('Update downloaded:', info.version);
+    new Notification({
+      title: 'Update downloaded',
+      body: `Version ${info.version} has been downloaded and will be installed when the application closes.`,
+    }).show();
+  });
+
+  autoUpdater.checkForUpdatesAndNotify();
 }

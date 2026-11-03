@@ -361,6 +361,7 @@ flowchart LR
   main --> windowManager["windowManager.js"]
   main --> rpc["rpc.js"]
   main --> shortcuts["electron-localshortcut"]
+  main --> updater["electron-updater"]
   main --> processProbe["find-process"]
   windowManager --> electron
   rpc --> discordLibrary["discord-rich-presence"]
@@ -385,6 +386,7 @@ The principal dependency rules are:
 | `electron` | Supply the desktop process model, Chromium renderer, browser session, native window APIs, command-line switches, and packaging runtime | Main process, preload, and window manager | Electron defaults and Chromium capability names are compatibility-sensitive; process topology and security defaults change with runtime revisions |
 | `electron-builder` | Produce Linux deployment artefacts from [package.json](package.json) | `npm run build` | Packaging configuration is coupled to electron-builder target names, substitutions, and filesystem layout |
 | `electron-localshortcut` | Register application-scoped keyboard accelerators | Main process readiness and shutdown | Shortcut lifecycle is process-global and requires explicit `unregisterAll()` during quit |
+| `electron-updater` | Automatic application updates from GitHub Releases | Main process initialisation | Update checks occur after window creation; downloads and installs on quit |
 | `find-process` | Probe the local process table for Discord | Main-process startup | Discord detection depends on the literal process name `Discord` and occurs only once per application launch |
 | `discord-rich-presence` | Communicate activity to the local Discord client | [scripts/rpc.js](scripts/rpc.js) | The integration is tied to this library's client and presence shape but remains optional to streaming |
 | NVIDIA GeForce NOW | Supply the hosted interface, authentication, APIs, and game stream | Browser navigation and preload-adapted requests | Upstream page titles, URL shapes, request schemas, and browser checks can change independently and invalidate local adaptations |

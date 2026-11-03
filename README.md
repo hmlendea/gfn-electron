@@ -149,6 +149,7 @@ npm start
 |---------|---------|
 | `discord-rich-presence` | Discord RPC integration |
 | `electron-localshortcut` | Application-local keyboard shortcuts |
+| `electron-updater` | Automatic application updates |
 | `find-process` | Process discovery for integration logic |
 
 ## 🗂️ Project Structure
