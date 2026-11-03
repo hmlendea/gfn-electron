@@ -7,7 +7,8 @@
   "main": "scripts/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --publish never"
+    "build": "electron-builder --publish never",
+    "release": "electron-builder --publish always"
   },
   "build": {
     "asar": false,
@@ -31,7 +32,12 @@
     },
     "extraFiles": [
       "com.github.hmlendea.${name}.desktop"
-    ]
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "hmlendea",
+      "repo": "gfn-electron"
+    }
   },
   "repository": "https://github.com/hmlendea/gfn-electron",
   "keywords": [
@@ -49,6 +55,7 @@
   "dependencies": {
     "discord-rich-presence": "^0.0.8",
     "electron-localshortcut": "^3.2.1",
+    "electron-updater": "^6.3.9",
     "find-process": "^1.4.10"
   }
 }

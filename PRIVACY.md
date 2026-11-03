@@ -32,9 +32,11 @@ Data sent from a self-hosted instance to external services:
 - **GeForce NOW web traffic** — HTTPS navigation, session requests, and media stream to Nvidia's servers at `play.geforcenow.com`.
 - **Discord rich presence** — an optional page-title-derived activity string sent to a local Discord process when enabled.
 - **Startup console output** — the complete process argument list is logged at launch, which can expose launch identifiers in terminal output.
+- **Application update check** — after window creation, the installed version is compared with the project's GitHub releases via `electron-updater`; a newer compatible build is downloaded and installed when the application quits. The check transmits the current application version and platform to GitHub.
 
 Optional flows that the operator can disable:
 - Discord rich presence: `--disable-rpc` flag or `GFN_DISABLE_RPC=1` environment variable.
+- Application update check: set the `NODE_ENV` environment variable to `development`.
 
 ## 📥 Data We Handle
 
@@ -77,6 +79,7 @@ The project does not define cookie, cache, or credential retention policy; those
 |------------------------|---------|---------------|--------------------------------|
 | Nvidia GeForce NOW (`play.geforcenow.com`) | Game streaming, authentication, game discovery | HTTPS session traffic, stream media | Loaded at `https://play.geforcenow.com`; no repository-owned API contract |
 | Discord desktop process | Optional rich presence | Page-title-derived activity string | `--disable-rpc` or `GFN_DISABLE_RPC=1` to disable |
+| GitHub Releases (`github.com`) | Automatic update check and installation | Current application version and platform build metadata | `NODE_ENV=development` disables the check |
 
 The application has no built-in telemetry, metrics exporter, remote logging client, or external data transfer beyond the two integrations above.
 
@@ -88,6 +91,7 @@ The following documented controls are available:
 - Override reported refresh rate: `GFN_REFRESH_RATE` environment variable.
 - Direct-launch a game: `--direct-start <cmsId>` or `GFN_DIRECT_START_ID` environment variable.
 - Disable GPU crash recovery tier progression: set `crashCount >= 2` in `config.json` (disables hardware acceleration).
+- Disable automatic update checks: set the `NODE_ENV` environment variable to `development`.
 
 No documented procedure exists for exporting or deleting browser session data; that is controlled by Electron's default session and the remote page.
 
