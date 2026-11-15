@@ -18,12 +18,14 @@ Unofficial desktop client for Nvidia GeForce NOW on Linux, delivering a native E
 - [System Requirements](#-system-requirements)
 - [Installation](#-installation)
 - [Development](#-development)
+- [GitHub Actions](#-github-actions)
 - [Project Structure](#-project-structure)
 - [Documentation](#-documentation)
 - [Architecture](#architecture)
 - [Contributing](#-contributing)
 - [Security](#-security)
 - [Privacy](#-privacy)
+- [Support](#-support)
 - [Project Engagement](#-project-engagement)
 - [License](#-license)
 
@@ -152,6 +154,14 @@ npm start
 | `electron-updater` | Automatic application updates |
 | `find-process` | Process discovery for integration logic |
 
+## ⚙️ GitHub Actions
+
+| Workflow | Purpose | What it does |
+|----------|---------|--------------|
+| [ Node.js CI ](https://github.com/hmlendea/gfn-electron/blob/master/.github/workflows/node.js.yml) | Install locked dependencies and package the application | Runs on pushes to and pull requests against `master`; sets up Node.js 20 with npm caching, installs with `npm ci`, and builds with `npm run build` |
+| [ GitHub Release ](https://github.com/hmlendea/gfn-electron/blob/master/.github/workflows/github-release.yml) | Build and publish release artefacts | Runs on published releases; sets up Node.js 20 with npm caching, installs with `npm ci`, builds with `npm run build`, and publishes the Linux ZIP and AppImage artefacts with `softprops/action-gh-release` |
+| [ CodeQL ](https://github.com/hmlendea/gfn-electron/blob/master/.github/workflows/codeql-analysis.yml) | Static security analysis | Runs on pushes to and pull requests against `master` and on a weekly schedule; analyses JavaScript and TypeScript |
+
 ## 🗂️ Project Structure
 
 The key directories and files are:
@@ -198,6 +208,10 @@ For information on reporting security vulnerabilities, see [SECURITY.md](./SECUR
 ## 🛡️ Privacy
 
 For information on how this application handles personal data, see [PRIVACY.md](./PRIVACY.md).
+
+## 💬 Support
+
+For support, please [open an issue](https://github.com/hmlendea/gfn-electron/issues).
 
 ## 💝 Project Engagement
 

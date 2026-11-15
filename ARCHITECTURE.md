@@ -407,7 +407,7 @@ At runtime, one Electron main process owns one active `BrowserWindow`; Electron 
 | Startup and shutdown | Platform switches are appended before readiness; shutdown preserves crash recovery state, disconnects RPC, and unregisters shortcuts | Lifecycle ordering is part of correctness and changes require full process-level verification |
 | Recovery | GPU crashes relaunch at progressively more conservative graphics tiers until the terminal tier | Recovery can reduce acceleration and stream performance; terminal crashes and persistence failures stop automatic retries |
 | Availability | Interactive rendering depends on the local graphics environment, Chromium compatibility, network access, and upstream GeForce NOW | The client provides no offline mode, local service substitute, or upstream failover |
-| Continuous integration | Node.js 20 CI executes `npm ci` and `npm run build --if-present`; CodeQL analyses JavaScript and TypeScript | CI proves dependency installation, packaging, and static analysis only; it does not exercise an interactive Electron session |
+| Continuous integration | Node.js 20 CI executes `npm ci` and `npm run build --if-present`; CodeQL analyses JavaScript and TypeScript; the GitHub Release workflow builds and uploads the Linux ZIP and AppImage assets on published releases | CI proves dependency installation, packaging, static analysis, and asset publication only; it does not exercise an interactive Electron session |
 | Security maintenance | [SECURITY.md](SECURITY.md) designates only the latest FlatHub release as supported | Operators using GitHub Releases, AUR, other channels, or previous releases are outside the documented maintenance commitment |
 
 ## 🛡️ Compatibility Contracts
@@ -423,7 +423,7 @@ At runtime, one Electron main process owns one active `BrowserWindow`; Electron 
 
 ## ✅ Testing and Verification
 
-The repository contains no test files, test runner, `npm test` script, or coverage configuration. The Node.js workflow installs locked dependencies and packages the application on Node.js 20; the CodeQL workflow supplies scheduled and change-driven static analysis. These gates do not verify browser request adaptation, graphics fallback, fullscreen transitions, Discord IPC, navigation, or generated launchers.
+The repository contains no test files, test runner, `npm test` script, or coverage configuration. The Node.js workflow installs locked dependencies and packages the application on Node.js 20; the CodeQL workflow supplies scheduled and change-driven static analysis; the GitHub Release workflow rebuilds the application on published releases and attaches the Linux ZIP and AppImage assets to the release. These gates do not verify browser request adaptation, graphics fallback, fullscreen transitions, Discord IPC, navigation, or generated launchers.
 
 Execute the principal automated verification with:
 
@@ -472,7 +472,7 @@ Architecture-sensitive modifications additionally require manual verification:
 | Discord rich presence | [scripts/rpc.js](scripts/rpc.js) |
 | Reserved, currently empty renderer module | [scripts/renderer.js](scripts/renderer.js) |
 | Installed desktop metadata | [com.github.hmlendea.geforcenow-electron.desktop](com.github.hmlendea.geforcenow-electron.desktop) |
-| Packaging and static-analysis automation | [.github/workflows/node.js.yml](.github/workflows/node.js.yml), [.github/workflows/codeql-analysis.yml](.github/workflows/codeql-analysis.yml) |
+| Packaging and static-analysis automation | [.github/workflows/node.js.yml](.github/workflows/node.js.yml), [.github/workflows/codeql-analysis.yml](.github/workflows/codeql-analysis.yml), [.github/workflows/github-release.yml](.github/workflows/github-release.yml) |
 
 ## 📚 Related Documentation
 

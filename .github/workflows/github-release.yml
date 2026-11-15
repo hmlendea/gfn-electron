@@ -1,0 +1,45 @@
+name: GitHub Release
+
+on:
+  release:
+    types: [ published ]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v7
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 20.x
+        cache: 'npm'
+
+    - name: Extract the version from the GitHub tag
+      id: version
+      run: |
+        VERSION="${{ github.event.release.tag_name }}"
+        VERSION="${VERSION#v}"
+        echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+    - name: Install the dependencies
+      run: npm ci
+
+    - name: Build the release artefacts
+      run: npm run build
+
+    - name: Publish the release assets
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          dist/geforcenow-electron_${{ steps.version.outputs.version }}_*
+          dist/latest-linux*.yml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
