@@ -302,6 +302,8 @@ Both paths activate VA-API and accelerated video capabilities and ignore Chromiu
 
 The window manager treats a page title containing `on GeForce NOW` as the streaming-mode signal. Entering streaming mode forces fullscreen, requests pointer lock through renderer JavaScript, and focuses the window. A title that omits the phrase exits streaming mode and permits fullscreen exit.
 
+The default-session permission handlers accept only the permission types the hosted application requires, including `keyboardLock`. The streamer acquires the Keyboard Lock API while streaming so that reserved keys such as `Escape` are delivered to the remote game instead of invoking Chromium's default fullscreen exit; denying that permission reintroduces the `Escape` regression.
+
 `F11` and `Super+F` request a manual state inversion. While streaming mode is active, the controller rejects a transition out of fullscreen, and a native `leave-full-screen` event requests fullscreen again. Outside streaming mode, manual entry and exit are permitted. On Steam Deck, `SteamDeck=1` creates the window in fullscreen and synchronises the controller's initial state; Wayland input-method flags support compositor-mediated text input.
 
 ## 🧵 Cross-Cutting Concerns

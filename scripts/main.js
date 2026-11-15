@@ -26,6 +26,10 @@ const hasExperimentalGpuFlagsEnabled =
 const trustedApplicationPermissionTypes = new Set([
   'display-capture',
   'fullscreen',
+  // The streamer captures Escape and other reserved keys through the Keyboard
+  // Lock API; without this permission Chromium exits fullscreen on Escape
+  // instead of forwarding the key to the game.
+  'keyboardLock',
   'media',
   'mediaKeySystem',
   'pointerLock',
