@@ -8,7 +8,8 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-builder --publish never",
-    "release": "electron-builder --publish always"
+    "release": "electron-builder --publish always",
+    "test": "node --test"
   },
   "build": {
     "asar": false,

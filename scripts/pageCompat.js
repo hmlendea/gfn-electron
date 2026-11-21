@@ -35,20 +35,43 @@ function createPageCompatibilityScript(settings) {
             window.fetch = async function (input, init) {
                 const request = input instanceof Request ? input : null;
                 const url = request ? request.url : String(input instanceof URL ? input.href : input);
-                const method = (init && init.method) || (request && request.method) || 'GET';
-                let body = init && init.body !== undefined ? init.body : null;
-                if (body === null && request && method.toUpperCase() === 'POST') {
+                const method = ((init && init.method) || (request && request.method) || 'GET').toUpperCase();
+
+                if (method !== 'POST' || !url.includes(sessionPath)) {
+                    return originalFetch.call(this, input, init);
+                }
+
+                // Only rewrite string bodies. Streams, FormData, Blob, and other body
+                // types must retain the browser's native Request/fetch semantics.
+                let body = init && init.body !== undefined ? init.body : undefined;
+                if (body === undefined && request) {
                     body = await request.clone().text();
                 }
-                if (method.toUpperCase() === 'POST' && url.includes(sessionPath) && typeof body === 'string') {
-                    if (request && (!init || init.body === undefined)) {
-                        input = new Request(request, { body: patchBody(body) });
-                        init = undefined;
-                    } else {
-                    init = { ...(init || {}), body: patchBody(body) };
-                    }
+
+                if (typeof body !== 'string') {
+                    return originalFetch.call(this, input, init);
                 }
-                return originalFetch.call(this, input, init);
+
+                const patchedBody = patchBody(body);
+                if (patchedBody === body) {
+                    return originalFetch.call(this, input, init);
+                }
+
+                if (request) {
+                    // Build from the original Request and the caller's init so method,
+                    // headers, credentials, mode, redirect, signal, and other overrides
+                    // are preserved while replacing only the JSON body.
+                    const patchedRequest = new Request(request, {
+                        ...(init || {}),
+                        body: patchedBody,
+                    });
+                    return originalFetch.call(this, patchedRequest);
+                }
+
+                return originalFetch.call(this, input, {
+                    ...(init || {}),
+                    body: patchedBody,
+                });
             };
 
             const originalOpen = XMLHttpRequest.prototype.open;
