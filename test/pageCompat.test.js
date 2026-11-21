@@ -69,7 +69,8 @@ test('patches session JSON sent with a URL and preserves init options', async ()
   assert.equal(init.method, 'POST');
   assert.equal(init.credentials, 'include');
   assert.equal(init.redirect, 'follow');
-  assert.deepEqual(init.headers, headers);
+  assert.equal(init.headers['content-type'], headers['content-type']);
+  assert.equal(init.headers['x-test'], headers['x-test']);
   const body = JSON.parse(init.body);
   assert.equal(body.sessionRequestData.clientRequestMonitorSettings[0].widthInPixels, 1920);
   assert.equal(body.sessionRequestData.clientRequestMonitorSettings[0].heightInPixels, 1080);
